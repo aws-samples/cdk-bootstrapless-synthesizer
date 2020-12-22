@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@aws-cdk/cloud-assembly-schema@0.0.0", "@aws-cdk/cloud-assembly-schema@1.79.0":
+"@aws-cdk/cloud-assembly-schema@1.79.0", "@aws-cdk/cloud-assembly-schema@^1.79.0":
   version "1.79.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/cloud-assembly-schema/-/cloud-assembly-schema-1.79.0.tgz#e089ed386f47b4e24e12e398b66d1df7894e5109"
   integrity sha512-n2ARtOXIUq3FdJ1EBuHzsM0DQau6ZwHprPhpk1xc5bv21s7D5X5ECe06eC0K5xC5ZyfC13BDWu1f+xFh+krnYA==
@@ -10,7 +10,7 @@
     jsonschema "^1.4.0"
     semver "^7.3.2"
 
-"@aws-cdk/core@0.0.0":
+"@aws-cdk/core@^1.79.0":
   version "1.79.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/core/-/core-1.79.0.tgz#164b2f01877259eeb1ba16617be103522ae934d6"
   integrity sha512-I+2GbQfbPy6TewnGbviE1W8cUhgBEA1mQLYm5gBj/Rzix1tCyaNvfYsBU3ipg3jIATpHsg1CzUq0zrumUnmnTg==
@@ -24,7 +24,7 @@
     ignore "^5.1.8"
     minimatch "^3.0.4"
 
-"@aws-cdk/cx-api@0.0.0", "@aws-cdk/cx-api@1.79.0":
+"@aws-cdk/cx-api@1.79.0", "@aws-cdk/cx-api@^1.79.0":
   version "1.79.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/cx-api/-/cx-api-1.79.0.tgz#c9770fdd9b14a64e7ef350aa020969902b8a182d"
   integrity sha512-ymQOqHcPzYhrcQ4swMgw5JzAaOm+PehH1cepsxi/Wq2zNOXkyN9o6Hw6l+eDpezFvNIKFy4mMAo6FR9xRCUiow==
