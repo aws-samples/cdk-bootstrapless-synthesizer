@@ -1,12 +1,48 @@
 {
   "tasks": {
+    "clobber": {
+      "name": "clobber",
+      "category": "30.maintain",
+      "description": "hard resets to HEAD of origin and cleans the local repo",
+      "env": {
+        "BRANCH": "$(git branch --show-current)"
+      },
+      "steps": [
+        {
+          "exec": "git checkout -b scratch",
+          "name": "save current HEAD in \"scratch\" branch"
+        },
+        {
+          "exec": "git checkout $BRANCH"
+        },
+        {
+          "exec": "git fetch origin",
+          "name": "fetch latest changes from origin"
+        },
+        {
+          "exec": "git reset --hard origin/$BRANCH",
+          "name": "hard reset to origin commit"
+        },
+        {
+          "exec": "git clean -fdx",
+          "name": "clean all untracked files"
+        },
+        {
+          "say": "ready to rock! (unpushed commits are under the \"scratch\" branch)"
+        }
+      ],
+      "condition": "git diff --exit-code > /dev/null"
+    },
     "compile": {
       "name": "compile",
       "category": "00.build",
       "description": "Only compile",
       "steps": [
         {
-          "exec": "tsc"
+          "exec": "jsii --silence-warnings=reserved-word --no-fix-peer-dependencies"
+        },
+        {
+          "spawn": "docgen"
         }
       ]
     },
@@ -106,7 +142,7 @@
       "description": "Watch & compile in the background",
       "steps": [
         {
-          "exec": "tsc -w"
+          "exec": "jsii -w --silence-warnings=reserved-word --no-fix-peer-dependencies"
         }
       ]
     },
@@ -116,16 +152,7 @@
       "description": "Create an npm tarball",
       "steps": [
         {
-          "exec": "rm -fr dist"
-        },
-        {
-          "exec": "mkdir -p dist/js"
-        },
-        {
-          "exec": "yarn pack"
-        },
-        {
-          "exec": "mv *.tgz dist/js/"
+          "exec": "jsii-pacmak"
         }
       ]
     },
@@ -136,6 +163,26 @@
       "steps": [
         {
           "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test .projenrc.js"
+        }
+      ]
+    },
+    "compat": {
+      "name": "compat",
+      "category": "20.release",
+      "description": "Perform API compatibility check against latest version",
+      "steps": [
+        {
+          "exec": "jsii-diff npm:$(node -p \"require('./package.json').name\") -k --ignore-file .compatignore || (echo \"\nUNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .compatignore to skip.\n\" && exit 1)"
+        }
+      ]
+    },
+    "docgen": {
+      "name": "docgen",
+      "category": "20.release",
+      "description": "Generate API.md from .jsii manifest",
+      "steps": [
+        {
+          "exec": "jsii-docgen"
         }
       ]
     }
