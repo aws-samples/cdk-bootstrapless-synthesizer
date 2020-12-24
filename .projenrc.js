@@ -5,6 +5,8 @@ const project = new JsiiProject({
   authorName: 'wchaws',
   name: 'cdk-bootstrapless-synthesizer',
   repository: 'git@github.com:wchaws/cdk-bootstrapless-synthesizer.git',
+  releaseEveryCommit: false,
+  releaseBranches: ['main'],
   deps: [
     '@aws-cdk/cloud-assembly-schema',
     '@aws-cdk/cx-api',

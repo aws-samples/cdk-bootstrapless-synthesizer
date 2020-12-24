@@ -1,3 +1,5 @@
+import { BootstraplessStackSynthesizer } from '../src/';
+
 test('hello', () => {
-  expect(1).toBe(1);
+  new BootstraplessStackSynthesizer();
 });
