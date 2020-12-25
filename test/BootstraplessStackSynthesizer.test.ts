@@ -240,32 +240,32 @@ test('synth', () => {
   const asm = myapp.synth();
   const manifest = readAssetManifest(asm);
 
-  expect(manifest?.files['mystack.template.json'].source).toEqual({
+  expect(manifest.files?.['mystack.template.json']?.source).toEqual({
     path: 'mystack.template.json',
     packaging: 'file',
   });
-  expect(manifest?.files['mystack.template.json'].destinations).toEqual({
+  expect(manifest.files?.['mystack.template.json']?.destinations).toEqual({
     'current_account-current_region': {
       bucketName: 'template-bucket',
       objectKey: 'mystack.template.json',
       assumeRoleArn: 'file:role:arn',
     },
   });
-  expect(manifest?.files['file-asset-hash'].source).toEqual({
+  expect(manifest.files?.['file-asset-hash']?.source).toEqual({
     path: __filename,
     packaging: FileAssetPackaging.FILE,
   });
-  expect(manifest?.files['file-asset-hash'].destinations).toEqual({
+  expect(manifest.files?.['file-asset-hash']?.destinations).toEqual({
     'current_account-current_region': {
       bucketName: 'file-asset-bucket',
       objectKey: 'file-asset-hash',
       assumeRoleArn: 'file:role:arn',
     },
   });
-  expect(manifest?.dockerImages['docker-asset-hash'].source).toEqual({
+  expect(manifest.dockerImages?.['docker-asset-hash']?.source).toEqual({
     directory: __dirname,
   });
-  expect(manifest?.dockerImages['docker-asset-hash'].destinations).toEqual({
+  expect(manifest.dockerImages?.['docker-asset-hash']?.destinations).toEqual({
     'current_account-current_region': {
       repositoryName: 'image-ecr-repository',
       imageTag: 'docker-asset-hash',
