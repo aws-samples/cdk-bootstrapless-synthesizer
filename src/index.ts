@@ -8,20 +8,92 @@ import * as cxapi from '@aws-cdk/cx-api';
 
 const REGION_PLACEHOLDER = '${AWS::Region}';
 
+/**
+ * Configuration properties for BootstraplessStackSynthesizer
+ */
 export interface BootstraplessStackSynthesizerProps {
+  /**
+   * Name of the S3 bucket to hold file assets
+   *
+   * You must supply this if you have given a non-standard name to the staging bucket.
+   *
+   * The placeholders `${AWS::AccountId}` and `${AWS::Region}` will
+   * be replaced with the values of qualifier and the stack's account and region,
+   * respectively.
+   *
+   */
   readonly fileAssetsBucketName?: string;
+
+  /**
+   * Name of the ECR repository to hold Docker Image assets
+   *
+   * You must supply this if you have given a non-standard name to the ECR repository.
+   *
+   * The placeholders `${AWS::AccountId}` and `${AWS::Region}` will
+   * be replaced with the values of qualifier and the stack's account and region,
+   * respectively.
+   *
+   */
   readonly imageAssetsRepositoryName?: string;
 
+  /**
+   * The role to use to publish file assets to the S3 bucket in this environment
+   *
+   * You must supply this if you have given a non-standard name to the publishing role.
+   *
+   * The placeholders `${AWS::AccountId}` and `${AWS::Region}` will
+   * be replaced with the values of qualifier and the stack's account and region,
+   * respectively.
+   *
+   */
   readonly fileAssetPublishingRoleArn?: string;
+
+  /**
+   * The role to use to publish image assets to the ECR repository in this environment
+   *
+   * You must supply this if you have given a non-standard name to the publishing role.
+   *
+   * The placeholders `${AWS::AccountId}` and `${AWS::Region}` will
+   * be replaced with the values of qualifier and the stack's account and region,
+   * respectively.
+   *
+   */
   readonly imageAssetPublishingRoleArn?: string;
 
+  /**
+   * Object key prefix to use while storing S3 Assets
+   *
+   */
   readonly fileAssetsPrefix?: string;
+
+  /**
+   * The regions set of file assets to be published only when fileAssetsBucketName contains `${AWS::Region}`
+   *
+   * For examples:
+   * `['us-east-1', 'us-west-1']`
+   *
+   */
   readonly fileAssetsRegionSet?: string[];
+
+  /**
+   * Overrider the name of the S3 bucket to hold Cloudformation template
+   *
+   * Default is `fileAssetsBucketName`
+   */
   readonly templateBucketName?: string;
 
+  /**
+   * Overrider the tag of the Docker Image assets
+   *
+   * Default is the sourceHash of `addDockerImageAsset`
+   */
   readonly imageAssetsTag?: string;
 }
 
+/**
+ * A Bootstrapless stack synthesizer that is designated to generate templates
+ * that can directly used by Cloudformation
+ */
 export class BootstraplessStackSynthesizer extends StackSynthesizer {
   /**
    * Default file asset prefix
@@ -157,6 +229,9 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     };
   }
 
+  /**
+   * Dumps current manifest into JSON format
+   */
   public dumps(): string {
     const manifest: cxschema.AssetManifest = {
       version: cxschema.Manifest.version(),
