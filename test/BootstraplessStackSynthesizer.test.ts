@@ -1,4 +1,7 @@
-import { FileAssetPackaging, Stack } from '@aws-cdk/core';
+import * as fs from 'fs';
+import * as cxschema from '@aws-cdk/cloud-assembly-schema';
+import { FileAssetPackaging, Stack, App } from '@aws-cdk/core';
+import * as cxapi from '@aws-cdk/cx-api';
 import { BootstraplessStackSynthesizer } from '../src';
 
 
@@ -211,8 +214,81 @@ test('addDockerImageAsset when imageAssetsTag is specified', () => {
   });
   expect(json.files).toEqual({});
 });
+
+test('synth', () => {
+  const myapp = new App();
+  const mystack = new Stack(myapp, 'mystack', {
+    synthesizer: new BootstraplessStackSynthesizer({
+      fileAssetsBucketName: 'file-asset-bucket',
+      fileAssetPublishingRoleArn: 'file:role:arn',
+      templateBucketName: 'template-bucket',
+
+      imageAssetsRepositoryName: 'image-ecr-repository',
+      imageAssetPublishingRoleArn: 'image:role:arn',
+    }),
+  });
+
+  mystack.synthesizer.addFileAsset({
+    fileName: __filename,
+    packaging: FileAssetPackaging.FILE,
+    sourceHash: 'file-asset-hash',
+  });
+  mystack.synthesizer.addDockerImageAsset({
+    directoryName: __dirname,
+    sourceHash: 'docker-asset-hash',
+  });
+  const asm = myapp.synth();
+  const manifest = readAssetManifest(asm);
+
+  expect(manifest?.files['mystack.template.json'].source).toEqual({
+    path: 'mystack.template.json',
+    packaging: 'file',
+  });
+  expect(manifest?.files['mystack.template.json'].destinations).toEqual({
+    'current_account-current_region': {
+      bucketName: 'template-bucket',
+      objectKey: 'mystack.template.json',
+      assumeRoleArn: 'file:role:arn',
+    },
+  });
+  expect(manifest?.files['file-asset-hash'].source).toEqual({
+    path: __filename,
+    packaging: FileAssetPackaging.FILE,
+  });
+  expect(manifest?.files['file-asset-hash'].destinations).toEqual({
+    'current_account-current_region': {
+      bucketName: 'file-asset-bucket',
+      objectKey: 'file-asset-hash',
+      assumeRoleArn: 'file:role:arn',
+    },
+  });
+  expect(manifest?.dockerImages['docker-asset-hash'].source).toEqual({
+    directory: __dirname,
+  });
+  expect(manifest?.dockerImages['docker-asset-hash'].destinations).toEqual({
+    'current_account-current_region': {
+      repositoryName: 'image-ecr-repository',
+      imageTag: 'docker-asset-hash',
+      assumeRoleArn: 'image:role:arn',
+    },
+  });
+});
+
 // const CFN_CONTEXT = {
 //   'AWS::Region': 'the_region',
 //   'AWS::AccountId': 'the_account',
 //   'AWS::URLSuffix': 'domain.aws',
 // };
+
+
+function isAssetManifest(x: cxapi.CloudArtifact): x is cxapi.AssetManifestArtifact {
+  return x instanceof cxapi.AssetManifestArtifact;
+}
+
+
+function readAssetManifest(asm: cxapi.CloudAssembly): cxschema.AssetManifest {
+  const manifestArtifact = asm.artifacts.filter(isAssetManifest)[0];
+  if (!manifestArtifact) { throw new Error('no asset manifest in assembly'); }
+
+  return JSON.parse(fs.readFileSync(manifestArtifact.file, { encoding: 'utf-8' }));
+}
