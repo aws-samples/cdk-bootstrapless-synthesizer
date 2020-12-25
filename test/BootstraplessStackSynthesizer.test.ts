@@ -13,7 +13,7 @@ test('default manifest json', () => {
 });
 
 
-test('add addFileAsset', () => {
+test('addFileAsset', () => {
   const stack = new Stack();
   const synthesizer = new BootstraplessStackSynthesizer({
     fileAssetsBucketName: 'test-bucket-name',
@@ -39,7 +39,7 @@ test('add addFileAsset', () => {
   expect(json.dockerImages).toEqual({});
 });
 
-test('add addFileAsset when fileAssetsPrefix is set', () => {
+test('addFileAsset when fileAssetsPrefix is set', () => {
   const stack = new Stack();
   const synthesizer = new BootstraplessStackSynthesizer({
     fileAssetsBucketName: 'test-bucket-name',
@@ -67,7 +67,7 @@ test('add addFileAsset when fileAssetsPrefix is set', () => {
 });
 
 
-test('add addFileAsset when fileAssetsRegionSet is set but fileAssetsBucketName doesn\'t contains ${AWS::Region}', () => {
+test('addFileAsset when fileAssetsRegionSet is set but fileAssetsBucketName doesn\'t contains ${AWS::Region}', () => {
   const stack = new Stack();
   const synthesizer = new BootstraplessStackSynthesizer({
     fileAssetsBucketName: 'test-bucket-name',
@@ -96,7 +96,7 @@ test('add addFileAsset when fileAssetsRegionSet is set but fileAssetsBucketName 
 });
 
 
-test('add addFileAsset when fileAssetsRegionSet is set and fileAssetsBucketName contains ${AWS::Region}', () => {
+test('addFileAsset when fileAssetsRegionSet is set and fileAssetsBucketName contains ${AWS::Region}', () => {
   const stack = new Stack();
   const synthesizer = new BootstraplessStackSynthesizer({
     fileAssetsBucketName: 'test-bucket-name-${AWS::Region}',
@@ -133,7 +133,7 @@ test('add addFileAsset when fileAssetsRegionSet is set and fileAssetsBucketName 
 });
 
 
-test('add addFileAsset when fileAssetsBucketName contains ${AWS::Region}', () => {
+test('addFileAsset when fileAssetsBucketName contains ${AWS::Region}', () => {
   const stack = new Stack();
   const synthesizer = new BootstraplessStackSynthesizer({
     fileAssetsBucketName: 'test-bucket-name-${AWS::Region}',
@@ -163,6 +163,29 @@ test('add addFileAsset when fileAssetsBucketName contains ${AWS::Region}', () =>
 });
 
 
+test('addDockerImageAsset', () => {
+  const stack = new Stack();
+  const synthesizer = new BootstraplessStackSynthesizer({
+    imageAssetsRepositoryName: 'the-repo',
+  });
+  synthesizer.bind(stack);
+  synthesizer.addDockerImageAsset({
+    directoryName: __dirname,
+    sourceHash: 'abcdef',
+  });
+  const json = JSON.parse(synthesizer.dumps());
+
+  expect(json.dockerImages.abcdef.source).toEqual({
+    directory: __dirname,
+  });
+  expect(json.dockerImages.abcdef.destinations).toEqual({
+    'current_account-current_region': {
+      repositoryName: 'the-repo',
+      imageTag: 'abcdef',
+    },
+  });
+  expect(json.files).toEqual({});
+});
 // const CFN_CONTEXT = {
 //   'AWS::Region': 'the_region',
 //   'AWS::AccountId': 'the_account',

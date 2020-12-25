@@ -18,6 +18,8 @@ export interface BootstraplessStackSynthesizerProps {
   readonly fileAssetsPrefix?: string;
   readonly fileAssetsRegionSet?: string[];
   readonly templateBucketName?: string;
+
+  readonly imageAssetsTag?: string;
 }
 
 export class BootstraplessStackSynthesizer extends StackSynthesizer {
@@ -126,7 +128,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     assertBound(this.stack);
     assertBound(this.repositoryName);
 
-    const imageTag = asset.sourceHash;
+    const imageTag = this.props.imageAssetsTag ?? asset.sourceHash;
 
     // Add to manifest
     this.dockerImages[asset.sourceHash] = {
