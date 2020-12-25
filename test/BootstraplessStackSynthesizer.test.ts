@@ -1,6 +1,7 @@
 import { FileAssetPackaging, Stack } from '@aws-cdk/core';
 import { BootstraplessStackSynthesizer } from '../src';
 
+
 test('default manifest json', () => {
   const stack = new Stack();
   const synthesizer = new BootstraplessStackSynthesizer();
@@ -10,6 +11,7 @@ test('default manifest json', () => {
   expect(json.files).toEqual({});
   expect(json.dockerImages).toEqual({});
 });
+
 
 test('add addFileAsset', () => {
   const stack = new Stack();
@@ -36,6 +38,34 @@ test('add addFileAsset', () => {
   });
   expect(json.dockerImages).toEqual({});
 });
+
+test('add addFileAsset when fileAssetsPrefix is set', () => {
+  const stack = new Stack();
+  const synthesizer = new BootstraplessStackSynthesizer({
+    fileAssetsBucketName: 'test-bucket-name',
+    fileAssetsPrefix: 'test-prefix/',
+  });
+  synthesizer.bind(stack);
+  synthesizer.addFileAsset({
+    fileName: __filename,
+    packaging: FileAssetPackaging.FILE,
+    sourceHash: 'abcdef',
+  });
+  const json = JSON.parse(synthesizer.dumps());
+
+  expect(json.files.abcdef.source).toEqual({
+    path: __filename,
+    packaging: FileAssetPackaging.FILE,
+  });
+  expect(json.files.abcdef.destinations).toEqual({
+    'current_account-current_region': {
+      bucketName: 'test-bucket-name',
+      objectKey: 'test-prefix/abcdef',
+    },
+  });
+  expect(json.dockerImages).toEqual({});
+});
+
 
 test('add addFileAsset when fileAssetsRegionSet is set but fileAssetsBucketName doesn\'t contains ${AWS::Region}', () => {
   const stack = new Stack();
@@ -64,6 +94,7 @@ test('add addFileAsset when fileAssetsRegionSet is set but fileAssetsBucketName 
   });
   expect(json.dockerImages).toEqual({});
 });
+
 
 test('add addFileAsset when fileAssetsRegionSet is set and fileAssetsBucketName contains ${AWS::Region}', () => {
   const stack = new Stack();
@@ -100,6 +131,7 @@ test('add addFileAsset when fileAssetsRegionSet is set and fileAssetsBucketName 
   });
   expect(json.dockerImages).toEqual({});
 });
+
 
 test('add addFileAsset when fileAssetsBucketName contains ${AWS::Region}', () => {
   const stack = new Stack();
