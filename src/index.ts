@@ -6,6 +6,8 @@ import { DockerImageAssetLocation, DockerImageAssetSource, FileAssetLocation, Fi
 import * as cxapi from '@aws-cdk/cx-api';
 
 
+const REGION_PLACEHOLDER = '${AWS::Region}';
+
 export interface BootstraplessStackSynthesizerProps {
   readonly fileAssetsBucketName?: string;
   readonly imageAssetsRepositoryName?: string;
@@ -79,10 +81,10 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     const objectKey = this.fileAssetsPrefix + asset.sourceHash + (asset.packaging === FileAssetPackaging.ZIP_DIRECTORY ? '.zip' : '');
     const destinations: { [id: string]: cxschema.FileDestination } = {};
 
-    if (this.props.fileAssetsRegionSet && this.props.fileAssetsRegionSet.length && bucketName.includes('${AWS::Region}')) {
+    if (this.props.fileAssetsRegionSet?.length && bucketName.includes(REGION_PLACEHOLDER)) {
       for (let region of this.props.fileAssetsRegionSet) {
         destinations[region] = {
-          bucketName: replaceAll(bucketName, '${AWS::Region}', region),
+          bucketName: replaceAll(bucketName, REGION_PLACEHOLDER, region),
           objectKey,
           region,
           assumeRoleArn: this.fileAssetPublishingRoleArn,
@@ -153,6 +155,15 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     };
   }
 
+  public dumps(): string {
+    const manifest: cxschema.AssetManifest = {
+      version: cxschema.Manifest.version(),
+      files: this.files,
+      dockerImages: this.dockerImages,
+    };
+    return JSON.stringify(manifest, undefined, 2);
+  }
+
   /**
    * Synthesize the associated stack to the session
    */
@@ -216,13 +227,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     const manifestFile = `${artifactId}.json`;
     const outPath = path.join(session.assembly.outdir, manifestFile);
 
-    const manifest: cxschema.AssetManifest = {
-      version: cxschema.Manifest.version(),
-      files: this.files,
-      dockerImages: this.dockerImages,
-    };
-
-    fs.writeFileSync(outPath, JSON.stringify(manifest, undefined, 2));
+    fs.writeFileSync(outPath, this.dumps());
     session.assembly.addArtifact(artifactId, {
       type: cxschema.ArtifactType.ASSET_MANIFEST,
       properties: {
