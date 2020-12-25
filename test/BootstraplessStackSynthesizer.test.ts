@@ -186,6 +186,31 @@ test('addDockerImageAsset', () => {
   });
   expect(json.files).toEqual({});
 });
+
+test('addDockerImageAsset when imageAssetsTag is specified', () => {
+  const stack = new Stack();
+  const synthesizer = new BootstraplessStackSynthesizer({
+    imageAssetsRepositoryName: 'the-repo',
+    imageAssetsTag: 'latest',
+  });
+  synthesizer.bind(stack);
+  synthesizer.addDockerImageAsset({
+    directoryName: __dirname,
+    sourceHash: 'abcdef',
+  });
+  const json = JSON.parse(synthesizer.dumps());
+
+  expect(json.dockerImages.abcdef.source).toEqual({
+    directory: __dirname,
+  });
+  expect(json.dockerImages.abcdef.destinations).toEqual({
+    'current_account-current_region': {
+      repositoryName: 'the-repo',
+      imageTag: 'latest',
+    },
+  });
+  expect(json.files).toEqual({});
+});
 // const CFN_CONTEXT = {
 //   'AWS::Region': 'the_region',
 //   'AWS::AccountId': 'the_account',
