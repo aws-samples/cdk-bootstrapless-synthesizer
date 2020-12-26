@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-// import * as crypto from 'crypto';
 import * as cxschema from '@aws-cdk/cloud-assembly-schema';
 import { DockerImageAssetLocation, DockerImageAssetSource, FileAssetLocation, FileAssetPackaging, FileAssetSource, Fn, ISynthesisSession, Stack, StackSynthesizer, Token } from '@aws-cdk/core';
 import * as cxapi from '@aws-cdk/cx-api';
@@ -76,18 +75,29 @@ export interface BootstraplessStackSynthesizerProps {
   readonly fileAssetsRegionSet?: string[];
 
   /**
-   * Overrider the name of the S3 bucket to hold Cloudformation template
+   * Override the name of the S3 bucket to hold Cloudformation template
    *
    * Default is `fileAssetsBucketName`
    */
   readonly templateBucketName?: string;
 
   /**
-   * Overrider the tag of the Docker Image assets
+   * Override the tag of the Docker Image assets
    *
    * Default is the sourceHash of `addDockerImageAsset`
    */
   readonly imageAssetsTag?: string;
+
+  /**
+   * Override the ECR repository region of the Docker Image assets
+   *
+   */
+  readonly imageAssetsRegion?: string;
+
+  /**
+   * Override the ECR repository account id of the Docker Image assets
+   */
+  readonly imageAssetsAccountId?: string;
 }
 
 /**
@@ -214,13 +224,15 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
         [this.manifestEnvName]: {
           repositoryName: this.repositoryName,
           imageTag,
-          region: resolvedOr(this.stack.region, undefined),
+          region: this.props.imageAssetsRegion ?? resolvedOr(this.stack.region, undefined),
           assumeRoleArn: this.imageAssetPublishingRoleArn,
         },
       },
     };
 
-    const { account, region, urlSuffix } = stackLocationOrInstrinsics(this.stack);
+    let { account, region, urlSuffix } = stackLocationOrInstrinsics(this.stack);
+    region = this.props.imageAssetsRegion ?? region;
+    account = this.props.imageAssetsAccountId ?? account;
 
     // Return CFN expression
     return {
@@ -384,7 +396,3 @@ function assertBound<A>(x: A | undefined): asserts x is NonNullable<A> {
     throw new Error('You must call bindStack() first');
   }
 }
-
-// function contentHash(content: string) {
-//   return crypto.createHash('sha256').update(content).digest('hex');
-// }
