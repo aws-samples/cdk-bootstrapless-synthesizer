@@ -37,9 +37,11 @@ new BootstraplessStackSynthesizer(props?: BootstraplessStackSynthesizerProps)
   * **fileAssetsPrefix** (<code>string</code>)  Object key prefix to use while storing S3 Assets. __*Optional*__
   * **fileAssetsRegionSet** (<code>Array<string></code>)  The regions set of file assets to be published only when fileAssetsBucketName contains `${AWS::Region}`. __*Optional*__
   * **imageAssetPublishingRoleArn** (<code>string</code>)  The role to use to publish image assets to the ECR repository in this environment. __*Optional*__
+  * **imageAssetsAccountId** (<code>string</code>)  Override the ECR repository account id of the Docker Image assets. __*Optional*__
+  * **imageAssetsRegion** (<code>string</code>)  Override the ECR repository region of the Docker Image assets. __*Optional*__
   * **imageAssetsRepositoryName** (<code>string</code>)  Name of the ECR repository to hold Docker Image assets. __*Optional*__
-  * **imageAssetsTag** (<code>string</code>)  Overrider the tag of the Docker Image assets. __*Optional*__
-  * **templateBucketName** (<code>string</code>)  Overrider the name of the S3 bucket to hold Cloudformation template. __*Optional*__
+  * **imageAssetsTag** (<code>string</code>)  Override the tag of the Docker Image assets. __*Optional*__
+  * **templateBucketName** (<code>string</code>)  Override the name of the S3 bucket to hold Cloudformation template. __*Optional*__
 
 
 
@@ -149,9 +151,11 @@ Name | Type | Description
 **fileAssetsPrefix**? | <code>string</code> | Object key prefix to use while storing S3 Assets.<br/>__*Optional*__
 **fileAssetsRegionSet**? | <code>Array<string></code> | The regions set of file assets to be published only when fileAssetsBucketName contains `${AWS::Region}`.<br/>__*Optional*__
 **imageAssetPublishingRoleArn**? | <code>string</code> | The role to use to publish image assets to the ECR repository in this environment.<br/>__*Optional*__
+**imageAssetsAccountId**? | <code>string</code> | Override the ECR repository account id of the Docker Image assets.<br/>__*Optional*__
+**imageAssetsRegion**? | <code>string</code> | Override the ECR repository region of the Docker Image assets.<br/>__*Optional*__
 **imageAssetsRepositoryName**? | <code>string</code> | Name of the ECR repository to hold Docker Image assets.<br/>__*Optional*__
-**imageAssetsTag**? | <code>string</code> | Overrider the tag of the Docker Image assets.<br/>__*Optional*__
-**templateBucketName**? | <code>string</code> | Overrider the name of the S3 bucket to hold Cloudformation template.<br/>__*Optional*__
+**imageAssetsTag**? | <code>string</code> | Override the tag of the Docker Image assets.<br/>__*Optional*__
+**templateBucketName**? | <code>string</code> | Override the name of the S3 bucket to hold Cloudformation template.<br/>__*Optional*__
 
 
 

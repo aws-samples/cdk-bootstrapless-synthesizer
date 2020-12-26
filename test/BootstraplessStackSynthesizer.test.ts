@@ -215,6 +215,63 @@ test('addDockerImageAsset when imageAssetsTag is specified', () => {
   expect(json.files).toEqual({});
 });
 
+test('addDockerImageAsset when imageAssetsRegion is specified', () => {
+  const stack = new Stack();
+  const synthesizer = new BootstraplessStackSynthesizer({
+    imageAssetsRepositoryName: 'the-repo',
+    imageAssetsRegion: 'us-west-1',
+  });
+  synthesizer.bind(stack);
+  const location = synthesizer.addDockerImageAsset({
+    directoryName: __dirname,
+    sourceHash: 'abcdef',
+  });
+  const json = JSON.parse(synthesizer.dumps());
+
+  expect(stack.resolve(location.imageUri)).toEqual({
+    'Fn::Sub': '${AWS::AccountId}.dkr.ecr.us-west-1.${AWS::URLSuffix}/the-repo:abcdef',
+  });
+  expect(json.dockerImages.abcdef.source).toEqual({
+    directory: __dirname,
+  });
+  expect(json.dockerImages.abcdef.destinations).toEqual({
+    'current_account-current_region': {
+      repositoryName: 'the-repo',
+      imageTag: 'abcdef',
+      region: 'us-west-1',
+    },
+  });
+  expect(json.files).toEqual({});
+});
+
+test('addDockerImageAsset when imageAssetsAccountId is specified', () => {
+  const stack = new Stack();
+  const synthesizer = new BootstraplessStackSynthesizer({
+    imageAssetsRepositoryName: 'the-repo',
+    imageAssetsAccountId: '1234567890',
+  });
+  synthesizer.bind(stack);
+  const location = synthesizer.addDockerImageAsset({
+    directoryName: __dirname,
+    sourceHash: 'abcdef',
+  });
+  const json = JSON.parse(synthesizer.dumps());
+
+  expect(stack.resolve(location.imageUri)).toEqual({
+    'Fn::Sub': '1234567890.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/the-repo:abcdef',
+  });
+  expect(json.dockerImages.abcdef.source).toEqual({
+    directory: __dirname,
+  });
+  expect(json.dockerImages.abcdef.destinations).toEqual({
+    'current_account-current_region': {
+      repositoryName: 'the-repo',
+      imageTag: 'abcdef',
+    },
+  });
+  expect(json.files).toEqual({});
+});
+
 test('synth', () => {
   const myapp = new App();
   const mystack = new Stack(myapp, 'mystack', {
