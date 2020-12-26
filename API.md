@@ -4,7 +4,7 @@
 
 Name|Description
 ----|-----------
-[BootstraplessStackSynthesizer](#cdk-bootstrapless-synthesizer-bootstraplessstacksynthesizer)|A Bootstrapless stack synthesizer that is designated to generate templates that can directly used by Cloudformation.
+[BootstraplessStackSynthesizer](#cdk-bootstrapless-synthesizer-bootstraplessstacksynthesizer)|A Bootstrapless stack synthesizer that is designated to generate templates that can be directly used by Cloudformation.
 
 
 **Structs**
@@ -17,7 +17,7 @@ Name|Description
 
 ## class BootstraplessStackSynthesizer  <a id="cdk-bootstrapless-synthesizer-bootstraplessstacksynthesizer"></a>
 
-A Bootstrapless stack synthesizer that is designated to generate templates that can directly used by Cloudformation.
+A Bootstrapless stack synthesizer that is designated to generate templates that can be directly used by Cloudformation.
 
 __Implements__: [IStackSynthesizer](#aws-cdk-core-istacksynthesizer)
 __Extends__: [StackSynthesizer](#aws-cdk-core-stacksynthesizer)
