@@ -92,7 +92,7 @@ export interface BootstraplessStackSynthesizerProps {
 
 /**
  * A Bootstrapless stack synthesizer that is designated to generate templates
- * that can directly used by Cloudformation
+ * that can be directly used by Cloudformation
  */
 export class BootstraplessStackSynthesizer extends StackSynthesizer {
   /**

@@ -1,6 +1,6 @@
-# my project
+![Release](https://github.com/wchaws/cdk-bootstrapless-synthesizer/workflows/Release/badge.svg)
 
-sample
+# cdk-bootstrapless-synthesizer
 
 ```ts
 new MyWidgetServiceStack(app, 'MyWidgetServiceStack', {
@@ -13,3 +13,7 @@ new MyWidgetServiceStack(app, 'MyWidgetServiceStack', {
   })
 });
 ```
+
+## API Reference
+
+See [API Reference](./API.md) for API details.
