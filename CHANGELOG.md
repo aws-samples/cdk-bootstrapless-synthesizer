@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.4 (2020-12-26)
+
+
+### Features
+
+* **BootstraplessStackSynthesizerProps:** add imageAssetsRegion, imageAssetsAccountId props ([c299555](https://github.com/wchaws/cdk-bootstrapless-synthesizer/commit/c2995559f9e207da7dd45ca435cf43ad160824a8))
+
+
+### Bug Fixes
+
+* test ([59299d6](https://github.com/wchaws/cdk-bootstrapless-synthesizer/commit/59299d64d7ba6f35ae0857511812b2cccf66cfdc))
+
 ### 0.0.3 (2020-12-26)
 
 
