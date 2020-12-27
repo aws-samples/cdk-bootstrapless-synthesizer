@@ -4,16 +4,38 @@
 
 # cdk-bootstrapless-synthesizer
 
+A Bootstrapless stack synthesizer that is designated to generate templates that can be directly used by Cloudformation
+
+## Usage
+
+In cdk source code
+
 ```ts
+import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
+
+// ...
+const app = new cdk.App();
 new MyWidgetServiceStack(app, 'MyWidgetServiceStack', {
   synthesizer: new BootstraplessStackSynthesizer({
-    templateBucketName: 'prod-bucketname',
-    imageAssetsRepositoryName: 'bootstrapless-synth',
-    fileAssetsBucketName: 'prod-bucketname-${AWS::Region}',
+    templateBucketName: 'the-s3-bucket-for-cfn-template',
+    imageAssetsRepositoryName: 'ecr-repo-name',
+
+    fileAssetsBucketName: 'the-s3-bucket-for-cdk-assets-${AWS::Region}',
     fileAssetsRegionSet: ['us-east-1'],
-    fileAssetsPrefix: 'repo-name/latest/',
+    fileAssetsPrefix: 'the-s3-object-prefix/latest/',
+
+    imageAssetTag: 'docker-image-tag',
+    imageAssetRegion: 'us-east-1',
+    imageAssetAccountId: '1234567890',
   })
 });
+```
+
+Synth cloudformation templates, assets and upload them
+
+```shell
+$ cdk synth
+$ npx cdk-assets publish -p cdk.out/MyWidgetServiceStack.assets.json -v
 ```
 
 ## API Reference
