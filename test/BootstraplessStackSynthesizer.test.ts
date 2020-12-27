@@ -2,8 +2,20 @@ import * as fs from 'fs';
 import * as cxschema from '@aws-cdk/cloud-assembly-schema';
 import { FileAssetPackaging, Stack, App } from '@aws-cdk/core';
 import * as cxapi from '@aws-cdk/cx-api';
-import { BootstraplessStackSynthesizer } from '../src';
+import { BootstraplessStackSynthesizer, BootstraplessStackSynthesizerProps } from '../src';
 
+beforeEach(() => {
+  delete process.env.BSS_FILE_ASSET_BUCKET_NAME;
+  delete process.env.BSS_IMAGE_ASSET_REPOSITORY_NAME;
+  delete process.env.BSS_FILE_ASSET_PUBLISHING_ROLE_ARN;
+  delete process.env.BSS_IMAGE_ASSET_PUBLISHING_ROLE_ARN;
+  delete process.env.BSS_FILE_ASSET_PREFIX;
+  delete process.env.BSS_FILE_ASSET_REGION_SET;
+  delete process.env.BSS_TEMPLATE_BUCKET_NAME;
+  delete process.env.BSS_IMAGE_ASSET_TAG;
+  delete process.env.BSS_IMAGE_ASSET_REGION;
+  delete process.env.BSS_IMAGE_ASSET_ACCOUNT_ID;
+});
 
 test('default manifest json', () => {
   const stack = new Stack();
@@ -15,11 +27,44 @@ test('default manifest json', () => {
   expect(json.dockerImages).toEqual({});
 });
 
+test('assertBound for stack', () => {
+  const synthesizer = new BootstraplessStackSynthesizer();
+
+  expect(() => {
+    synthesizer.addFileAsset({
+      fileName: __filename,
+      packaging: FileAssetPackaging.FILE,
+      sourceHash: 'abcdef',
+    });
+  }).toThrow('You must call bindStack');
+});
+
+test('assertBound for bucketName and repositoryName', () => {
+  const stack = new Stack();
+  const synthesizer = new BootstraplessStackSynthesizer();
+  synthesizer.bind(stack);
+
+  expect(() => {
+    synthesizer.addFileAsset({
+      fileName: __filename,
+      packaging: FileAssetPackaging.FILE,
+      sourceHash: 'abcdef',
+    });
+  }).toThrow('You must call bindStack');
+
+  expect(() => {
+    synthesizer.addDockerImageAsset({
+      directoryName: __dirname,
+      sourceHash: 'abcdef',
+    });
+  }).toThrow('You must call bindStack');
+});
+
 
 test('addFileAsset', () => {
   const stack = new Stack();
   const synthesizer = new BootstraplessStackSynthesizer({
-    fileAssetsBucketName: 'test-bucket-name',
+    fileAssetBucketName: 'test-bucket-name',
   });
   synthesizer.bind(stack);
   synthesizer.addFileAsset({
@@ -42,12 +87,12 @@ test('addFileAsset', () => {
   expect(json.dockerImages).toEqual({});
 });
 
-test('addFileAsset when fileAssetsPrefix is set', () => {
+test.each([
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name', fileAssetPrefix: 'test-prefix/' }),
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name' }, { BSS_FILE_ASSET_PREFIX: 'test-prefix/' }),
+])('#%# addFileAsset when fileAssetsPrefix is set', (mksynthzerFn) => {
   const stack = new Stack();
-  const synthesizer = new BootstraplessStackSynthesizer({
-    fileAssetsBucketName: 'test-bucket-name',
-    fileAssetsPrefix: 'test-prefix/',
-  });
+  const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
   synthesizer.addFileAsset({
     fileName: __filename,
@@ -70,12 +115,12 @@ test('addFileAsset when fileAssetsPrefix is set', () => {
 });
 
 
-test('addFileAsset when fileAssetsRegionSet is set but fileAssetsBucketName doesn\'t contains ${AWS::Region}', () => {
+test.each([
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name', fileAssetRegionSet: ['us-east-1', 'us-west-1'] }),
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name' }, { BSS_FILE_ASSET_REGION_SET: 'us-east-1, us-west-1' }),
+])('#%# addFileAsset when fileAssetsRegionSet is set but fileAssetsBucketName doesn\'t contains ${AWS::Region}', (mksynthzerFn) => {
   const stack = new Stack();
-  const synthesizer = new BootstraplessStackSynthesizer({
-    fileAssetsBucketName: 'test-bucket-name',
-    fileAssetsRegionSet: ['us-east-1', 'us-west-1'],
-  });
+  const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
   synthesizer.addFileAsset({
     fileName: __filename,
@@ -98,13 +143,12 @@ test('addFileAsset when fileAssetsRegionSet is set but fileAssetsBucketName does
   expect(json.dockerImages).toEqual({});
 });
 
-
-test('addFileAsset when fileAssetsRegionSet is set and fileAssetsBucketName contains ${AWS::Region}', () => {
+test.each([
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name-${AWS::Region}', fileAssetRegionSet: ['us-east-1', 'us-west-1'] }),
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name-${AWS::Region}' }, { BSS_FILE_ASSET_REGION_SET: 'us-east-1, us-west-1' }),
+])('#%# addFileAsset when fileAssetsRegionSet is set and fileAssetsBucketName contains ${AWS::Region}', (mksynthzerFn) => {
   const stack = new Stack();
-  const synthesizer = new BootstraplessStackSynthesizer({
-    fileAssetsBucketName: 'test-bucket-name-${AWS::Region}',
-    fileAssetsRegionSet: ['us-east-1', 'us-west-1'],
-  });
+  const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
   const location = synthesizer.addFileAsset({
     fileName: __filename,
@@ -136,11 +180,12 @@ test('addFileAsset when fileAssetsRegionSet is set and fileAssetsBucketName cont
 });
 
 
-test('addFileAsset when fileAssetsBucketName contains ${AWS::Region}', () => {
+test.each([
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name-${AWS::Region}' }),
+  () => mksynthzer({}, { BSS_FILE_ASSET_BUCKET_NAME: 'test-bucket-name-${AWS::Region}' }),
+])('#%# addFileAsset when fileAssetsBucketName contains ${AWS::Region}', (mksynthzerFn) => {
   const stack = new Stack();
-  const synthesizer = new BootstraplessStackSynthesizer({
-    fileAssetsBucketName: 'test-bucket-name-${AWS::Region}',
-  });
+  const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
   const location = synthesizer.addFileAsset({
     fileName: __filename,
@@ -166,11 +211,12 @@ test('addFileAsset when fileAssetsBucketName contains ${AWS::Region}', () => {
 });
 
 
-test('addDockerImageAsset', () => {
+test.each([
+  () => mksynthzer({ imageAssetRepositoryName: 'the-repo' }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo' }),
+])('#%# addDockerImageAsset', (mksynthzerFn) => {
   const stack = new Stack();
-  const synthesizer = new BootstraplessStackSynthesizer({
-    imageAssetsRepositoryName: 'the-repo',
-  });
+  const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
   synthesizer.addDockerImageAsset({
     directoryName: __dirname,
@@ -190,12 +236,13 @@ test('addDockerImageAsset', () => {
   expect(json.files).toEqual({});
 });
 
-test('addDockerImageAsset when imageAssetsTag is specified', () => {
+
+test.each([
+  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetTag: 'latest' }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_TAG: 'latest' }),
+])('#%# addDockerImageAsset when imageAssetsTag is specified', (mksynthzerFn) => {
   const stack = new Stack();
-  const synthesizer = new BootstraplessStackSynthesizer({
-    imageAssetsRepositoryName: 'the-repo',
-    imageAssetsTag: 'latest',
-  });
+  const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
   synthesizer.addDockerImageAsset({
     directoryName: __dirname,
@@ -215,12 +262,13 @@ test('addDockerImageAsset when imageAssetsTag is specified', () => {
   expect(json.files).toEqual({});
 });
 
-test('addDockerImageAsset when imageAssetsRegion is specified', () => {
+
+test.each([
+  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetRegion: 'us-west-1' }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_REGION: 'us-west-1' }),
+])('#%# addDockerImageAsset when imageAssetsRegion is specified', (mksynthzerFn) => {
   const stack = new Stack();
-  const synthesizer = new BootstraplessStackSynthesizer({
-    imageAssetsRepositoryName: 'the-repo',
-    imageAssetsRegion: 'us-west-1',
-  });
+  const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
   const location = synthesizer.addDockerImageAsset({
     directoryName: __dirname,
@@ -244,12 +292,12 @@ test('addDockerImageAsset when imageAssetsRegion is specified', () => {
   expect(json.files).toEqual({});
 });
 
-test('addDockerImageAsset when imageAssetsAccountId is specified', () => {
+test.each([
+  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetAccountId: '1234567890' }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_ACCOUNT_ID: '1234567890' }),
+])('#%# addDockerImageAsset when imageAssetsAccountId is specified', (mksynthzerFn) => {
   const stack = new Stack();
-  const synthesizer = new BootstraplessStackSynthesizer({
-    imageAssetsRepositoryName: 'the-repo',
-    imageAssetsAccountId: '1234567890',
-  });
+  const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
   const location = synthesizer.addDockerImageAsset({
     directoryName: __dirname,
@@ -276,11 +324,11 @@ test('synth', () => {
   const myapp = new App();
   const mystack = new Stack(myapp, 'mystack', {
     synthesizer: new BootstraplessStackSynthesizer({
-      fileAssetsBucketName: 'file-asset-bucket',
+      fileAssetBucketName: 'file-asset-bucket',
       fileAssetPublishingRoleArn: 'file:role:arn',
       templateBucketName: 'template-bucket',
 
-      imageAssetsRepositoryName: 'image-ecr-repository',
+      imageAssetRepositoryName: 'image-ecr-repository',
       imageAssetPublishingRoleArn: 'image:role:arn',
     }),
   });
@@ -348,4 +396,13 @@ function readAssetManifest(asm: cxapi.CloudAssembly): cxschema.AssetManifest {
   if (!manifestArtifact) { throw new Error('no asset manifest in assembly'); }
 
   return JSON.parse(fs.readFileSync(manifestArtifact.file, { encoding: 'utf-8' }));
+}
+
+function mksynthzer(props: BootstraplessStackSynthesizerProps, env?: {[key: string]: string}): BootstraplessStackSynthesizer {
+  if (env) {
+    for (const key in env) {
+      process.env[key] = env[key];
+    }
+  }
+  return new BootstraplessStackSynthesizer(props);
 }
