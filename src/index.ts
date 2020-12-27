@@ -20,8 +20,9 @@ export interface BootstraplessStackSynthesizerProps {
    * be replaced with the values of qualifier and the stack's account and region,
    * respectively.
    *
+   * @default - process.env.BSS_FILE_ASSET_BUCKET_NAME
    */
-  readonly fileAssetsBucketName?: string;
+  readonly fileAssetBucketName?: string;
 
   /**
    * Name of the ECR repository to hold Docker Image assets
@@ -32,8 +33,9 @@ export interface BootstraplessStackSynthesizerProps {
    * be replaced with the values of qualifier and the stack's account and region,
    * respectively.
    *
+   * @default - process.env.BSS_IMAGE_ASSET_REPOSITORY_NAME
    */
-  readonly imageAssetsRepositoryName?: string;
+  readonly imageAssetRepositoryName?: string;
 
   /**
    * The role to use to publish file assets to the S3 bucket in this environment
@@ -44,6 +46,7 @@ export interface BootstraplessStackSynthesizerProps {
    * be replaced with the values of qualifier and the stack's account and region,
    * respectively.
    *
+   * @default - process.env.BSS_FILE_ASSET_PUBLISHING_ROLE_ARN
    */
   readonly fileAssetPublishingRoleArn?: string;
 
@@ -56,14 +59,16 @@ export interface BootstraplessStackSynthesizerProps {
    * be replaced with the values of qualifier and the stack's account and region,
    * respectively.
    *
+   * @default - process.env.BSS_IMAGE_ASSET_PUBLISHING_ROLE_ARN
    */
   readonly imageAssetPublishingRoleArn?: string;
 
   /**
    * Object key prefix to use while storing S3 Assets
    *
+   * @default - process.env.BSS_FILE_ASSET_PREFIX
    */
-  readonly fileAssetsPrefix?: string;
+  readonly fileAssetPrefix?: string;
 
   /**
    * The regions set of file assets to be published only when fileAssetsBucketName contains `${AWS::Region}`
@@ -71,33 +76,37 @@ export interface BootstraplessStackSynthesizerProps {
    * For examples:
    * `['us-east-1', 'us-west-1']`
    *
+   * @default - process.env.BSS_FILE_ASSET_REGION_SET // comma delimited list
    */
-  readonly fileAssetsRegionSet?: string[];
+  readonly fileAssetRegionSet?: string[];
 
   /**
    * Override the name of the S3 bucket to hold Cloudformation template
    *
-   * Default is `fileAssetsBucketName`
+   * @default - process.env.BSS_TEMPLATE_BUCKET_NAME
    */
   readonly templateBucketName?: string;
 
   /**
    * Override the tag of the Docker Image assets
    *
-   * Default is the sourceHash of `addDockerImageAsset`
+   * @default - process.env.BSS_IMAGE_ASSET_TAG
    */
-  readonly imageAssetsTag?: string;
+  readonly imageAssetTag?: string;
 
   /**
    * Override the ECR repository region of the Docker Image assets
    *
+   * @default - process.env.BSS_IMAGE_ASSET_REGION
    */
-  readonly imageAssetsRegion?: string;
+  readonly imageAssetRegion?: string;
 
   /**
    * Override the ECR repository account id of the Docker Image assets
+   *
+   * @default - process.env.BSS_IMAGE_ASSET_ACCOUNT_ID
    */
-  readonly imageAssetsAccountId?: string;
+  readonly imageAssetAccountId?: string;
 }
 
 /**
@@ -105,23 +114,49 @@ export interface BootstraplessStackSynthesizerProps {
  * that can be directly used by Cloudformation
  */
 export class BootstraplessStackSynthesizer extends StackSynthesizer {
-  /**
-   * Default file asset prefix
-   */
-  public static readonly DEFAULT_FILE_ASSET_PREFIX = '';
-
   private _stack?: Stack;
-  private bucketName: string = '';
-  private repositoryName: string = '';
+  private bucketName?: string;
+  private repositoryName?: string;
   private fileAssetPublishingRoleArn?: string;
   private imageAssetPublishingRoleArn?: string;
-  private fileAssetsPrefix?: string
+  private fileAssetPrefix?: string;
+  private fileAssetRegionSet?: string[];
+  private templateBucketName?: string;
+  private imageAssetTag?: string;
+  private imageAssetRegion?: string;
+  private imageAssetAccountId?: string;
+
 
   private readonly files: NonNullable<cxschema.AssetManifest['files']> = {};
   private readonly dockerImages: NonNullable<cxschema.AssetManifest['dockerImages']> = {};
 
-  constructor(private readonly props: BootstraplessStackSynthesizerProps = {}) {
+  constructor(props: BootstraplessStackSynthesizerProps = {}) {
     super();
+    const {
+      BSS_FILE_ASSET_BUCKET_NAME,
+      BSS_IMAGE_ASSET_REPOSITORY_NAME,
+
+      BSS_FILE_ASSET_PUBLISHING_ROLE_ARN,
+      BSS_IMAGE_ASSET_PUBLISHING_ROLE_ARN,
+
+      BSS_FILE_ASSET_PREFIX,
+      BSS_FILE_ASSET_REGION_SET,
+
+      BSS_TEMPLATE_BUCKET_NAME,
+      BSS_IMAGE_ASSET_TAG,
+      BSS_IMAGE_ASSET_REGION,
+      BSS_IMAGE_ASSET_ACCOUNT_ID,
+    } = process.env;
+    this.bucketName = props.fileAssetBucketName ?? BSS_FILE_ASSET_BUCKET_NAME;
+    this.repositoryName = props.imageAssetRepositoryName ?? BSS_IMAGE_ASSET_REPOSITORY_NAME;
+    this.fileAssetPublishingRoleArn = props.fileAssetPublishingRoleArn ?? BSS_FILE_ASSET_PUBLISHING_ROLE_ARN;
+    this.imageAssetPublishingRoleArn = props.imageAssetPublishingRoleArn ?? BSS_IMAGE_ASSET_PUBLISHING_ROLE_ARN;
+    this.fileAssetPrefix = props.fileAssetPrefix ?? BSS_FILE_ASSET_PREFIX;
+    this.fileAssetRegionSet = props.fileAssetRegionSet ?? (BSS_FILE_ASSET_REGION_SET ? BSS_FILE_ASSET_REGION_SET.split(',') : undefined);
+    this.templateBucketName = props.templateBucketName ?? BSS_TEMPLATE_BUCKET_NAME;
+    this.imageAssetTag = props.imageAssetTag ?? BSS_IMAGE_ASSET_TAG;
+    this.imageAssetRegion = props.imageAssetRegion ?? BSS_IMAGE_ASSET_REGION;
+    this.imageAssetAccountId = props.imageAssetAccountId ?? BSS_IMAGE_ASSET_ACCOUNT_ID;
   }
 
   public bind(stack: Stack): void {
@@ -136,7 +171,10 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     // We replace:
     // - ${AWS::AccountId}, ${AWS::Region}: only if we have the actual values available
     // - ${AWS::Partition}: never, since we never have the actual partition value.
-    const specialize = (s: string) => {
+    const specialize = (s: string | undefined) => {
+      if (s === undefined) {
+        return undefined;
+      }
       return cxapi.EnvironmentPlaceholders.replace(s, {
         region: resolvedOr(stack.region, cxapi.EnvironmentPlaceholders.CURRENT_REGION),
         accountId: resolvedOr(stack.account, cxapi.EnvironmentPlaceholders.CURRENT_ACCOUNT),
@@ -145,11 +183,11 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     };
 
     /* eslint-disable max-len */
-    this.bucketName = specialize(this.props.fileAssetsBucketName ?? '');
-    this.repositoryName = specialize(this.props.imageAssetsRepositoryName ?? '');
-    this.fileAssetPublishingRoleArn = this.props.fileAssetPublishingRoleArn ? specialize(this.props.fileAssetPublishingRoleArn) : undefined;
-    this.imageAssetPublishingRoleArn = this.props.imageAssetPublishingRoleArn ? specialize(this.props.imageAssetPublishingRoleArn) : undefined;
-    this.fileAssetsPrefix = specialize(this.props.fileAssetsPrefix ?? BootstraplessStackSynthesizer.DEFAULT_FILE_ASSET_PREFIX);
+    this.bucketName = specialize(this.bucketName);
+    this.repositoryName = specialize(this.repositoryName);
+    this.fileAssetPublishingRoleArn = specialize(this.fileAssetPublishingRoleArn);
+    this.imageAssetPublishingRoleArn = specialize(this.imageAssetPublishingRoleArn);
+    this.fileAssetPrefix = specialize(this.fileAssetPrefix ?? '');
     /* eslint-enable max-len */
   }
 
@@ -162,11 +200,12 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     assertBound(this.bucketName);
 
     const bucketName = overrideBucketname ?? this.bucketName;
-    const objectKey = this.fileAssetsPrefix + asset.sourceHash + (asset.packaging === FileAssetPackaging.ZIP_DIRECTORY ? '.zip' : '');
+    const objectKey = this.fileAssetPrefix + asset.sourceHash + (asset.packaging === FileAssetPackaging.ZIP_DIRECTORY ? '.zip' : '');
     const destinations: { [id: string]: cxschema.FileDestination } = {};
 
-    if (this.props.fileAssetsRegionSet?.length && bucketName.includes(REGION_PLACEHOLDER)) {
-      for (let region of this.props.fileAssetsRegionSet) {
+    if (this.fileAssetRegionSet?.length && bucketName.includes(REGION_PLACEHOLDER)) {
+      for (let region of this.fileAssetRegionSet) {
+        region = region.trim();
         destinations[region] = {
           bucketName: replaceAll(bucketName, REGION_PLACEHOLDER, region),
           objectKey,
@@ -210,7 +249,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     assertBound(this.stack);
     assertBound(this.repositoryName);
 
-    const imageTag = this.props.imageAssetsTag ?? asset.sourceHash;
+    const imageTag = this.imageAssetTag ?? asset.sourceHash;
 
     // Add to manifest
     this.dockerImages[asset.sourceHash] = {
@@ -224,15 +263,15 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
         [this.manifestEnvName]: {
           repositoryName: this.repositoryName,
           imageTag,
-          region: this.props.imageAssetsRegion ?? resolvedOr(this.stack.region, undefined),
+          region: this.imageAssetRegion ?? resolvedOr(this.stack.region, undefined),
           assumeRoleArn: this.imageAssetPublishingRoleArn,
         },
       },
     };
 
     let { account, region, urlSuffix } = stackLocationOrInstrinsics(this.stack);
-    region = this.props.imageAssetsRegion ?? region;
-    account = this.props.imageAssetsAccountId ?? account;
+    region = this.imageAssetRegion ?? region;
+    account = this.imageAssetAccountId ?? account;
 
     // Return CFN expression
     return {
@@ -294,7 +333,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
       fileName: this.stack.templateFile,
       packaging: FileAssetPackaging.FILE,
       sourceHash,
-    }, this.props.templateBucketName);
+    }, this.templateBucketName);
 
     // We should technically return an 'https://s3.REGION.amazonaws.com[.cn]/name/hash' URL here,
     // because that is what CloudFormation expects to see.
@@ -392,7 +431,7 @@ function stackLocationOrInstrinsics(stack: Stack) {
 
 
 function assertBound<A>(x: A | undefined): asserts x is NonNullable<A> {
-  if (x === null && x === undefined) {
+  if (x === null || x === undefined) {
     throw new Error('You must call bindStack() first');
   }
 }
