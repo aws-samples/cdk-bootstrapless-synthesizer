@@ -1,7 +1,7 @@
 const { JsiiProject } = require('projen');
 
 const project = new JsiiProject({
-  authorAddress: 'wch@amazon.com',
+  authorAddress: 'javacs3+aws@gmail.com',
   authorName: 'wchaws',
   name: 'cdk-bootstrapless-synthesizer',
   repository: 'git@github.com:wchaws/cdk-bootstrapless-synthesizer.git',
