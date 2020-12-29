@@ -4,12 +4,12 @@
     "type": "git",
     "url": "git@github.com:wchaws/cdk-bootstrapless-synthesizer.git"
   },
-  "bin": {},
   "scripts": {
     "projen": "npx projen",
     "start": "npx projen start",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
+    "test:compile": "npx projen test:compile",
     "test": "npx projen test",
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -48,7 +48,7 @@
     "jsii-pacmak": "^1.16.0",
     "jsii-release": "^0.2.8",
     "json-schema": "^0.2.5",
-    "projen": "^0.8.0",
+    "projen": "^0.12.3",
     "standard-version": "^9.0.0",
     "ts-jest": "^26.4.4",
     "typescript": "^3.9.5"
@@ -64,7 +64,6 @@
     "@aws-cdk/cx-api": "^1.79.0"
   },
   "bundledDependencies": [],
-  "keywords": [],
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "version": "0.5.0",
