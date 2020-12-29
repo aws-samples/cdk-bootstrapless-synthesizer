@@ -157,6 +157,8 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     this.imageAssetTag = props.imageAssetTag ?? BSS_IMAGE_ASSET_TAG;
     this.imageAssetRegion = props.imageAssetRegion ?? BSS_IMAGE_ASSET_REGION;
     this.imageAssetAccountId = props.imageAssetAccountId ?? BSS_IMAGE_ASSET_ACCOUNT_ID;
+
+    this.imageAssetRegion = this.imageAssetRegion?.trim();
   }
 
   public bind(stack: Stack): void {
