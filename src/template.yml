@@ -1,0 +1,128 @@
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Configuration
+        Parameters:
+          - Qualifier
+          - TrustedAccounts
+          - FileAssetsBuckets
+          - ImageAssetsRepositories
+
+Parameters:
+  Qualifier:
+    Description: An identifier to distinguish multiple bootstrapless stacks in the same environment
+    Default: my-identifier
+    Type: String
+  TrustedAccounts:
+    Description: List of AWS accounts that are trusted to publish assets and deploy stacks to this environment
+    Default: "<ACCOUNT_ID>, <ACCOUNT_ID>, ..."
+    Type: CommaDelimitedList
+  FileAssetsBuckets:
+    Description: File assets buckets arn list separated by commas
+    Default: "arn:aws:s3:::<BUCKET_NAME>, arn:aws:s3:::<BUCKET_NAME>/*, ..."
+    Type: CommaDelimitedList
+  ImageAssetsRepositories:
+    Description: Image assets repositories arn list separated by commas
+    Default: "arn:aws:ecr:<REGION>:<ACCOUNT_ID>:repository/<REPO_NAME>, ..."
+    Type: CommaDelimitedList
+
+Conditions:
+  HasTrustedAccounts:
+    Fn::Not:
+      - Fn::Equals:
+          - ""
+          - Fn::Join:
+              - ""
+              - Ref: TrustedAccounts
+
+Resources:
+  FilePublishingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS:
+                Ref: AWS::AccountId
+          - Fn::If:
+              - HasTrustedAccounts
+              - Action: sts:AssumeRole
+                Effect: Allow
+                Principal:
+                  AWS:
+                    Ref: TrustedAccounts
+              - Ref: AWS::NoValue
+      RoleName:
+        Fn::Sub: ${Qualifier}-file-publishing-role
+  ImagePublishingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS:
+                Ref: AWS::AccountId
+          - Fn::If:
+              - HasTrustedAccounts
+              - Action: sts:AssumeRole
+                Effect: Allow
+                Principal:
+                  AWS:
+                    Ref: TrustedAccounts
+              - Ref: AWS::NoValue
+      RoleName:
+        Fn::Sub: ${Qualifier}-image-publishing-role
+  FilePublishingRoleDefaultPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+              - s3:PutObject*
+              - s3:Abort*
+            Resource: !Ref FileAssetsBuckets
+            Effect: Allow
+        Version: "2012-10-17"
+      Roles:
+        - Ref: FilePublishingRole
+      PolicyName:
+        Fn::Sub: ${Qualifier}-file-publishing-role-default-policy
+  ImagePublishingRoleDefaultPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - ecr:PutImage
+              - ecr:InitiateLayerUpload
+              - ecr:UploadLayerPart
+              - ecr:CompleteLayerUpload
+              - ecr:BatchCheckLayerAvailability
+              - ecr:DescribeRepositories
+              - ecr:DescribeImages
+            Resource: !Ref ImageAssetsRepositories
+            Effect: Allow
+          - Action:
+              - ecr:GetAuthorizationToken
+            Resource: "*"
+            Effect: Allow
+        Version: "2012-10-17"
+      Roles:
+        - Ref: ImagePublishingRole
+      PolicyName:
+        Fn::Sub: ${Qualifier}-image-publishing-role-default-policy
+
+Outputs:
+  FilePublishingRoleArn:
+    Value: !Sub ${FilePublishingRole.Arn}
+  ImagePublishingRole:
+    Value: !Sub ${ImagePublishingRole.Arn}
