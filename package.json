@@ -29,9 +29,9 @@
     "organization": false
   },
   "devDependencies": {
-    "@aws-cdk/cloud-assembly-schema": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/cx-api": "0.0.0",
+    "@aws-cdk/cloud-assembly-schema": "^1.79.0",
+    "@aws-cdk/core": "^1.79.0",
+    "@aws-cdk/cx-api": "^1.79.0",
     "@types/jest": "^26.0.19",
     "@types/node": "^10.17.0",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
@@ -48,7 +48,7 @@
     "jsii-pacmak": "^1.16.0",
     "jsii-release": "^0.2.8",
     "json-schema": "^0.2.5",
-    "projen": "^0.12.3",
+    "projen": "^0.12.9",
     "standard-version": "^9.0.0",
     "ts-jest": "^26.4.4",
     "typescript": "^3.9.5"
