@@ -6,6 +6,7 @@ import * as cxapi from '@aws-cdk/cx-api';
 
 
 const REGION_PLACEHOLDER = '${AWS::Region}';
+const ERR_MSG_CALL_BIND_FIRST = 'You must call bind() first';
 
 /**
  * Configuration properties for BootstraplessStackSynthesizer
@@ -20,6 +21,7 @@ export interface BootstraplessStackSynthesizerProps {
    * be replaced with the values of qualifier and the stack's account and region,
    * respectively.
    *
+   * @required if you have file assets
    * @default - process.env.BSS_FILE_ASSET_BUCKET_NAME
    */
   readonly fileAssetBucketName?: string;
@@ -33,6 +35,7 @@ export interface BootstraplessStackSynthesizerProps {
    * be replaced with the values of qualifier and the stack's account and region,
    * respectively.
    *
+   * @required if you have docker image assets
    * @default - process.env.BSS_IMAGE_ASSET_REPOSITORY_NAME
    */
   readonly imageAssetRepositoryName?: string;
@@ -71,7 +74,7 @@ export interface BootstraplessStackSynthesizerProps {
   readonly fileAssetPrefix?: string;
 
   /**
-   * The regions set of file assets to be published only when fileAssetsBucketName contains `${AWS::Region}`
+   * The regions set of file assets to be published only when `fileAssetBucketName` contains `${AWS::Region}`
    *
    * For examples:
    * `['us-east-1', 'us-west-1']`
@@ -198,8 +201,8 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
   }
 
   private _addFileAsset(asset: FileAssetSource, overrideBucketname?: string): FileAssetLocation {
-    assertBound(this.stack);
-    assertBound(this.bucketName);
+    assertNotNull(this.stack, ERR_MSG_CALL_BIND_FIRST);
+    assertNotNull(this.bucketName, 'The bucketName is null');
 
     const bucketName = overrideBucketname ?? this.bucketName;
     const objectKey = this.fileAssetPrefix + asset.sourceHash + (asset.packaging === FileAssetPackaging.ZIP_DIRECTORY ? '.zip' : '');
@@ -248,8 +251,8 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
   }
 
   public addDockerImageAsset(asset: DockerImageAssetSource): DockerImageAssetLocation {
-    assertBound(this.stack);
-    assertBound(this.repositoryName);
+    assertNotNull(this.stack, ERR_MSG_CALL_BIND_FIRST);
+    assertNotNull(this.repositoryName, 'The repositoryName is null');
 
     const imageTag = this.imageAssetTag ?? asset.sourceHash;
 
@@ -298,7 +301,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
    * Synthesize the associated stack to the session
    */
   public synthesize(session: ISynthesisSession): void {
-    assertBound(this.stack);
+    assertNotNull(this.stack, ERR_MSG_CALL_BIND_FIRST);
 
     this.synthesizeStackTemplate(this.stack, session);
 
@@ -327,7 +330,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
    * contains CloudFormation intrinsics which can't go into the manifest).
    */
   private addStackTemplateToAssetManifest(_: ISynthesisSession) {
-    assertBound(this.stack);
+    assertNotNull(this.stack, ERR_MSG_CALL_BIND_FIRST);
 
     const sourceHash = this.stack.templateFile;
 
@@ -351,7 +354,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
    * Write an asset manifest to the Cloud Assembly, return the artifact IDs written
    */
   private writeAssetManifest(session: ISynthesisSession): string {
-    assertBound(this.stack);
+    assertNotNull(this.stack, ERR_MSG_CALL_BIND_FIRST);
 
     const artifactId = `${this.stack.artifactId}.assets`;
     const manifestFile = `${artifactId}.json`;
@@ -369,7 +372,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
   }
 
   private get manifestEnvName(): string {
-    assertBound(this.stack);
+    assertNotNull(this.stack, ERR_MSG_CALL_BIND_FIRST);
 
     return [
       resolvedOr(this.stack.account, 'current_account'),
@@ -432,8 +435,8 @@ function stackLocationOrInstrinsics(stack: Stack) {
 // }
 
 
-function assertBound<A>(x: A | undefined): asserts x is NonNullable<A> {
+function assertNotNull<A>(x: A | undefined, msg:string = 'Null value error'): asserts x is NonNullable<A> {
   if (x === null || x === undefined) {
-    throw new Error('You must call bindStack() first');
+    throw new Error(msg);
   }
 }
