@@ -36,7 +36,7 @@ test('assertBound for stack', () => {
       packaging: FileAssetPackaging.FILE,
       sourceHash: 'abcdef',
     });
-  }).toThrow('You must call bindStack');
+  }).toThrow('You must call bind');
 });
 
 test('assertBound for bucketName and repositoryName', () => {
@@ -50,14 +50,14 @@ test('assertBound for bucketName and repositoryName', () => {
       packaging: FileAssetPackaging.FILE,
       sourceHash: 'abcdef',
     });
-  }).toThrow('You must call bindStack');
+  }).toThrow('The bucketName is null');
 
   expect(() => {
     synthesizer.addDockerImageAsset({
       directoryName: __dirname,
       sourceHash: 'abcdef',
     });
-  }).toThrow('You must call bindStack');
+  }).toThrow('The repositoryName is null');
 });
 
 

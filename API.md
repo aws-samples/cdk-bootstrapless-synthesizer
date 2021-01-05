@@ -35,7 +35,7 @@ new BootstraplessStackSynthesizer(props?: BootstraplessStackSynthesizerProps)
   * **fileAssetBucketName** (<code>string</code>)  Name of the S3 bucket to hold file assets. __*Default*__: process.env.BSS_FILE_ASSET_BUCKET_NAME
   * **fileAssetPrefix** (<code>string</code>)  Object key prefix to use while storing S3 Assets. __*Default*__: process.env.BSS_FILE_ASSET_PREFIX
   * **fileAssetPublishingRoleArn** (<code>string</code>)  The role to use to publish file assets to the S3 bucket in this environment. __*Default*__: process.env.BSS_FILE_ASSET_PUBLISHING_ROLE_ARN
-  * **fileAssetRegionSet** (<code>Array<string></code>)  The regions set of file assets to be published only when fileAssetsBucketName contains `${AWS::Region}`. __*Default*__: process.env.BSS_FILE_ASSET_REGION_SET // comma delimited list
+  * **fileAssetRegionSet** (<code>Array<string></code>)  The regions set of file assets to be published only when `fileAssetBucketName` contains `${AWS::Region}`. __*Default*__: process.env.BSS_FILE_ASSET_REGION_SET // comma delimited list
   * **imageAssetAccountId** (<code>string</code>)  Override the ECR repository account id of the Docker Image assets. __*Default*__: process.env.BSS_IMAGE_ASSET_ACCOUNT_ID
   * **imageAssetPublishingRoleArn** (<code>string</code>)  The role to use to publish image assets to the ECR repository in this environment. __*Default*__: process.env.BSS_IMAGE_ASSET_PUBLISHING_ROLE_ARN
   * **imageAssetRegion** (<code>string</code>)  Override the ECR repository region of the Docker Image assets. __*Default*__: process.env.BSS_IMAGE_ASSET_REGION
@@ -148,7 +148,7 @@ Name | Type | Description
 **fileAssetBucketName**? | <code>string</code> | Name of the S3 bucket to hold file assets.<br/>__*Default*__: process.env.BSS_FILE_ASSET_BUCKET_NAME
 **fileAssetPrefix**? | <code>string</code> | Object key prefix to use while storing S3 Assets.<br/>__*Default*__: process.env.BSS_FILE_ASSET_PREFIX
 **fileAssetPublishingRoleArn**? | <code>string</code> | The role to use to publish file assets to the S3 bucket in this environment.<br/>__*Default*__: process.env.BSS_FILE_ASSET_PUBLISHING_ROLE_ARN
-**fileAssetRegionSet**? | <code>Array<string></code> | The regions set of file assets to be published only when fileAssetsBucketName contains `${AWS::Region}`.<br/>__*Default*__: process.env.BSS_FILE_ASSET_REGION_SET // comma delimited list
+**fileAssetRegionSet**? | <code>Array<string></code> | The regions set of file assets to be published only when `fileAssetBucketName` contains `${AWS::Region}`.<br/>__*Default*__: process.env.BSS_FILE_ASSET_REGION_SET // comma delimited list
 **imageAssetAccountId**? | <code>string</code> | Override the ECR repository account id of the Docker Image assets.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_ACCOUNT_ID
 **imageAssetPublishingRoleArn**? | <code>string</code> | The role to use to publish image assets to the ECR repository in this environment.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_PUBLISHING_ROLE_ARN
 **imageAssetRegion**? | <code>string</code> | Override the ECR repository region of the Docker Image assets.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_REGION
