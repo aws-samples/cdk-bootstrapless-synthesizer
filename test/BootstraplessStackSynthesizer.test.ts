@@ -116,8 +116,8 @@ test.each([
 
 
 test.each([
-  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name', fileAssetRegionSet: ['us-east-1', 'us-west-1'] }),
-  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name' }, { BSS_FILE_ASSET_REGION_SET: 'us-east-1, us-west-1' }),
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name', fileAssetRegionSet: ['us-east-1', 'us-west-1', '', ' '] }),
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name' }, { BSS_FILE_ASSET_REGION_SET: 'us-east-1, us-west-1, , ,' }),
 ])('#%# addFileAsset when fileAssetsRegionSet is set but fileAssetsBucketName doesn\'t contains ${AWS::Region}', (mksynthzerFn) => {
   const stack = new Stack();
   const synthesizer = mksynthzerFn();
@@ -144,8 +144,8 @@ test.each([
 });
 
 test.each([
-  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name-${AWS::Region}', fileAssetRegionSet: ['us-east-1', 'us-west-1'] }),
-  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name-${AWS::Region}' }, { BSS_FILE_ASSET_REGION_SET: 'us-east-1, us-west-1' }),
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name-${AWS::Region}', fileAssetRegionSet: ['us-east-1', 'us-west-1', '', ' '] }),
+  () => mksynthzer({ fileAssetBucketName: 'test-bucket-name-${AWS::Region}' }, { BSS_FILE_ASSET_REGION_SET: 'us-east-1, us-west-1, , ,' }),
 ])('#%# addFileAsset when fileAssetsRegionSet is set and fileAssetsBucketName contains ${AWS::Region}', (mksynthzerFn) => {
   const stack = new Stack();
   const synthesizer = mksynthzerFn();

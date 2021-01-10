@@ -211,6 +211,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     if (this.fileAssetRegionSet?.length && bucketName.includes(REGION_PLACEHOLDER)) {
       for (let region of this.fileAssetRegionSet) {
         region = region.trim();
+        if (!region) { continue; }
         destinations[region] = {
           bucketName: replaceAll(bucketName, REGION_PLACEHOLDER, region),
           objectKey,
