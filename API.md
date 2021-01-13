@@ -66,11 +66,12 @@ addDockerImageAsset(asset: DockerImageAssetSource): DockerImageAssetLocation
 ```
 
 * **asset** (<code>[DockerImageAssetSource](#aws-cdk-core-dockerimageassetsource)</code>)  *No description*
-  * **directoryName** (<code>string</code>)  The directory where the Dockerfile is stored, must be relative to the cloud assembly root. 
   * **sourceHash** (<code>string</code>)  The hash of the contents of the docker build context. 
+  * **directoryName** (<code>string</code>)  The directory where the Dockerfile is stored, must be relative to the cloud assembly root. __*Default*__: Exactly one of `directoryName` and `executable` is required
   * **dockerBuildArgs** (<code>Map<string, string></code>)  Build args to pass to the `docker build` command. __*Default*__: no build args are passed
   * **dockerBuildTarget** (<code>string</code>)  Docker target to build to. __*Default*__: no target
   * **dockerFile** (<code>string</code>)  Path to the Dockerfile (relative to the directory). __*Default*__: no file
+  * **executable** (<code>Array<string></code>)  An external command that will produce the packaged asset. __*Default*__: Exactly one of `directoryName` and `executable` is required
   * **repositoryName** (<code>string</code>)  ECR repository name. __*Default*__: automatically derived from the asset's ID.
 
 __Returns__:
@@ -87,9 +88,10 @@ addFileAsset(asset: FileAssetSource): FileAssetLocation
 ```
 
 * **asset** (<code>[FileAssetSource](#aws-cdk-core-fileassetsource)</code>)  *No description*
-  * **fileName** (<code>string</code>)  The path, relative to the root of the cloud assembly, in which this asset source resides. 
-  * **packaging** (<code>[FileAssetPackaging](#aws-cdk-core-fileassetpackaging)</code>)  Which type of packaging to perform. 
   * **sourceHash** (<code>string</code>)  A hash on the content source. 
+  * **executable** (<code>Array<string></code>)  An external command that will produce the packaged asset. __*Default*__: Exactly one of `directory` and `executable` is required
+  * **fileName** (<code>string</code>)  The path, relative to the root of the cloud assembly, in which this asset source resides. __*Default*__: Exactly one of `directory` and `executable` is required
+  * **packaging** (<code>[FileAssetPackaging](#aws-cdk-core-fileassetpackaging)</code>)  Which type of packaging to perform. __*Default*__: Required if `fileName` is specified.
 
 __Returns__:
 * <code>[FileAssetLocation](#aws-cdk-core-fileassetlocation)</code>
