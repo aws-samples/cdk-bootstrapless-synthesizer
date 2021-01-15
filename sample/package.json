@@ -1,0 +1,27 @@
+{
+  "name": "sample",
+  "scripts": {
+    "build": "tsc",
+    "synth": "cdk synth",
+    "watch": "tsc -w"
+  },
+  "devDependencies": {
+    "@types/node": "^10.17.0",
+    "aws-cdk": "^1.79.0",
+    "json-schema": "^0.3.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "@aws-cdk/assert": "^1.79.0",
+    "@aws-cdk/aws-apigateway": "^1.79.0",
+    "@aws-cdk/aws-ec2": "^1.79.0",
+    "@aws-cdk/aws-lambda": "^1.79.0",
+    "@aws-cdk/aws-s3": "^1.79.0",
+    "@aws-cdk/core": "^1.79.0",
+    "cdk-bootstrapless-synthesizer": "^0.6.2"
+  },
+  "bundledDependencies": [],
+  "license": "Apache-2.0",
+  "version": "0.0.0"
+}
