@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.3](https://github.com/wchaws/cdk-bootstrapless-synthesizer/compare/v0.6.1...v0.6.3) (2021-01-15)
+
+### [0.6.2](https://github.com/wchaws/cdk-bootstrapless-synthesizer/compare/v0.6.1...v0.6.2) (2021-01-14)
+
+### [0.6.1](https://github.com/wchaws/cdk-bootstrapless-synthesizer/compare/v0.6.0...v0.6.1) (2021-01-13)
+
+## [0.6.0](https://github.com/wchaws/cdk-bootstrapless-synthesizer/compare/v0.5.20...v0.6.0) (2021-01-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade aws-cdk to 1.84.0
+
+### Bug Fixes
+
+* fileAssetRegionSet contains empty value region error ([115b95c](https://github.com/wchaws/cdk-bootstrapless-synthesizer/commit/115b95c9bf5ffbc66e3115cd4bf298beb654c387))
+
+
+* upgrade aws-cdk to 1.84.0 ([732211f](https://github.com/wchaws/cdk-bootstrapless-synthesizer/commit/732211fb7508802dcb920f41e259d624f5d5dc18))
+
 ### [0.5.20](https://github.com/wchaws/cdk-bootstrapless-synthesizer/compare/v0.5.19...v0.5.20) (2021-01-13)
 
 ### [0.5.19](https://github.com/wchaws/cdk-bootstrapless-synthesizer/compare/v0.5.18...v0.5.19) (2021-01-13)
