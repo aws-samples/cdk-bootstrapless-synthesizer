@@ -18,12 +18,12 @@ import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
 const app = new cdk.App();
 new MyWidgetServiceStack(app, 'MyWidgetServiceStack', {
   synthesizer: new BootstraplessStackSynthesizer({
-    templateBucketName: 'the-s3-bucket-for-cfn-template',
-    imageAssetsRepositoryName: 'ecr-repo-name',
+    templateBucketName: 'cfn-template-bucket',
+    imageAssetRepositoryName: 'ecr-repo-name',
 
-    fileAssetsBucketName: 'the-s3-bucket-for-cdk-assets-${AWS::Region}',
-    fileAssetsRegionSet: ['us-east-1'],
-    fileAssetsPrefix: 'the-s3-object-prefix/latest/',
+    fileAssetBucketName: 'file-asset-bucket-${AWS::Region}',
+    fileAssetRegionSet: ['us-east-1'],
+    fileAssetPrefix: 'file-asset-prefix/latest/',
 
     imageAssetTag: 'docker-image-tag',
     imageAssetRegion: 'us-east-1',
@@ -38,6 +38,10 @@ Synth cloudformation templates, assets and upload them
 $ cdk synth
 $ npx cdk-assets publish -p cdk.out/MyWidgetServiceStack.assets.json -v
 ```
+
+## Sample Project
+
+See [Sample Project](./sample/README.md)
 
 ## API Reference
 

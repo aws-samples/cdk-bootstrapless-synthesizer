@@ -14,8 +14,10 @@
 /coverage
 /dist
 /lib
+/sample/lib
 /test-reports/
 build/Release
+cdk.out/
 coverage
 jspm_packages/
 junit.xml
@@ -44,6 +46,7 @@ yarn-error.log*
 !/API.md
 !/LICENSE
 !/package.json
+!/sample/tsconfig.json
 !/src
 !/test
 !/tsconfig.jest.json

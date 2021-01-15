@@ -6,6 +6,14 @@ const project = new JsiiProject({
   name: 'cdk-bootstrapless-synthesizer',
   repository: 'git@github.com:wchaws/cdk-bootstrapless-synthesizer.git',
   codeCov: true,
+  gitignore: [
+    'cdk.out/',
+    '/sample/lib',
+    '!/sample/tsconfig.json',
+  ],
+  npmignore: [
+    'sample/',
+  ],
   releaseEveryCommit: true,
   releaseBranches: ['main'],
   deps: [
