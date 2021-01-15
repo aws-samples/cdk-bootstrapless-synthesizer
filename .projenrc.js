@@ -6,6 +6,7 @@ const project = new JsiiProject({
   name: 'cdk-bootstrapless-synthesizer',
   repository: 'git@github.com:wchaws/cdk-bootstrapless-synthesizer.git',
   codeCov: true,
+  projenUpgradeSecret: 'GITHUB_TOKEN',
   gitignore: [
     'cdk.out/',
     '/sample/lib',
