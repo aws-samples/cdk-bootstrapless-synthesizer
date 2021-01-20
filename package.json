@@ -1,5 +1,6 @@
 {
   "name": "cdk-bootstrapless-synthesizer",
+  "description": "Generate directly usable AWS CloudFormation template.",
   "repository": {
     "type": "git",
     "url": "git@github.com:wchaws/cdk-bootstrapless-synthesizer.git"
