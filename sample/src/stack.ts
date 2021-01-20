@@ -3,33 +3,36 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { Construct, Stack, StackProps, CfnMapping, Aws } from '@aws-cdk/core';
 
+class MyImage implements ec2.IMachineImage {
+  private mapping: { [k1: string]: { [k2: string]: any } } = {};
+  constructor(readonly amiMap: { [region: string]: string }) {
+    for (const [region, ami] of Object.entries(amiMap)) {
+      this.mapping[region] = { ami };
+    }
+  }
+  public getImage(parent: Construct): ec2.MachineImageConfig {
+    const amiMap = new CfnMapping(parent, 'AmiMap', { mapping: this.mapping });
+    return {
+      imageId: amiMap.findInMap(Aws.REGION, 'ami'),
+      userData: ec2.UserData.forLinux(),
+      osType: ec2.OperatingSystemType.LINUX,
+    };
+  }
+}
+
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
-
-    const regionMap = new CfnMapping(this, 'RegionMap', {
-      mapping: {
-        'cn-north-1': { ami: 'ami-cn-north-1' },
-        'cn-northwest-1': { ami: 'ami-cn-northwest-1' },
-      },
-    });
-
-    class MyImage implements ec2.IMachineImage {
-      public getImage(_: Construct): ec2.MachineImageConfig {
-        return {
-          imageId: regionMap.findInMap(Aws.REGION, 'ami'),
-          userData: ec2.UserData.forLinux(),
-          osType: ec2.OperatingSystemType.LINUX,
-        };
-      }
-    }
 
     const vpc= new ec2.Vpc(this, 'VPC');
 
     new ec2.Instance(this, 'Instance', {
       vpc,
       instanceType: new ec2.InstanceType('t2.micro'),
-      machineImage: new MyImage(),
+      machineImage: new MyImage({
+        'cn-north-1': 'ami-cn-north-1',
+        'cn-northwest-1': 'ami-cn-northwest-1',
+      }),
     });
 
     const layer = new lambda.LayerVersion(this, 'MyLayer', {
