@@ -1,0 +1,54 @@
+{
+  "version": "8.0.0",
+  "files": {
+    "8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0": {
+      "source": {
+        "path": "asset.8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "us-east-1": {
+          "bucketName": "file-asset-bucket-us-east-1",
+          "objectKey": "file-asset-prefix/latest/8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0.zip",
+          "region": "us-east-1"
+        },
+        "us-west-1": {
+          "bucketName": "file-asset-bucket-us-west-1",
+          "objectKey": "file-asset-prefix/latest/8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0.zip",
+          "region": "us-west-1"
+        }
+      }
+    },
+    "c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55": {
+      "source": {
+        "path": "asset.c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "us-east-1": {
+          "bucketName": "file-asset-bucket-us-east-1",
+          "objectKey": "file-asset-prefix/latest/c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55.zip",
+          "region": "us-east-1"
+        },
+        "us-west-1": {
+          "bucketName": "file-asset-bucket-us-west-1",
+          "objectKey": "file-asset-prefix/latest/c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55.zip",
+          "region": "us-west-1"
+        }
+      }
+    },
+    "MyStack.template.json": {
+      "source": {
+        "path": "MyStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cfn-template-bucket",
+          "objectKey": "file-asset-prefix/latest/MyStack.template.json"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
