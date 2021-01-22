@@ -106,4 +106,25 @@ const project = new JsiiProject({
   // parent: undefined,                                                        /* The parent project, if this project is part of a bigger project. */
 });
 
+const wf = project.github.addWorkflow('build-sample');
+wf.on({
+  pull_request: {},
+  workflow_dispatch: {},
+});
+wf.addJobs({
+  'build-sample': {
+    'runs-on': 'ubuntu-latest',
+    'steps': [
+      { uses: 'actions/checkout@v2' },
+      {
+        uses: 'actions/setup-node@v1',
+        with: {
+          'node-version': '10.17.0',
+        },
+      },
+      { run: 'cd sample && yarn && yarn synth' },
+    ],
+  },
+});
+
 project.synth();
