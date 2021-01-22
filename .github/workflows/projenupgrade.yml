@@ -20,7 +20,7 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.AUTOMATION }}
           commit-message: "chore: upgrade projen"
           branch: auto/projen-upgrade
           title: "chore: upgrade projen"
