@@ -74,6 +74,7 @@
     },
     {
       "name": "jsii-release",
+      "version": "^0.2.11",
       "type": "build"
     },
     {
@@ -82,7 +83,7 @@
     },
     {
       "name": "projen",
-      "version": "^0.15.13",
+      "version": "^0.15.14",
       "type": "build"
     },
     {
