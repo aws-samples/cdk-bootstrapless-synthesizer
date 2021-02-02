@@ -1,5 +1,5 @@
 {
-  "version": "8.0.0",
+  "version": "9.0.0",
   "files": {
     "8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0": {
       "source": {
@@ -50,5 +50,17 @@
       }
     }
   },
-  "dockerImages": {}
+  "dockerImages": {
+    "7195291054a98fc5a1de68305740fc2157b44ee0e137c1eb050fcdedb7971565": {
+      "source": {
+        "directory": "asset.7195291054a98fc5a1de68305740fc2157b44ee0e137c1eb050fcdedb7971565"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "repositoryName": "your-ecr-repo-name",
+          "imageTag": "latest"
+        }
+      }
+    }
+  }
 }
