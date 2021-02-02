@@ -10,7 +10,11 @@ new MyStack(app, 'MyStack', {
 
     fileAssetBucketName: 'file-asset-bucket-${AWS::Region}',
     fileAssetRegionSet: ['us-east-1', 'us-west-1'],
-    fileAssetPrefix: 'file-asset-prefix/latest/'
+    fileAssetPrefix: 'file-asset-prefix/latest/',
+
+    imageAssetRepositoryName: 'your-ecr-repo-name',
+    imageAssetAccountId: '1234567890',
+    imageAssetTag: 'latest',
   }),
 });
 

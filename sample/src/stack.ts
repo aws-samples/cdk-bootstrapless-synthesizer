@@ -1,7 +1,8 @@
 import * as path from 'path';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
-import { Construct, Stack, StackProps, CfnMapping, Aws } from '@aws-cdk/core';
+import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
+import { CfnOutput, Construct, Stack, StackProps, CfnMapping, Aws } from '@aws-cdk/core';
 
 class MyImage implements ec2.IMachineImage {
   private mapping: { [k1: string]: { [k2: string]: any } } = {};
@@ -24,10 +25,14 @@ export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    const vpc= new ec2.Vpc(this, 'VPC');
+    const image = new DockerImageAsset(this, 'MyBuildImage', {
+      directory: path.join(__dirname, '../docker')
+    });
+
+    new CfnOutput(this, 'output', { value: image.imageUri });
 
     new ec2.Instance(this, 'Instance', {
-      vpc,
+      vpc:  new ec2.Vpc(this, 'VPC'),
       instanceType: new ec2.InstanceType('t2.micro'),
       machineImage: new MyImage({
         'cn-north-1': 'ami-cn-north-1',
