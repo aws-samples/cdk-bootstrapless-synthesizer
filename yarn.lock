@@ -630,13 +630,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/fs-extra@^8.0.0":
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-8.1.1.tgz#1e49f22d09aa46e19b51c0b013cb63d0d923a068"
-  integrity sha512-TcUlBem321DFQzBNuz8p0CLLKp0VvF/XH9E4KHNmgwyp4E3AfgI5cjiIVZWlbfThBop2qxFIh4+LeY6hVWWZ2w==
-  dependencies:
-    "@types/node" "*"
-
 "@types/graceful-fs@^4.1.2":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@types/graceful-fs/-/graceful-fs-4.1.4.tgz#4ff9f641a7c6d1a3508ff88bc3141b152772e753"
@@ -2476,7 +2469,7 @@ fs-access@^1.0.1:
   dependencies:
     null-check "^1.0.0"
 
-fs-extra@^8.0.0, fs-extra@^8.1.0:
+fs-extra@^8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
   integrity sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
@@ -3748,15 +3741,6 @@ jsii-reflect@^1.16.0, jsii-reflect@^1.21.0:
     oo-ascii-tree "^1.21.0"
     yargs "^16.2.0"
 
-jsii-release@^0.2.11:
-  version "0.2.18"
-  resolved "https://registry.yarnpkg.com/jsii-release/-/jsii-release-0.2.18.tgz#4358351e2704733f646c3c327254ba11dc7b12ae"
-  integrity sha512-gJH0JFe6SijSO7+dj0Lzh1+kTXOCURTZiWeVLVlMfhD4H15XwXezEoF4gS8BYGWEjWZ8z4Fm29spynTqNhr7Xg==
-  dependencies:
-    "@types/fs-extra" "^8.0.0"
-    fs-extra "^8.0.0"
-    shlex "^2.0.2"
-
 jsii-rosetta@^1.21.0:
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/jsii-rosetta/-/jsii-rosetta-1.21.0.tgz#591ebb2ce390b81f269a66d906446f8bebe9e23b"
@@ -4772,10 +4756,10 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.15.14:
-  version "0.15.14"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.15.14.tgz#43db1fdd515fb0ebaa92779d77d4bb5db98a9526"
-  integrity sha512-fYxuV63nmvmRrWkNIUsOtjWzBnNYhmeNHNpAenweOnK50qC6cmJhNatsizZlwVuP1YwyfBjvgJKdoGmLv+SVOg==
+projen@^0.16.5:
+  version "0.16.5"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.16.5.tgz#f9287197b3957fb99ff733ce4631ad57fc928fe7"
+  integrity sha512-upozDbWgeH4/IoqCcnCHUwNLoUukTrmS7CrVPiACKIbpOpdoHmrbZX3WAh2pJ2jOQV9JwL6de44r3UGtlY0iaQ==
   dependencies:
     "@iarna/toml" "^2.2.5"
     chalk "^4.1.0"
@@ -5259,11 +5243,6 @@ shellwords@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
-
-shlex@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/shlex/-/shlex-2.0.2.tgz#debf51a145f1df9e7cb7cce04340ccb45120092d"
-  integrity sha512-i4p9nNXgBTILspHwZlBCNsZzwuVWW8SFx5dyIONrjL0R+AbMOPbg7ndqgGfjYivkYRTtZMKqIT8HT+QyOhPQWA==
 
 side-channel@^1.0.3:
   version "1.0.3"
