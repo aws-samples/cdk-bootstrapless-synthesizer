@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.69](https://github.com/wchaws/cdk-bootstrapless-synthesizer/compare/v0.6.68...v0.6.69) (2021-03-03)
+
 ### [0.6.68](https://github.com/wchaws/cdk-bootstrapless-synthesizer/compare/v0.6.67...v0.6.68) (2021-03-03)
 
 ### [0.6.67](https://github.com/wchaws/cdk-bootstrapless-synthesizer/compare/v0.6.66...v0.6.67) (2021-03-02)
