@@ -5,11 +5,13 @@
     "synth": "cdk synth",
     "watch": "tsc -w"
   },
+  "resolutions": {
+    "netmask": "^2.0.1"
+  },
   "devDependencies": {
     "@types/node": "^10.17.0",
     "aws-cdk": "^1.95.1",
     "json-schema": "^0.3.0",
-    "netmask": "^2.0.1",
     "ts-node": "^9.1.1",
     "typescript": "^3.9.5"
   },
