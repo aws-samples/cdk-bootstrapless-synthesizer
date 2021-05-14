@@ -1,9 +1,7 @@
 # cdk-bootstrapless-synthesizer
 
-![Release](https://github.com/wchaws/cdk-bootstrapless-synthesizer/workflows/Release/badge.svg)
 [![npm version](https://img.shields.io/npm/v/cdk-bootstrapless-synthesizer)](https://www.npmjs.com/package/cdk-bootstrapless-synthesizer)
 [![downloads](https://img.shields.io/npm/dw/cdk-bootstrapless-synthesizer)](https://www.npmjs.com/package/cdk-bootstrapless-synthesizer)
-[![codecov](https://codecov.io/gh/wchaws/cdk-bootstrapless-synthesizer/branch/main/graph/badge.svg?token=08UOSTIYLZ)](https://codecov.io/gh/wchaws/cdk-bootstrapless-synthesizer)
 
 A bootstrapless stack synthesizer that is designated to generate templates that can be directly used by AWS CloudFormation
 
