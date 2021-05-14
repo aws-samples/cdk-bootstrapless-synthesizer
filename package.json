@@ -3,19 +3,20 @@
   "description": "Generate directly usable AWS CloudFormation template.",
   "repository": {
     "type": "git",
-    "url": "git@github.com:wchaws/cdk-bootstrapless-synthesizer.git"
+    "url": "github.com/aws-samples/cdk-bootstrapless-synthesizer"
   },
   "scripts": {
     "clobber": "npx projen clobber",
+    "bump": "npx projen bump",
+    "unbump": "npx projen unbump",
     "compile": "npx projen compile",
     "test:compile": "npx projen test:compile",
     "test": "npx projen test",
     "build": "npx projen build",
-    "bump": "npx projen bump",
-    "release": "npx projen release",
     "test:watch": "npx projen test:watch",
     "test:update": "npx projen test:update",
     "projen:upgrade": "npx projen projen:upgrade",
+    "default": "npx projen default",
     "watch": "npx projen watch",
     "package": "npx projen package",
     "eslint": "npx projen eslint",
@@ -25,9 +26,8 @@
     "start": "npx projen start"
   },
   "author": {
-    "name": "wchaws",
-    "email": "javacs3+aws@gmail.com",
-    "organization": false
+    "name": "Amazon.com",
+    "organization": true
   },
   "devDependencies": {
     "@aws-cdk/cloud-assembly-schema": "^1.84.0",
@@ -48,7 +48,7 @@
     "jsii-docgen": "^1.8.19",
     "jsii-pacmak": "^1.16.0",
     "json-schema": "^0.3.0",
-    "projen": "^0.17.20",
+    "projen": "^0.17.90",
     "standard-version": "^9",
     "ts-jest": "^26.4.4",
     "typescript": "^3.9.5"
@@ -66,7 +66,7 @@
   "bundledDependencies": [],
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "0.6.145",
+  "version": "0.7.1",
   "jest": {
     "testMatch": [
       "**/__tests__/**/*.ts?(x)",

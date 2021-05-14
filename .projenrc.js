@@ -1,13 +1,12 @@
 const { JsiiProject } = require('projen');
 
 const project = new JsiiProject({
-  authorAddress: 'javacs3+aws@gmail.com',
-  authorName: 'wchaws',
   description: 'Generate directly usable AWS CloudFormation template.',
+  author: 'Amazon.com',
+  authorOrganization: true,
+  repository: 'github.com/aws-samples/cdk-bootstrapless-synthesizer',
   name: 'cdk-bootstrapless-synthesizer',
-  repository: 'git@github.com:wchaws/cdk-bootstrapless-synthesizer.git',
   codeCov: true,
-  projenUpgradeSecret: 'AUTOMATION',
   gitignore: [
     'cdk.out/',
     '/sample/lib',
