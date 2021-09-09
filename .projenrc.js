@@ -1,4 +1,4 @@
-const { JsiiProject } = require('projen');
+const { JsiiProject, github } = require('projen');
 
 const project = new JsiiProject({
   description: 'Generate directly usable AWS CloudFormation template.',
@@ -29,7 +29,8 @@ const project = new JsiiProject({
   ],
 });
 
-const wf = project.github.addWorkflow('build-sample');
+const gh = new github.GitHub(project);
+const wf = gh.addWorkflow('build-sample');
 wf.on({
   pull_request: {},
   workflow_dispatch: {},
