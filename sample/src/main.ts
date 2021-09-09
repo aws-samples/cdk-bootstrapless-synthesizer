@@ -24,6 +24,7 @@ export class MyStack extends Stack {
               'export npm_config_update_notifier=false',
               'export npm_config_cache=$(mktemp -d)', // https://github.com/aws/aws-cdk/issues/8707#issuecomment-757435414
               'cd $(mktemp -d)',
+              'ls -al /asset-input/',
               'cp -v /asset-input/package*.json .',
               'npm i --only=prod',
               'mkdir -p /asset-output/nodejs/',
