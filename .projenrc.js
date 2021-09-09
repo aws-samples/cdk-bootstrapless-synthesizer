@@ -16,7 +16,6 @@ const project = new JsiiProject({
     'sample/',
   ],
   releaseEveryCommit: true,
-  releaseBranches: ['main'],
   defaultReleaseBranch: 'main',
   deps: [
     '@aws-cdk/cloud-assembly-schema',
@@ -38,12 +37,15 @@ wf.on({
 wf.addJobs({
   'build-sample': {
     'runs-on': 'ubuntu-latest',
+    'permissions': {
+      contents: 'read',
+    },
     'steps': [
       { uses: 'actions/checkout@v2' },
       {
         uses: 'actions/setup-node@v1',
         with: {
-          'node-version': '10.17.0',
+          'node-version': '12',
         },
       },
       { run: 'cd sample && yarn && yarn synth' },

@@ -6,10 +6,11 @@ on:
   workflow_dispatch: {}
 jobs:
   build-sample:
-    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 10.17.0
+          node-version: "12"
       - run: cd sample && yarn && yarn synth
