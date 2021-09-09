@@ -19,8 +19,10 @@ export class MyStack extends Stack {
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/'), {
         bundling: {
           image: lambda.Runtime.NODEJS_12_X.bundlingImage,
+          user: 'root',
           command: [
             'bash', '-xc', [
+              'ls -al',
               'export npm_config_update_notifier=false',
               'export npm_config_cache=$(mktemp -d)', // https://github.com/aws/aws-cdk/issues/8707#issuecomment-757435414
               'cd $(mktemp -d)',
