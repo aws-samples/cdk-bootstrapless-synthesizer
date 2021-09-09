@@ -29,7 +29,7 @@
     "projen": "npx projen"
   },
   "author": {
-    "name": "Amazon.com",
+    "name": "wchaws",
     "organization": true
   },
   "devDependencies": {

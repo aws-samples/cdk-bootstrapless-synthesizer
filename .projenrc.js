@@ -2,7 +2,7 @@ const { JsiiProject, github } = require('projen');
 
 const project = new JsiiProject({
   description: 'Generate directly usable AWS CloudFormation template.',
-  author: 'Amazon.com',
+  author: 'wchaws',
   authorOrganization: true,
   repository: 'github.com/aws-samples/cdk-bootstrapless-synthesizer',
   name: 'cdk-bootstrapless-synthesizer',
@@ -53,5 +53,10 @@ wf.addJobs({
     ],
   },
 });
+
+// project.package.addField('resolutions', {
+//   'trim-newlines': '3.0.1',
+//   'xmldom': 'github:xmldom/xmldom#0.7.0', // TODO: remove this when xmldom^0.7.0 is released in npm
+// });
 
 project.synth();
