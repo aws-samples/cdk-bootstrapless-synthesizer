@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as cp from 'child_process';
 import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { App, CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
@@ -14,6 +15,11 @@ export class MyStack extends Stack {
     });
 
     new CfnOutput(this, 'output', { value: image.imageUri });
+
+    const p = path.join(__dirname, '../lambda/');
+
+    console.log('lambda layer path', p);
+    cp.execSync(`ls -al ${p}`);
 
     const layer = new lambda.LayerVersion(this, 'MyLayer', {
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/'), {
