@@ -54,9 +54,8 @@ wf.addJobs({
   },
 });
 
-// project.package.addField('resolutions', {
-//   'trim-newlines': '3.0.1',
-//   'xmldom': 'github:xmldom/xmldom#0.7.0', // TODO: remove this when xmldom^0.7.0 is released in npm
-// });
+project.package.addField('resolutions', {
+  'trim-newlines': '3.0.1',
+});
 
 project.synth();
