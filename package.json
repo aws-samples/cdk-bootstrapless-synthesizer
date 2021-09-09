@@ -3,7 +3,7 @@
   "description": "Generate directly usable AWS CloudFormation template.",
   "repository": {
     "type": "git",
-    "url": "github.com/aws-samples/cdk-bootstrapless-synthesizer"
+    "url": "https://github.com/aws-samples/cdk-bootstrapless-synthesizer.git"
   },
   "scripts": {
     "clobber": "npx projen clobber",

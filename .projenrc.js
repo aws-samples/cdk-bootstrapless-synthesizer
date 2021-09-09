@@ -4,7 +4,7 @@ const project = new JsiiProject({
   description: 'Generate directly usable AWS CloudFormation template.',
   author: 'wchaws',
   authorOrganization: true,
-  repository: 'github.com/aws-samples/cdk-bootstrapless-synthesizer',
+  repository: 'https://github.com/aws-samples/cdk-bootstrapless-synthesizer.git',
   name: 'cdk-bootstrapless-synthesizer',
   codeCov: true,
   gitignore: [
