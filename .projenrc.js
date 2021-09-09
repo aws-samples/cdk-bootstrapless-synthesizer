@@ -27,6 +27,10 @@ const project = new JsiiProject({
     '@aws-cdk/cx-api',
     '@aws-cdk/core',
   ],
+  publishToPypi: {
+    distName: 'cdk-bootstrapless-synthesizer',
+    module: 'cdk_bootstrapless_synthesizer',
+  },
 });
 
 const gh = new github.GitHub(project);
