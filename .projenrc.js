@@ -31,11 +31,18 @@ const project = new JsiiProject({
     distName: 'cdk-bootstrapless-synthesizer',
     module: 'cdk_bootstrapless_synthesizer',
   },
+  jestOptions: {
+    jestConfig: {
+      testPathIgnorePatterns: [
+        'sample/',
+      ],
+    },
+  },
 });
 
 const sampleProject = new AwsCdkTypeScriptApp({
   parent: project,
-  outdir: 'sample2',
+  outdir: 'sample',
   cdkVersion: '1.122.0',
   defaultReleaseBranch: 'main',
   name: 'sample',
