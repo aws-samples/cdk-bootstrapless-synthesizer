@@ -1,20 +1,20 @@
 {
-  "version": "9.0.0",
+  "version": "14.0.0",
   "files": {
-    "8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0": {
+    "ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe": {
       "source": {
-        "path": "asset.8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0",
+        "path": "asset.ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe",
         "packaging": "zip"
       },
       "destinations": {
         "us-east-1": {
           "bucketName": "file-asset-bucket-us-east-1",
-          "objectKey": "file-asset-prefix/latest/8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0.zip",
+          "objectKey": "file-asset-prefix/latest/ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe.zip",
           "region": "us-east-1"
         },
         "us-west-1": {
           "bucketName": "file-asset-bucket-us-west-1",
-          "objectKey": "file-asset-prefix/latest/8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0.zip",
+          "objectKey": "file-asset-prefix/latest/ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe.zip",
           "region": "us-west-1"
         }
       }
@@ -37,23 +37,23 @@
         }
       }
     },
-    "MyStack.template.json": {
+    "my-stack-dev.template.json": {
       "source": {
-        "path": "MyStack.template.json",
+        "path": "my-stack-dev.template.json",
         "packaging": "file"
       },
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cfn-template-bucket",
-          "objectKey": "file-asset-prefix/latest/MyStack.template.json"
+          "objectKey": "file-asset-prefix/latest/my-stack-dev.template.json"
         }
       }
     }
   },
   "dockerImages": {
-    "7195291054a98fc5a1de68305740fc2157b44ee0e137c1eb050fcdedb7971565": {
+    "081d61aabae441170677433ce52c96bcc8d23f6e4d70643bd2ea6b2e6dd570f5": {
       "source": {
-        "directory": "asset.7195291054a98fc5a1de68305740fc2157b44ee0e137c1eb050fcdedb7971565"
+        "directory": "asset.081d61aabae441170677433ce52c96bcc8d23f6e4d70643bd2ea6b2e6dd570f5"
       },
       "destinations": {
         "current_account-current_region": {

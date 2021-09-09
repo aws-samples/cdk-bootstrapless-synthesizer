@@ -1,0 +1,301 @@
+{
+  "Outputs": {
+    "output": {
+      "Value": {
+        "Fn::Sub": "1234567890.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/your-ecr-repo-name:latest"
+      }
+    }
+  },
+  "Resources": {
+    "MyLayer38944FA5": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Fn::Sub": "file-asset-bucket-${AWS::Region}"
+          },
+          "S3Key": "file-asset-prefix/latest/ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe.zip"
+        },
+        "CompatibleRuntimes": [
+          "nodejs12.x"
+        ],
+        "Description": "A layer to test the L2 construct"
+      },
+      "Metadata": {
+        "aws:cdk:path": "my-stack-dev/MyLayer/Resource",
+        "aws:asset:path": "asset.ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe",
+        "aws:asset:property": "Content"
+      }
+    },
+    "MyHandlerServiceRoleFFA06653": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "my-stack-dev/MyHandler/ServiceRole/Resource"
+      }
+    },
+    "MyHandler6B74D312": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "file-asset-bucket-${AWS::Region}"
+          },
+          "S3Key": "file-asset-prefix/latest/c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "MyHandlerServiceRoleFFA06653",
+            "Arn"
+          ]
+        },
+        "Handler": "index.handler",
+        "Layers": [
+          {
+            "Ref": "MyLayer38944FA5"
+          }
+        ],
+        "Runtime": "nodejs12.x"
+      },
+      "DependsOn": [
+        "MyHandlerServiceRoleFFA06653"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "my-stack-dev/MyHandler/Resource",
+        "aws:asset:path": "asset.c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55",
+        "aws:asset:property": "Code"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WQQWvDMAyFf8vujrq0g123dgwKhUIKvWuOFtw0dpHkjmL832en62Gn96QH3xNqoV0u4fnpDX+ksf24SDYwQToo2tG8i5AWOzg/mM2330e9RDWb4EU5Wq27jiREtlR9CXqnLvhsKi+R5QYrQ+Aj2JF4O+FAM9WUDDq6BHEa+LZGIXPG6atHSDu8ER+JpZAq9t/8Gb3Vv+Dhs5HVo+hOlxWsY2nUGexwgtSF83xk1Zyz8aEnOMni2r5A+1p+cBLnGo5e3UTQ3fUX9l5UICABAAA="
+      },
+      "Metadata": {
+        "aws:cdk:path": "my-stack-dev/CDKMetadata/Default"
+      },
+      "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Conditions": {
+    "CDKMetadataAvailable": {
+      "Fn::Or": [
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "af-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ca-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-northwest-1"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-3"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "me-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "sa-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-2"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-2"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
