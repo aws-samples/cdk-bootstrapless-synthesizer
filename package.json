@@ -73,9 +73,6 @@
   "license": "Apache-2.0",
   "version": "0.0.0",
   "jest": {
-    "testPathIgnorePatterns": [
-      "sample/"
-    ],
     "testMatch": [
       "**/__tests__/**/*.ts?(x)",
       "**/?(*.)+(spec|test).ts?(x)"
@@ -90,7 +87,10 @@
     ],
     "coverageDirectory": "coverage",
     "coveragePathIgnorePatterns": [
-      "sample/"
+      "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
     ],
     "watchPathIgnorePatterns": [
       "/node_modules/"
