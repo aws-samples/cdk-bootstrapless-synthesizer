@@ -18,7 +18,7 @@ export class MyStack extends Stack {
 
     const p = path.join(__dirname, '../lambda/');
 
-    process.env.CDK_DOCKER = 'echo';
+    // process.env.CDK_DOCKER = 'echo';
 
     console.log('lambda layer path', p);
     console.log(cp.execSync(`ls -al ${p}`).toString());
