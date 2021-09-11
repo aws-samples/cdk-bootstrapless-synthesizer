@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: build
-        run: npx projen build
+        run: pwd && npx projen build
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
