@@ -31,7 +31,8 @@ export class MyStack extends Stack {
           user: 'root',
           command: [
             'bash', '-xc', [
-              'ls -al',
+              'pwd',
+              'find /asset-input/',
               'export npm_config_update_notifier=false',
               'export npm_config_cache=$(mktemp -d)', // https://github.com/aws/aws-cdk/issues/8707#issuecomment-757435414
               'cd $(mktemp -d)',
