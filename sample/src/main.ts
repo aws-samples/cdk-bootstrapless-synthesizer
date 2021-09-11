@@ -18,8 +18,11 @@ export class MyStack extends Stack {
 
     const p = path.join(__dirname, '../lambda/');
 
+    process.env.CDK_DOCKER = 'echo';
+
     console.log('lambda layer path', p);
     console.log(cp.execSync(`ls -al ${p}`).toString());
+
 
     const layer = new lambda.LayerVersion(this, 'MyLayer', {
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/'), {
