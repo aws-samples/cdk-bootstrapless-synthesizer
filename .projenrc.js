@@ -1,4 +1,4 @@
-const { JsiiProject, AwsCdkTypeScriptApp } = require('projen');
+const { JsiiProject, AwsCdkTypeScriptApp, github } = require('projen');
 
 const project = new JsiiProject({
   description: 'Generate directly usable AWS CloudFormation template.',
@@ -34,7 +34,7 @@ const project = new JsiiProject({
   jestOptions: {
     jestConfig: {
       testPathIgnorePatterns: [
-        'sample/', // FIXME: Don't know why Github CI can not build sample via projen build
+        'sample/', // https://github.com/projen/projen/issues/1059
       ],
     },
   },
@@ -63,6 +63,32 @@ const sampleProject = new AwsCdkTypeScriptApp({
   // packageName: undefined,      /* The "name" in package.json. */
   // release: undefined,          /* Add release management to this project. */
 });
+
+const gh = new github.GitHub(project);
+const wf = gh.addWorkflow('build-sample');
+wf.on({
+  pull_request: {},
+  workflow_dispatch: {},
+});
+wf.addJobs({
+  'build-sample': {
+    runsOn: 'ubuntu-latest',
+    permissions: {
+      contents: 'read',
+    },
+    steps: [
+      { uses: 'actions/checkout@v2' },
+      {
+        uses: 'actions/setup-node@v1',
+        with: {
+          'node-version': '12',
+        },
+      },
+      { run: 'cd sample && yarn && yarn test' },
+    ],
+  },
+});
+
 
 project.package.addField('resolutions', {
   'trim-newlines': '3.0.1',

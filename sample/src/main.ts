@@ -22,16 +22,15 @@ export class MyStack extends Stack {
           user: 'root',
           command: [
             'bash', '-xc', [
-              'ls -al',
               'export npm_config_update_notifier=false',
               'export npm_config_cache=$(mktemp -d)', // https://github.com/aws/aws-cdk/issues/8707#issuecomment-757435414
               'cd $(mktemp -d)',
-              'ls -al /asset-input/',
+              'find /asset-input/',
               'cp -v /asset-input/package*.json .',
               'npm i --only=prod',
               'mkdir -p /asset-output/nodejs/',
               'cp -au node_modules /asset-output/nodejs/',
-            ].join('&&'),
+            ].join(' && '),
           ],
         },
       }),
