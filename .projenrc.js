@@ -34,7 +34,7 @@ const project = new JsiiProject({
   jestOptions: {
     jestConfig: {
       testPathIgnorePatterns: [
-        'sample/', // FIXME: Don't know why Github CI can not build sample via projen build
+        'sample/', // https://github.com/projen/projen/issues/1059
       ],
     },
   },

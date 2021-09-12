@@ -1,5 +1,4 @@
 import * as path from 'path';
-import * as cp from 'child_process';
 import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { App, CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
@@ -16,14 +15,6 @@ export class MyStack extends Stack {
 
     new CfnOutput(this, 'output', { value: image.imageUri });
 
-    const p = path.join(__dirname, '../lambda/');
-
-    // process.env.CDK_DOCKER = 'echo';
-
-    console.log('lambda layer path', p);
-    console.log(cp.execSync(`ls -al ${p}`).toString());
-
-
     const layer = new lambda.LayerVersion(this, 'MyLayer', {
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/'), {
         bundling: {
@@ -31,17 +22,15 @@ export class MyStack extends Stack {
           user: 'root',
           command: [
             'bash', '-xc', [
-              'pwd',
-              'find /asset-input/',
               'export npm_config_update_notifier=false',
               'export npm_config_cache=$(mktemp -d)', // https://github.com/aws/aws-cdk/issues/8707#issuecomment-757435414
               'cd $(mktemp -d)',
-              'ls -al /asset-input/',
+              'find /asset-input/',
               'cp -v /asset-input/package*.json .',
               'npm i --only=prod',
               'mkdir -p /asset-output/nodejs/',
               'cp -au node_modules /asset-output/nodejs/',
-            ].join('&&'),
+            ].join(' && '),
           ],
         },
       }),
