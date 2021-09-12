@@ -72,11 +72,11 @@ wf.on({
 });
 wf.addJobs({
   'build-sample': {
-    'runs-on': 'ubuntu-latest',
-    'permissions': {
+    runsOn: 'ubuntu-latest',
+    permissions: {
       contents: 'read',
     },
-    'steps': [
+    steps: [
       { uses: 'actions/checkout@v2' },
       {
         uses: 'actions/setup-node@v1',

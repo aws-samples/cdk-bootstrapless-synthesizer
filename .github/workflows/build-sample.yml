@@ -6,6 +6,7 @@ on:
   workflow_dispatch: {}
 jobs:
   build-sample:
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
