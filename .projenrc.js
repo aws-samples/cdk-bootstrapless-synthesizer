@@ -43,7 +43,7 @@ const project = new JsiiProject({
 const sampleProject = new AwsCdkTypeScriptApp({
   parent: project,
   outdir: 'sample',
-  cdkVersion: '1.122.0',
+  cdkVersion: '1.124.0',
   defaultReleaseBranch: 'main',
   name: 'sample',
   licensed: false,

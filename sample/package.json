@@ -23,7 +23,7 @@
     "@types/node": "^10.17.0",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
-    "aws-cdk": "^1.122.0",
+    "aws-cdk": "^1.124.0",
     "eslint": "^7.32.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -38,12 +38,12 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@aws-cdk/assert": "^1.122.0",
-    "@aws-cdk/aws-apigateway": "^1.122.0",
-    "@aws-cdk/aws-ecr-assets": "^1.122.0",
-    "@aws-cdk/aws-lambda": "^1.122.0",
-    "@aws-cdk/aws-s3": "^1.122.0",
-    "@aws-cdk/core": "^1.122.0",
+    "@aws-cdk/assert": "^1.124.0",
+    "@aws-cdk/aws-apigateway": "^1.124.0",
+    "@aws-cdk/aws-ecr-assets": "^1.124.0",
+    "@aws-cdk/aws-lambda": "^1.124.0",
+    "@aws-cdk/aws-s3": "^1.124.0",
+    "@aws-cdk/core": "^1.124.0",
     "cdk-bootstrapless-synthesizer": "^0.7.10"
   },
   "bundledDependencies": [],
