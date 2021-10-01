@@ -27,6 +27,9 @@ const project = new JsiiProject({
     '@aws-cdk/cx-api',
     '@aws-cdk/core',
   ],
+  devDeps: [
+    'ansi-regex@6.0.1',
+  ],
   publishToPypi: {
     distName: 'cdk-bootstrapless-synthesizer',
     module: 'cdk_bootstrapless_synthesizer',
@@ -59,7 +62,9 @@ const sampleProject = new AwsCdkTypeScriptApp({
     'cdk-bootstrapless-synthesizer',
   ], /* Runtime dependencies of this module. */
   // description: undefined,      /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],                 /* Build dependencies for this module. */
+  devDeps: [
+    'ansi-regex@6.0.1',
+  ], /* Build dependencies for this module. */
   // packageName: undefined,      /* The "name" in package.json. */
   // release: undefined,          /* Add release management to this project. */
 });
