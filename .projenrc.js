@@ -18,14 +18,14 @@ const project = new JsiiProject({
   releaseEveryCommit: true,
   defaultReleaseBranch: 'main',
   deps: [
-    '@aws-cdk/cloud-assembly-schema',
-    '@aws-cdk/cx-api',
-    '@aws-cdk/core',
+    '@aws-cdk/cloud-assembly-schema@1.124.0',
+    '@aws-cdk/cx-api@1.124.0',
+    '@aws-cdk/core@1.124.0',
   ],
   peerDeps: [
-    '@aws-cdk/cloud-assembly-schema',
-    '@aws-cdk/cx-api',
-    '@aws-cdk/core',
+    '@aws-cdk/cloud-assembly-schema@1.124.0',
+    '@aws-cdk/cx-api@1.124.0',
+    '@aws-cdk/core@1.124.0',
   ],
   devDeps: [
     'ansi-regex@6.0.1',
