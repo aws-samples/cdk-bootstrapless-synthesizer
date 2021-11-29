@@ -5,8 +5,15 @@ const project = new JsiiProject({
   author: 'wchaws',
   authorOrganization: true,
   repository: 'https://github.com/aws-samples/cdk-bootstrapless-synthesizer.git',
+  keywords: ['cdk', 'cloudformation', 'aws', 'synthesizer'],
   name: 'cdk-bootstrapless-synthesizer',
   codeCov: true,
+  autoApproveOptions: {
+    secret: 'GITHUB_TOKEN',
+    allowedUsernames: ['dependabot[bot]'],
+  },
+  autoApproveUpgrades: true,
+  depsUpgrade: true,
   gitignore: [
     'cdk.out/',
     '/sample/lib',
@@ -69,7 +76,9 @@ const sampleProject = new AwsCdkTypeScriptApp({
   // release: undefined,          /* Add release management to this project. */
 });
 
-const gh = new github.GitHub(project);
+const gh = new github.GitHub(project, {
+  pullRequestLint: false,
+});
 const wf = gh.addWorkflow('build-sample');
 wf.on({
   pull_request: {},
