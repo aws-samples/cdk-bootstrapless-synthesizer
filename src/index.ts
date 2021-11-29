@@ -209,8 +209,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     const destinations: { [id: string]: cxschema.FileDestination } = {};
 
     if (this.fileAssetRegionSet?.length && bucketName.includes(REGION_PLACEHOLDER)) {
-      for (let region of this.fileAssetRegionSet) {
-        region = region.trim();
+      for (const region of this.fileAssetRegionSet.map(r => r.trim())) {
         if (!region) { continue; }
         destinations[region] = {
           bucketName: replaceAll(bucketName, REGION_PLACEHOLDER, region),
@@ -436,7 +435,7 @@ function stackLocationOrInstrinsics(stack: Stack) {
 // }
 
 
-function assertNotNull<A>(x: A | undefined, msg:string = 'Null value error'): asserts x is NonNullable<A> {
+function assertNotNull<A>(x: A | undefined, msg: string = 'Null value error'): asserts x is NonNullable<A> {
   if (x === null || x === undefined) {
     throw new Error(msg);
   }

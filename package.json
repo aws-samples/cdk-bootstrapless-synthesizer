@@ -6,27 +6,28 @@
     "url": "https://github.com/aws-samples/cdk-bootstrapless-synthesizer.git"
   },
   "scripts": {
-    "clobber": "npx projen clobber",
-    "compile": "npx projen compile",
-    "test:compile": "npx projen test:compile",
-    "test": "npx projen test",
     "build": "npx projen build",
-    "test:watch": "npx projen test:watch",
-    "test:update": "npx projen test:update",
     "bump": "npx projen bump",
-    "unbump": "npx projen unbump",
-    "publish:github": "npx projen publish:github",
-    "upgrade": "npx projen upgrade",
-    "upgrade-projen": "npx projen upgrade-projen",
-    "default": "npx projen default",
-    "watch": "npx projen watch",
-    "package": "npx projen package",
-    "eslint": "npx projen eslint",
+    "clobber": "npx projen clobber",
     "compat": "npx projen compat",
+    "compile": "npx projen compile",
+    "default": "npx projen default",
+    "docgen": "npx projen docgen",
+    "eslint": "npx projen eslint",
+    "package": "npx projen package",
+    "post-compile": "npx projen post-compile",
+    "pre-compile": "npx projen pre-compile",
+    "publish:github": "npx projen publish:github",
     "publish:npm": "npx projen publish:npm",
     "publish:pypi": "npx projen publish:pypi",
-    "docgen": "npx projen docgen",
     "release": "npx projen release",
+    "test": "npx projen test",
+    "test:update": "npx projen test:update",
+    "test:watch": "npx projen test:watch",
+    "unbump": "npx projen unbump",
+    "upgrade": "npx projen upgrade",
+    "upgrade-projen": "npx projen upgrade-projen",
+    "watch": "npx projen watch",
     "projen": "npx projen"
   },
   "author": {
@@ -54,7 +55,7 @@
     "jsii-pacmak": "^1.38.0",
     "json-schema": "^0.3.0",
     "npm-check-updates": "^11",
-    "projen": "^0.28.33",
+    "projen": "^0.34.25",
     "standard-version": "^9",
     "ts-jest": "^27.0.5",
     "typescript": "^3.9.10"
@@ -70,6 +71,12 @@
     "@aws-cdk/cx-api": "1.124.0"
   },
   "bundledDependencies": [],
+  "keywords": [
+    "aws",
+    "cdk",
+    "cloudformation",
+    "synthesizer"
+  ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "version": "0.0.0",
@@ -108,7 +115,7 @@
     "preset": "ts-jest",
     "globals": {
       "ts-jest": {
-        "tsconfig": "tsconfig.jest.json"
+        "tsconfig": "tsconfig.dev.json"
       }
     }
   },
