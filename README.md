@@ -16,32 +16,35 @@ import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
 const app = new cdk.App();
 
 // You can set arguments directly 
-new MyWidgetServiceStack(app, 'MyWidgetServiceStack', {
+new MyStack(app, 'my-stack-dev', {
   synthesizer: new BootstraplessStackSynthesizer({
     templateBucketName: 'cfn-template-bucket',
-    imageAssetRepositoryName: 'ecr-repo-name',
 
     fileAssetBucketName: 'file-asset-bucket-${AWS::Region}',
-    fileAssetRegionSet: ['us-east-1'],
+    fileAssetRegionSet: ['us-west-1', 'us-west-2'],
     fileAssetPrefix: 'file-asset-prefix/latest/',
 
-    imageAssetTag: 'docker-image-tag',
-    imageAssetRegion: 'us-east-1',
+    imageAssetRepositoryName: 'your-ecr-repo-name',
     imageAssetAccountId: '1234567890',
-  })
+    imageAssetTagPrefix: 'latest-',
+    imageAssetRegionSet: ['us-west-1', 'us-west-2'],
+  }),
 });
 
 // Or by environment variables
 // export BSS_TEMPLATE_BUCKET_NAME="cfn-template-bucket"
-// export BSS_IMAGE_ASSET_REPOSITORY_NAME="ecr-repo-name"
+
 // export BSS_FILE_ASSET_BUCKET_NAME="file-asset-bucket-\${AWS::Region}"
-// export BSS_FILE_ASSET_REGION_SET="us-east-1,us-west-1"
+// export BSS_FILE_ASSET_REGION_SET="us-west-1',us-west-2"
 // export BSS_FILE_ASSET_PREFIX="file-asset-prefix/latest/"
-// export BSS_IMAGE_ASSET_TAG="docker-image-tag"
-// export BSS_IMAGE_ASSET_REGION="us-east-1"
+
+// export BSS_IMAGE_ASSET_REPOSITORY_NAME="your-ecr-repo-name"
 // export BSS_IMAGE_ASSET_ACCOUNT_ID="1234567890"
-new MyWidgetServiceStack(app, 'MyWidgetServiceStack', {
-  synthesizer: new BootstraplessStackSynthesizer()
+// export BSS_IMAGE_ASSET_TAG_PREFIX="latest-"
+// export BSS_IMAGE_ASSET_REGION="us-west-1',us-west-2"
+
+new MyStack(app, 'my-stack-dev', {
+  synthesizer: new BootstraplessStackSynthesizer(),
 });
 ```
 
@@ -49,7 +52,7 @@ Synth AWS CloudFormation templates, assets and upload them
 
 ```shell
 $ cdk synth
-$ npx cdk-assets publish -p cdk.out/MyWidgetServiceStack.assets.json -v
+$ npx cdk-assets publish -p cdk.out/my-stack-dev.assets.json -v
 ```
 
 In your template

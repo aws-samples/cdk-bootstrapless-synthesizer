@@ -38,9 +38,9 @@ new BootstraplessStackSynthesizer(props?: BootstraplessStackSynthesizerProps)
   * **fileAssetRegionSet** (<code>Array<string></code>)  The regions set of file assets to be published only when `fileAssetBucketName` contains `${AWS::Region}`. __*Default*__: process.env.BSS_FILE_ASSET_REGION_SET // comma delimited list
   * **imageAssetAccountId** (<code>string</code>)  Override the ECR repository account id of the Docker Image assets. __*Default*__: process.env.BSS_IMAGE_ASSET_ACCOUNT_ID
   * **imageAssetPublishingRoleArn** (<code>string</code>)  The role to use to publish image assets to the ECR repository in this environment. __*Default*__: process.env.BSS_IMAGE_ASSET_PUBLISHING_ROLE_ARN
-  * **imageAssetRegion** (<code>string</code>)  Override the ECR repository region of the Docker Image assets. __*Default*__: process.env.BSS_IMAGE_ASSET_REGION
+  * **imageAssetRegionSet** (<code>Array<string></code>)  Override the ECR repository region of the Docker Image assets. __*Default*__: process.env.BSS_IMAGE_ASSET_REGION_SET // comma delimited list
   * **imageAssetRepositoryName** (<code>string</code>)  Name of the ECR repository to hold Docker Image assets. __*Default*__: process.env.BSS_IMAGE_ASSET_REPOSITORY_NAME
-  * **imageAssetTag** (<code>string</code>)  Override the tag of the Docker Image assets. __*Default*__: process.env.BSS_IMAGE_ASSET_TAG
+  * **imageAssetTagPrefix** (<code>string</code>)  Override the tag of the Docker Image assets. __*Default*__: process.env.BSS_IMAGE_ASSET_TAG_PREFIX
   * **templateBucketName** (<code>string</code>)  Override the name of the S3 bucket to hold Cloudformation template. __*Default*__: process.env.BSS_TEMPLATE_BUCKET_NAME
 
 
@@ -153,9 +153,9 @@ Name | Type | Description
 **fileAssetRegionSet**? | <code>Array<string></code> | The regions set of file assets to be published only when `fileAssetBucketName` contains `${AWS::Region}`.<br/>__*Default*__: process.env.BSS_FILE_ASSET_REGION_SET // comma delimited list
 **imageAssetAccountId**? | <code>string</code> | Override the ECR repository account id of the Docker Image assets.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_ACCOUNT_ID
 **imageAssetPublishingRoleArn**? | <code>string</code> | The role to use to publish image assets to the ECR repository in this environment.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_PUBLISHING_ROLE_ARN
-**imageAssetRegion**? | <code>string</code> | Override the ECR repository region of the Docker Image assets.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_REGION
+**imageAssetRegionSet**? | <code>Array<string></code> | Override the ECR repository region of the Docker Image assets.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_REGION_SET // comma delimited list
 **imageAssetRepositoryName**? | <code>string</code> | Name of the ECR repository to hold Docker Image assets.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_REPOSITORY_NAME
-**imageAssetTag**? | <code>string</code> | Override the tag of the Docker Image assets.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_TAG
+**imageAssetTagPrefix**? | <code>string</code> | Override the tag of the Docker Image assets.<br/>__*Default*__: process.env.BSS_IMAGE_ASSET_TAG_PREFIX
 **templateBucketName**? | <code>string</code> | Override the name of the S3 bucket to hold Cloudformation template.<br/>__*Default*__: process.env.BSS_TEMPLATE_BUCKET_NAME
 
 
