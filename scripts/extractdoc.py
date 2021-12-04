@@ -40,6 +40,8 @@ def renderf(filename, basedir=os.curdir):
             if show:
                 code.append(line.rstrip())
                 continue
+            else:
+                code = []
 
             if re.search(r'^\s*/// !tree', line, re.MULTILINE):
                 body.append(cat(

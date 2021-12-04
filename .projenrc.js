@@ -54,7 +54,8 @@ const project = new JsiiProject({
 const sampleProject = new AwsCdkTypeScriptApp({
   parent: project,
   outdir: 'sample',
-  cdkVersion: '1.125.0',
+  cdkVersion: '1.124.0',
+  cdkVersionPinning: true,
   defaultReleaseBranch: 'main',
   name: 'sample',
   licensed: false,
@@ -67,7 +68,7 @@ const sampleProject = new AwsCdkTypeScriptApp({
     '@aws-cdk/aws-ecr-assets',
   ], /* Which AWS CDK modules (those that start with "@aws-cdk/") this app uses. */
   deps: [
-    'cdk-bootstrapless-synthesizer',
+    'cdk-bootstrapless-synthesizer@^0.9.0',
   ], /* Runtime dependencies of this module. */
   // description: undefined,      /* The description is just a string that helps people understand the purpose of the package. */
   devDeps: [
