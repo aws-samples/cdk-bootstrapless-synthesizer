@@ -31,16 +31,16 @@ new MyStack(app, 'my-stack-dev', {
 });
 
 // Or by environment variables
-// export BSS_TEMPLATE_BUCKET_NAME="cfn-template-bucket"
+env.BSS_TEMPLATE_BUCKET_NAME = "cfn-template-bucket"
 
-// export BSS_FILE_ASSET_BUCKET_NAME="file-asset-bucket-\${AWS::Region}"
-// export BSS_FILE_ASSET_REGION_SET="us-west-1',us-west-2"
-// export BSS_FILE_ASSET_PREFIX="file-asset-prefix/latest/"
+env.BSS_FILE_ASSET_BUCKET_NAME = "file-asset-bucket-\${AWS::Region}"
+env.BSS_FILE_ASSET_REGION_SET = "us-west-1',us-west-2"
+env.BSS_FILE_ASSET_PREFIX = "file-asset-prefix/latest/"
 
-// export BSS_IMAGE_ASSET_REPOSITORY_NAME="your-ecr-repo-name"
-// export BSS_IMAGE_ASSET_ACCOUNT_ID="1234567890"
-// export BSS_IMAGE_ASSET_TAG_PREFIX="latest-"
-// export BSS_IMAGE_ASSET_REGION="us-west-1',us-west-2"
+env.BSS_IMAGE_ASSET_REPOSITORY_NAME = "your-ecr-repo-name"
+env.BSS_IMAGE_ASSET_ACCOUNT_ID = "1234567890"
+env.BSS_IMAGE_ASSET_TAG_PREFIX = "latest-"
+env.BSS_IMAGE_ASSET_REGION = "us-west-1',us-west-2"
 
 new MyStack(app, 'my-stack-dev2', {
   synthesizer: new BootstraplessStackSynthesizer(),

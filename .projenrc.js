@@ -54,20 +54,21 @@ const project = new JsiiProject({
 const sampleProject = new AwsCdkTypeScriptApp({
   parent: project,
   outdir: 'sample',
-  cdkVersion: '1.125.0',
+  cdkVersion: '1.124.0',
+  cdkVersionPinning: true,
   defaultReleaseBranch: 'main',
   name: 'sample',
   licensed: false,
   github: false,
 
   cdkDependencies: [
-    '@aws-cdk/aws-s3',
-    '@aws-cdk/aws-lambda',
-    '@aws-cdk/aws-apigateway',
-    '@aws-cdk/aws-ecr-assets',
+    '@aws-cdk/aws-s3@1.124.0',
+    '@aws-cdk/aws-lambda@1.124.0',
+    '@aws-cdk/aws-apigateway@1.124.0',
+    '@aws-cdk/aws-ecr-assets@1.124.0',
   ], /* Which AWS CDK modules (those that start with "@aws-cdk/") this app uses. */
   deps: [
-    'cdk-bootstrapless-synthesizer',
+    'cdk-bootstrapless-synthesizer@^0.9.0',
   ], /* Runtime dependencies of this module. */
   // description: undefined,      /* The description is just a string that helps people understand the purpose of the package. */
   devDeps: [
