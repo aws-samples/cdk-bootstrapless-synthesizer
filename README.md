@@ -5,17 +5,17 @@
 [![npm](https://img.shields.io/npm/dw/cdk-bootstrapless-synthesizer?label=npm%20downloads)](https://www.npmjs.com/package/cdk-bootstrapless-synthesizer)
 [![PyPI - Downloads](https://img.shields.io/pypi/dw/cdk-bootstrapless-synthesizer?label=pypi%20downloads)](https://pypi.org/project/cdk-bootstrapless-synthesizer)
 
-A bootstrapless stack synthesizer that is designated to generate templates that can be directly used by AWS CloudFormation
+A bootstrapless stack synthesizer that is designated to generate templates that can be directly used by AWS CloudFormation.
 
 ## Usage
-
 ```ts
 import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
+```
+<small>[main.ts](sample/src/main.ts)</small>
+```ts
+import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
+const app = new App();
 
-// ...
-const app = new cdk.App();
-
-// You can set arguments directly 
 new MyStack(app, 'my-stack-dev', {
   synthesizer: new BootstraplessStackSynthesizer({
     templateBucketName: 'cfn-template-bucket',
@@ -43,10 +43,11 @@ new MyStack(app, 'my-stack-dev', {
 // export BSS_IMAGE_ASSET_TAG_PREFIX="latest-"
 // export BSS_IMAGE_ASSET_REGION="us-west-1',us-west-2"
 
-new MyStack(app, 'my-stack-dev', {
+new MyStack(app, 'my-stack-dev2', {
   synthesizer: new BootstraplessStackSynthesizer(),
 });
 ```
+<small>[main.ts](sample/src/main.ts)</small>
 
 Synth AWS CloudFormation templates, assets and upload them
 
@@ -54,27 +55,6 @@ Synth AWS CloudFormation templates, assets and upload them
 $ cdk synth
 $ npx cdk-assets publish -p cdk.out/my-stack-dev.assets.json -v
 ```
-
-In your template
-
-```json
-{
-  // ...
-  "MyLayer38944FA5": {
-    "Type": "AWS::Lambda::LayerVersion",
-    "Properties": {
-      "Content": {
-        "S3Bucket": {
-          "Fn::Sub": "file-asset-bucket-${AWS::Region}"
-        },
-        "S3Key": "file-asset-prefix/latest/8104f93f351dd2d4e69b0ab2ebe9ccff2309a573660bd75ca920ffd1808522e0.zip"
-      }
-    }
-  }
-  // ...
-}
-```
-
 ## Sample Project
 
 See [Sample Project](./sample/README.md)

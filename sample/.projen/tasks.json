@@ -184,7 +184,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser ansi-regex aws-cdk eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import jest jest-junit json-schema npm-check-updates ts-jest ts-node typescript @aws-cdk/assert @aws-cdk/aws-apigateway @aws-cdk/aws-ecr-assets @aws-cdk/aws-lambda @aws-cdk/aws-s3 @aws-cdk/core cdk-bootstrapless-synthesizer"
+          "exec": "yarn upgrade @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser ansi-regex aws-cdk eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit json-schema npm-check-updates ts-jest ts-node typescript @aws-cdk/assert @aws-cdk/aws-apigateway @aws-cdk/aws-ecr-assets @aws-cdk/aws-lambda @aws-cdk/aws-s3 @aws-cdk/core cdk-bootstrapless-synthesizer"
         },
         {
           "exec": "npx projen"

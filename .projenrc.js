@@ -21,6 +21,7 @@ const project = new JsiiProject({
   ],
   npmignore: [
     'sample/',
+    'scripts/',
   ],
   releaseEveryCommit: true,
   defaultReleaseBranch: 'main',
@@ -53,7 +54,7 @@ const project = new JsiiProject({
 const sampleProject = new AwsCdkTypeScriptApp({
   parent: project,
   outdir: 'sample',
-  cdkVersion: '1.124.0',
+  cdkVersion: '1.125.0',
   defaultReleaseBranch: 'main',
   name: 'sample',
   licensed: false,
@@ -107,5 +108,10 @@ wf.addJobs({
 project.package.addField('resolutions', {
   'trim-newlines': '3.0.1',
 });
+
+
+const readme = project.addTask('readme');
+readme.exec('./scripts/extractdoc.py "sample/src/*.ts" README.md');
+project.postCompileTask.spawn(readme);
 
 project.synth();
