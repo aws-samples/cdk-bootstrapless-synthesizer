@@ -62,10 +62,10 @@ const sampleProject = new AwsCdkTypeScriptApp({
   github: false,
 
   cdkDependencies: [
-    '@aws-cdk/aws-s3@1.124.0',
-    '@aws-cdk/aws-lambda@1.124.0',
-    '@aws-cdk/aws-apigateway@1.124.0',
-    '@aws-cdk/aws-ecr-assets@1.124.0',
+    '@aws-cdk/aws-s3',
+    '@aws-cdk/aws-lambda',
+    '@aws-cdk/aws-apigateway',
+    '@aws-cdk/aws-ecr-assets',
   ], /* Which AWS CDK modules (those that start with "@aws-cdk/") this app uses. */
   deps: [
     'cdk-bootstrapless-synthesizer@^0.9.0',
