@@ -13,7 +13,6 @@ import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
 ```
 <small>[main.ts](sample/src/main.ts)</small>
 ```ts
-import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
 const app = new App();
 
 new MyStack(app, 'my-stack-dev', {
