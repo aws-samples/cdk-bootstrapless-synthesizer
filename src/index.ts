@@ -93,16 +93,19 @@ export interface BootstraplessStackSynthesizerProps {
   /**
    * Override the tag of the Docker Image assets
    *
-   * @default - process.env.BSS_IMAGE_ASSET_TAG
+   * @default - process.env.BSS_IMAGE_ASSET_TAG_PREFIX
    */
-  readonly imageAssetTag?: string;
+  readonly imageAssetTagPrefix?: string;
 
   /**
    * Override the ECR repository region of the Docker Image assets
    *
-   * @default - process.env.BSS_IMAGE_ASSET_REGION
+   * For examples:
+   * `['us-east-1', 'us-west-1']`
+   *
+   * @default - process.env.BSS_IMAGE_ASSET_REGION_SET // comma delimited list
    */
-  readonly imageAssetRegion?: string;
+  readonly imageAssetRegionSet?: string[];
 
   /**
    * Override the ECR repository account id of the Docker Image assets
@@ -125,8 +128,8 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
   private fileAssetPrefix?: string;
   private fileAssetRegionSet?: string[];
   private templateBucketName?: string;
-  private imageAssetTag?: string;
-  private imageAssetRegion?: string;
+  private imageAssetTagPrefix?: string;
+  private imageAssetRegionSet?: string[];
   private imageAssetAccountId?: string;
 
 
@@ -146,8 +149,8 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
       BSS_FILE_ASSET_REGION_SET,
 
       BSS_TEMPLATE_BUCKET_NAME,
-      BSS_IMAGE_ASSET_TAG,
-      BSS_IMAGE_ASSET_REGION,
+      BSS_IMAGE_ASSET_TAG_PREFIX,
+      BSS_IMAGE_ASSET_REGION_SET,
       BSS_IMAGE_ASSET_ACCOUNT_ID,
     } = process.env;
     this.bucketName = props.fileAssetBucketName ?? BSS_FILE_ASSET_BUCKET_NAME;
@@ -155,13 +158,11 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     this.fileAssetPublishingRoleArn = props.fileAssetPublishingRoleArn ?? BSS_FILE_ASSET_PUBLISHING_ROLE_ARN;
     this.imageAssetPublishingRoleArn = props.imageAssetPublishingRoleArn ?? BSS_IMAGE_ASSET_PUBLISHING_ROLE_ARN;
     this.fileAssetPrefix = props.fileAssetPrefix ?? BSS_FILE_ASSET_PREFIX;
-    this.fileAssetRegionSet = props.fileAssetRegionSet ?? (BSS_FILE_ASSET_REGION_SET ? BSS_FILE_ASSET_REGION_SET.split(',') : undefined);
+    this.fileAssetRegionSet = props.fileAssetRegionSet ?? commaSplit(BSS_FILE_ASSET_REGION_SET);
     this.templateBucketName = props.templateBucketName ?? BSS_TEMPLATE_BUCKET_NAME;
-    this.imageAssetTag = props.imageAssetTag ?? BSS_IMAGE_ASSET_TAG;
-    this.imageAssetRegion = props.imageAssetRegion ?? BSS_IMAGE_ASSET_REGION;
+    this.imageAssetTagPrefix = (props.imageAssetTagPrefix ?? BSS_IMAGE_ASSET_TAG_PREFIX) ?? '';
+    this.imageAssetRegionSet = props.imageAssetRegionSet ?? commaSplit(BSS_IMAGE_ASSET_REGION_SET);
     this.imageAssetAccountId = props.imageAssetAccountId ?? BSS_IMAGE_ASSET_ACCOUNT_ID;
-
-    this.imageAssetRegion = this.imageAssetRegion?.trim();
   }
 
   public bind(stack: Stack): void {
@@ -203,6 +204,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
   private _addFileAsset(asset: FileAssetSource, overrideBucketname?: string): FileAssetLocation {
     assertNotNull(this.stack, ERR_MSG_CALL_BIND_FIRST);
     assertNotNull(this.bucketName, 'The bucketName is null');
+    validateFileAssetSource(asset);
 
     const bucketName = overrideBucketname ?? this.bucketName;
     const objectKey = this.fileAssetPrefix + asset.sourceHash + (asset.packaging === FileAssetPackaging.ZIP_DIRECTORY ? '.zip' : '');
@@ -253,8 +255,29 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
   public addDockerImageAsset(asset: DockerImageAssetSource): DockerImageAssetLocation {
     assertNotNull(this.stack, ERR_MSG_CALL_BIND_FIRST);
     assertNotNull(this.repositoryName, 'The repositoryName is null');
+    validateDockerImageAssetSource(asset);
 
-    const imageTag = this.imageAssetTag ?? asset.sourceHash;
+    const imageTag = this.imageAssetTagPrefix + asset.sourceHash;
+    const destinations: { [id: string]: cxschema.DockerImageDestination } = {};
+
+    if (this.imageAssetRegionSet?.length) {
+      for (const region of this.imageAssetRegionSet.map(r => r.trim())) {
+        if (!region) { continue; }
+        destinations[region] = {
+          repositoryName: this.repositoryName,
+          imageTag,
+          region,
+          assumeRoleArn: this.fileAssetPublishingRoleArn,
+        };
+      }
+    } else {
+      destinations[this.manifestEnvName] = {
+        repositoryName: this.repositoryName,
+        imageTag,
+        region: resolvedOr(this.stack.region, undefined),
+        assumeRoleArn: this.imageAssetPublishingRoleArn,
+      };
+    }
 
     // Add to manifest
     this.dockerImages[asset.sourceHash] = {
@@ -264,24 +287,15 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
         dockerBuildTarget: asset.dockerBuildTarget,
         dockerFile: asset.dockerFile,
       },
-      destinations: {
-        [this.manifestEnvName]: {
-          repositoryName: this.repositoryName,
-          imageTag,
-          region: this.imageAssetRegion ?? resolvedOr(this.stack.region, undefined),
-          assumeRoleArn: this.imageAssetPublishingRoleArn,
-        },
-      },
+      destinations,
     };
 
-    let { account, region, urlSuffix } = stackLocationOrInstrinsics(this.stack);
-    region = this.imageAssetRegion ?? region;
+    let { account, urlSuffix } = stackLocationOrInstrinsics(this.stack);
     account = this.imageAssetAccountId ?? account;
 
-    // Return CFN expression
     return {
       repositoryName: cfnify(this.repositoryName),
-      imageUri: cfnify(`${account}.dkr.ecr.${region}.${urlSuffix}/${this.repositoryName}:${imageTag}`),
+      imageUri: cfnify(`${account}.dkr.ecr.${REGION_PLACEHOLDER}.${urlSuffix}/${this.repositoryName}:${imageTag}`),
     };
   }
 
@@ -438,5 +452,38 @@ function stackLocationOrInstrinsics(stack: Stack) {
 function assertNotNull<A>(x: A | undefined, msg: string = 'Null value error'): asserts x is NonNullable<A> {
   if (x === null || x === undefined) {
     throw new Error(msg);
+  }
+}
+
+function commaSplit(v?: string): string[] | undefined {
+  if (v) {
+    return v.split(',');
+  }
+  return undefined;
+}
+
+function validateFileAssetSource(asset: FileAssetSource) {
+  if (!!asset.executable === !!asset.fileName) {
+    throw new Error(`Exactly one of 'fileName' or 'executable' is required, got: ${JSON.stringify(asset)}`);
+  }
+
+  if (!!asset.packaging !== !!asset.fileName) {
+    throw new Error(`'packaging' is expected in combination with 'fileName', got: ${JSON.stringify(asset)}`);
+  }
+}
+
+function validateDockerImageAssetSource(asset: DockerImageAssetSource) {
+  if (!!asset.executable === !!asset.directoryName) {
+    throw new Error(`Exactly one of 'directoryName' or 'executable' is required, got: ${JSON.stringify(asset)}`);
+  }
+
+  check('dockerBuildArgs');
+  check('dockerBuildTarget');
+  check('dockerFile');
+
+  function check<K extends keyof DockerImageAssetSource>(key: K) {
+    if (asset[key] && !asset.directoryName) {
+      throw new Error(`'${key}' is only allowed in combination with 'directoryName', got: ${JSON.stringify(asset)}`);
+    }
   }
 }

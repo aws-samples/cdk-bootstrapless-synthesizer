@@ -12,8 +12,8 @@ beforeEach(() => {
   delete process.env.BSS_FILE_ASSET_PREFIX;
   delete process.env.BSS_FILE_ASSET_REGION_SET;
   delete process.env.BSS_TEMPLATE_BUCKET_NAME;
-  delete process.env.BSS_IMAGE_ASSET_TAG;
-  delete process.env.BSS_IMAGE_ASSET_REGION;
+  delete process.env.BSS_IMAGE_ASSET_TAG_PREFIX;
+  delete process.env.BSS_IMAGE_ASSET_REGION_SET;
   delete process.env.BSS_IMAGE_ASSET_ACCOUNT_ID;
 });
 
@@ -238,9 +238,9 @@ test.each([
 
 
 test.each([
-  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetTag: 'latest' }),
-  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_TAG: 'latest' }),
-])('#%# addDockerImageAsset when imageAssetsTag is specified', (mksynthzerFn) => {
+  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetTagPrefix: 'latest-' }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_TAG_PREFIX: 'latest-' }),
+])('#%# addDockerImageAsset when imageAssetTagPrefix is specified', (mksynthzerFn) => {
   const stack = new Stack();
   const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
@@ -256,7 +256,7 @@ test.each([
   expect(json.dockerImages.abcdef.destinations).toEqual({
     'current_account-current_region': {
       repositoryName: 'the-repo',
-      imageTag: 'latest',
+      imageTag: 'latest-abcdef',
     },
   });
   expect(json.files).toEqual({});
@@ -264,9 +264,9 @@ test.each([
 
 
 test.each([
-  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetRegion: 'us-west-1' }),
-  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_REGION: 'us-west-1' }),
-])('#%# addDockerImageAsset when imageAssetsRegion is specified', (mksynthzerFn) => {
+  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetRegionSet: ['us-west-1'] }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_REGION_SET: 'us-west-1' }),
+])('#%# addDockerImageAsset when imageAssetsRegionSet is specified', (mksynthzerFn) => {
   const stack = new Stack();
   const synthesizer = mksynthzerFn();
   synthesizer.bind(stack);
@@ -277,13 +277,13 @@ test.each([
   const json = JSON.parse(synthesizer.dumps());
 
   expect(stack.resolve(location.imageUri)).toEqual({
-    'Fn::Sub': '${AWS::AccountId}.dkr.ecr.us-west-1.${AWS::URLSuffix}/the-repo:abcdef',
+    'Fn::Sub': '${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/the-repo:abcdef',
   });
   expect(json.dockerImages.abcdef.source).toEqual({
     directory: __dirname,
   });
   expect(json.dockerImages.abcdef.destinations).toEqual({
-    'current_account-current_region': {
+    'us-west-1': {
       repositoryName: 'the-repo',
       imageTag: 'abcdef',
       region: 'us-west-1',

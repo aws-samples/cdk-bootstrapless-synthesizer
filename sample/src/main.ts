@@ -54,12 +54,13 @@ new MyStack(app, 'my-stack-dev', {
     templateBucketName: 'cfn-template-bucket',
 
     fileAssetBucketName: 'file-asset-bucket-${AWS::Region}',
-    fileAssetRegionSet: ['us-east-1', 'us-west-1'],
+    fileAssetRegionSet: ['us-west-1', 'us-west-2'],
     fileAssetPrefix: 'file-asset-prefix/latest/',
 
     imageAssetRepositoryName: 'your-ecr-repo-name',
     imageAssetAccountId: '1234567890',
-    imageAssetTag: 'latest',
+    imageAssetTagPrefix: 'latest-',
+    imageAssetRegionSet: ['us-west-1', 'us-west-2'],
   }),
 });
 
