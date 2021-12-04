@@ -132,6 +132,9 @@
       "steps": [
         {
           "spawn": "docgen"
+        },
+        {
+          "spawn": "readme"
         }
       ]
     },
@@ -179,6 +182,14 @@
       "steps": [
         {
           "exec": "npx -p jsii-release@latest jsii-release-pypi"
+        }
+      ]
+    },
+    "readme": {
+      "name": "readme",
+      "steps": [
+        {
+          "exec": "./scripts/extractdoc.py \"sample/src/*.ts\" README.md"
         }
       ]
     },
@@ -277,7 +288,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @aws-cdk/cloud-assembly-schema @aws-cdk/core @aws-cdk/cx-api @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser ansi-regex eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import jest jest-junit jsii jsii-diff jsii-docgen jsii-pacmak json-schema npm-check-updates standard-version ts-jest typescript @aws-cdk/cloud-assembly-schema @aws-cdk/core @aws-cdk/cx-api @aws-cdk/cloud-assembly-schema @aws-cdk/core @aws-cdk/cx-api"
+          "exec": "yarn upgrade @aws-cdk/cloud-assembly-schema @aws-cdk/core @aws-cdk/cx-api @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser ansi-regex eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii jsii-diff jsii-docgen jsii-pacmak json-schema npm-check-updates standard-version ts-jest typescript @aws-cdk/cloud-assembly-schema @aws-cdk/core @aws-cdk/cx-api @aws-cdk/cloud-assembly-schema @aws-cdk/core @aws-cdk/cx-api"
         },
         {
           "exec": "npx projen"
