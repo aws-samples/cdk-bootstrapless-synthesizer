@@ -25,6 +25,7 @@ const project = new JsiiProject({
   ],
   releaseEveryCommit: true,
   defaultReleaseBranch: 'main',
+  majorVersion: 2,
   deps: [
     '@aws-cdk/cloud-assembly-schema@1.124.0',
     '@aws-cdk/cx-api@1.124.0',
