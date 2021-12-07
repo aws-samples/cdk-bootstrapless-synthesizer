@@ -1,21 +1,6 @@
 {
   "dependencies": [
     {
-      "name": "@aws-cdk/cloud-assembly-schema",
-      "version": "1.124.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/core",
-      "version": "1.124.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/cx-api",
-      "version": "1.124.0",
-      "type": "build"
-    },
-    {
       "name": "@types/jest",
       "type": "build"
     },
@@ -37,6 +22,16 @@
     {
       "name": "ansi-regex",
       "version": "6.0.1",
+      "type": "build"
+    },
+    {
+      "name": "aws-cdk-lib",
+      "version": "2.0.0",
+      "type": "build"
+    },
+    {
+      "name": "constructs",
+      "version": "10.0.5",
       "type": "build"
     },
     {
@@ -108,33 +103,18 @@
       "type": "build"
     },
     {
-      "name": "@aws-cdk/cloud-assembly-schema",
-      "version": "1.124.0",
+      "name": "aws-cdk-lib",
+      "version": "2.0.0",
       "type": "peer"
     },
     {
-      "name": "@aws-cdk/core",
-      "version": "1.124.0",
+      "name": "constructs",
+      "version": "^10.0.5",
       "type": "peer"
     },
     {
-      "name": "@aws-cdk/cx-api",
-      "version": "1.124.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/cloud-assembly-schema",
-      "version": "1.124.0",
-      "type": "runtime"
-    },
-    {
-      "name": "@aws-cdk/core",
-      "version": "1.124.0",
-      "type": "runtime"
-    },
-    {
-      "name": "@aws-cdk/cx-api",
-      "version": "1.124.0",
+      "name": "aws-cdk-lib",
+      "version": "2.0.0",
       "type": "runtime"
     }
   ],
