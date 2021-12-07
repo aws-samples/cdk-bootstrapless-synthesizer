@@ -93,7 +93,7 @@ wf.addJobs({
       {
         uses: 'actions/setup-node@v1',
         with: {
-          'node-version': '12',
+          'node-version': '14',
         },
       },
       { run: 'cd sample && yarn && yarn test' },
