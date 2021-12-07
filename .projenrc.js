@@ -1,7 +1,7 @@
-const { JsiiProject, AwsCdkTypeScriptApp, github } = require('projen');
+const { awscdk, github, cdk } = require('projen');
 
-const project = new JsiiProject({
-  description: 'Generate directly usable AWS CloudFormation template.',
+const project = new cdk.JsiiProject({
+  description: 'Generate directly usable AWS CloudFormation template with aws-cdk v2.',
   author: 'wchaws',
   authorOrganization: true,
   repository: 'https://github.com/aws-samples/cdk-bootstrapless-synthesizer.git',
@@ -50,24 +50,21 @@ const project = new JsiiProject({
   minNodeVersion: '14.17.0',
 });
 
-const sampleProject = new AwsCdkTypeScriptApp({
+const sampleProject = new awscdk.AwsCdkTypeScriptApp({
   parent: project,
   outdir: 'sample',
-  cdkVersion: '1.124.0',
+  cdkVersion: '2.0.0',
   cdkVersionPinning: true,
   defaultReleaseBranch: 'main',
   name: 'sample',
   licensed: false,
   github: false,
-
-  cdkDependencies: [
-    '@aws-cdk/aws-s3',
-    '@aws-cdk/aws-lambda',
-    '@aws-cdk/aws-apigateway',
-    '@aws-cdk/aws-ecr-assets',
-  ], /* Which AWS CDK modules (those that start with "@aws-cdk/") this app uses. */
+  featureFlags: false,
+  cdkDependencies: [],
   deps: [
-    'cdk-bootstrapless-synthesizer@^0.9.0',
+    'aws-cdk-lib@2.0.0',
+    'cdk-bootstrapless-synthesizer@^2.0.0',
+    'constructs@^10.0.5',
   ], /* Runtime dependencies of this module. */
   // description: undefined,      /* The description is just a string that helps people understand the purpose of the package. */
   devDeps: [
@@ -96,7 +93,7 @@ wf.addJobs({
       {
         uses: 'actions/setup-node@v1',
         with: {
-          'node-version': '12',
+          'node-version': '14',
         },
       },
       { run: 'cd sample && yarn && yarn test' },

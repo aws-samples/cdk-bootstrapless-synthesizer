@@ -1,6 +1,6 @@
 {
   "name": "cdk-bootstrapless-synthesizer",
-  "description": "Generate directly usable AWS CloudFormation template.",
+  "description": "Generate directly usable AWS CloudFormation template with aws-cdk v2.",
   "repository": {
     "type": "git",
     "url": "https://github.com/aws-samples/cdk-bootstrapless-synthesizer.git"
@@ -55,7 +55,7 @@
     "jsii-pacmak": "^1.46.0",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^11",
-    "projen": "^0.36.6",
+    "projen": "^0.37.4",
     "standard-version": "^9",
     "ts-jest": "^27.1.0",
     "typescript": "^4.5.2"

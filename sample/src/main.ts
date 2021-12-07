@@ -10,9 +10,10 @@
 /// !! ## Usage
 
 import * as path from 'path';
-import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { App, CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
+import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { App, CfnOutput, Stack, StackProps } from 'aws-cdk-lib/core';
+import { Construct } from 'constructs';
 
 /// !show
 import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
