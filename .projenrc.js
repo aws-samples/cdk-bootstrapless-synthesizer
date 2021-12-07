@@ -25,6 +25,7 @@ const project = new JsiiProject({
   ],
   releaseEveryCommit: true,
   defaultReleaseBranch: 'main',
+  majorVersion: 2,
   deps: [
     'aws-cdk-lib@2.0.0',
   ],
