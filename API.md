@@ -220,7 +220,7 @@ public addDockerImageAsset(asset: DockerImageAssetSource)
 
 ###### `asset`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.BootstraplessStackSynthesizer.parameter.asset" id="cdkbootstraplesssynthesizerbootstraplessstacksynthesizerparameterasset"></a>
 
-- *Type:* [`@aws-cdk/core.DockerImageAssetSource`](#@aws-cdk/core.DockerImageAssetSource)
+- *Type:* [`aws-cdk-lib.DockerImageAssetSource`](#aws-cdk-lib.DockerImageAssetSource)
 
 ---
 
@@ -232,7 +232,7 @@ public addFileAsset(asset: FileAssetSource)
 
 ###### `asset`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.BootstraplessStackSynthesizer.parameter.asset" id="cdkbootstraplesssynthesizerbootstraplessstacksynthesizerparameterasset"></a>
 
-- *Type:* [`@aws-cdk/core.FileAssetSource`](#@aws-cdk/core.FileAssetSource)
+- *Type:* [`aws-cdk-lib.FileAssetSource`](#aws-cdk-lib.FileAssetSource)
 
 ---
 
@@ -244,7 +244,7 @@ public bind(stack: Stack)
 
 ###### `stack`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.BootstraplessStackSynthesizer.parameter.stack" id="cdkbootstraplesssynthesizerbootstraplessstacksynthesizerparameterstack"></a>
 
-- *Type:* [`@aws-cdk/core.Stack`](#@aws-cdk/core.Stack)
+- *Type:* [`aws-cdk-lib.Stack`](#aws-cdk-lib.Stack)
 
 ---
 
@@ -262,7 +262,7 @@ public synthesize(session: ISynthesisSession)
 
 ###### `session`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.BootstraplessStackSynthesizer.parameter.session" id="cdkbootstraplesssynthesizerbootstraplessstacksynthesizerparametersession"></a>
 
-- *Type:* [`@aws-cdk/core.ISynthesisSession`](#@aws-cdk/core.ISynthesisSession)
+- *Type:* [`aws-cdk-lib.ISynthesisSession`](#aws-cdk-lib.ISynthesisSession)
 
 ---
 

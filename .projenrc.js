@@ -26,14 +26,11 @@ const project = new JsiiProject({
   releaseEveryCommit: true,
   defaultReleaseBranch: 'main',
   deps: [
-    '@aws-cdk/cloud-assembly-schema@1.124.0',
-    '@aws-cdk/cx-api@1.124.0',
-    '@aws-cdk/core@1.124.0',
+    'aws-cdk-lib@2.0.0',
   ],
   peerDeps: [
-    '@aws-cdk/cloud-assembly-schema@1.124.0',
-    '@aws-cdk/cx-api@1.124.0',
-    '@aws-cdk/core@1.124.0',
+    'aws-cdk-lib@2.0.0',
+    'constructs@^10.0.5',
   ],
   devDeps: [
     'ansi-regex@6.0.1',
@@ -49,6 +46,7 @@ const project = new JsiiProject({
       ],
     },
   },
+  minNodeVersion: '14.17.0',
 });
 
 const sampleProject = new AwsCdkTypeScriptApp({
