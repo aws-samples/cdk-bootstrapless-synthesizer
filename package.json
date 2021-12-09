@@ -22,6 +22,7 @@
     "publish:pypi": "npx projen publish:pypi",
     "readme": "npx projen readme",
     "release": "npx projen release",
+    "release:v1-main": "npx projen release:v1-main",
     "test": "npx projen test",
     "test:update": "npx projen test:update",
     "test:watch": "npx projen test:watch",

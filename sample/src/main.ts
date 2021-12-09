@@ -7,6 +7,8 @@
 /// !!
 /// !! A bootstrapless stack synthesizer that is designated to generate templates that can be directly used by AWS CloudFormation.
 /// !!
+/// !! Please use ^1.0.0 for cdk version 1.x.x, use ^2.0.0 for cdk version 2.x.x
+/// !!
 /// !! ## Usage
 
 import * as path from 'path';
