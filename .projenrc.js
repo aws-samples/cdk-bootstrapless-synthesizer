@@ -26,6 +26,11 @@ const project = new cdk.JsiiProject({
   releaseEveryCommit: true,
   defaultReleaseBranch: 'main',
   majorVersion: 2,
+  releaseBranches: {
+    'v1-main': {
+      majorVersion: 1,
+    },
+  },
   deps: [
     'aws-cdk-lib@2.0.0',
   ],
