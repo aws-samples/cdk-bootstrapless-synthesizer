@@ -43,7 +43,7 @@
   "dependencies": {
     "@aws-cdk/assert": "2.0.0",
     "aws-cdk-lib": "2.0.0",
-    "cdk-bootstrapless-synthesizer": "^2.0.0",
+    "cdk-bootstrapless-synthesizer": "^2",
     "constructs": "^10.0.5"
   },
   "bundledDependencies": [],

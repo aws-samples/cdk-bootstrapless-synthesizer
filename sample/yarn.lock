@@ -1526,10 +1526,10 @@ cdk-assets@2.0.0:
     mime "^2.6.0"
     yargs "^16.2.0"
 
-cdk-bootstrapless-synthesizer@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/cdk-bootstrapless-synthesizer/-/cdk-bootstrapless-synthesizer-2.0.0.tgz#035199ce2f830dfe7ff7fd91a7417dc8675d206a"
-  integrity sha512-6nQy2GUMqBIP8fJkQ+85qDOJnY7Nu5oZVJQ5QtNxxIam7QdoZXYydY0VZ3oLvY5KNtS2VgWDXj/HtpSwi9rCGA==
+cdk-bootstrapless-synthesizer@^2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/cdk-bootstrapless-synthesizer/-/cdk-bootstrapless-synthesizer-2.0.2.tgz#bacb7bab2c1df0e7397ee857c1f4ee4e12c7e1f5"
+  integrity sha512-IvxkFWyMy13pX+hNMBurvwAiyELDERhakDJe7kFyHPc0QIGjjo1lEeKyAQr5WwMoQdjrXvs2oHbhUH3P0s1xcw==
   dependencies:
     aws-cdk-lib "2.0.0"
 

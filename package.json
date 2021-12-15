@@ -62,11 +62,11 @@
     "typescript": "^4.5.2"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "2.0.0",
+    "aws-cdk-lib": "^2",
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "aws-cdk-lib": "2.0.0"
+    "aws-cdk-lib": "2"
   },
   "bundledDependencies": [],
   "keywords": [
