@@ -2,6 +2,7 @@
   "name": "sample",
   "scripts": {
     "build": "npx projen build",
+    "bundle": "npx projen bundle",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
     "default": "npx projen default",
@@ -18,15 +19,17 @@
     "test:watch": "npx projen test:watch",
     "upgrade": "npx projen upgrade",
     "upgrade-projen": "npx projen upgrade-projen",
+    "watch": "npx projen watch",
     "projen": "npx projen"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
-    "@types/node": "^14.17.0",
+    "@types/node": "^12",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "ansi-regex": "6.0.1",
-    "aws-cdk": "2.0.0",
+    "aws-cdk": "^2.3.0",
+    "esbuild": "^0.14.8",
     "eslint": "^8",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -34,15 +37,14 @@
     "jest": "^27.1.1",
     "jest-junit": "^13",
     "json-schema": "^0.4.0",
-    "npm-check-updates": "^11",
+    "npm-check-updates": "^12",
     "projen": "^0.37.4",
     "ts-jest": "^27.0.5",
     "ts-node": "^9",
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@aws-cdk/assert": "2.0.0",
-    "aws-cdk-lib": "2.0.0",
+    "aws-cdk-lib": "^2.3.0",
     "cdk-bootstrapless-synthesizer": "^2",
     "constructs": "^10.0.5"
   },
