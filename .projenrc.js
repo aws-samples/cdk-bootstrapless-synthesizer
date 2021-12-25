@@ -32,7 +32,8 @@ const project = new cdk.JsiiProject({
     },
   },
   deps: [
-    'aws-cdk-lib@2',
+    'aws-cdk-lib@^2',
+    'constructs@^10.0.5',
   ],
   peerDeps: [
     'aws-cdk-lib@^2',
@@ -58,14 +59,13 @@ const project = new cdk.JsiiProject({
 const sampleProject = new awscdk.AwsCdkTypeScriptApp({
   parent: project,
   outdir: 'sample',
-  cdkVersion: '2.0.0',
-  cdkVersionPinning: true,
+  cdkVersion: '2.3.0',
+  cdkVersionPinning: false,
   defaultReleaseBranch: 'main',
   name: 'sample',
   licensed: false,
   github: false,
   featureFlags: false,
-  cdkDependencies: [],
   deps: [
     'cdk-bootstrapless-synthesizer@^2',
     'constructs@^10.0.5',
