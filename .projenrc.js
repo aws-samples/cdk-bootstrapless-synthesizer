@@ -33,6 +33,7 @@ const project = new cdk.JsiiProject({
   },
   deps: [
     'aws-cdk-lib@^2',
+    'constructs@^10.0.5',
   ],
   peerDeps: [
     'aws-cdk-lib@^2',

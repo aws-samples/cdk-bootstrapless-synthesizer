@@ -39,7 +39,6 @@
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "ansi-regex": "6.0.1",
-    "constructs": "10.0.5",
     "eslint": "^8",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.5.0",
@@ -62,7 +61,8 @@
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "aws-cdk-lib": "^2"
+    "aws-cdk-lib": "^2",
+    "constructs": "^10.0.5"
   },
   "bundledDependencies": [],
   "keywords": [
