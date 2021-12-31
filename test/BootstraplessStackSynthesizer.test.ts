@@ -138,6 +138,7 @@ test.each([
     'current_account-current_region': {
       bucketName: 'test-bucket-name',
       objectKey: 'abcdef',
+      region: 'us-east-1',
     },
   });
   expect(json.dockerImages).toEqual({});
