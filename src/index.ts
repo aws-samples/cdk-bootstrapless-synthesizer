@@ -224,7 +224,7 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
       destinations[this.manifestEnvName] = {
         bucketName,
         objectKey,
-        region: resolvedOr(this.stack.region, undefined),
+        region: resolvedOr(this.stack.region, trim(head(this.fileAssetRegionSet))),
         assumeRoleArn: this.fileAssetPublishingRoleArn,
       };
     }
@@ -485,4 +485,18 @@ function validateDockerImageAssetSource(asset: DockerImageAssetSource) {
       throw new Error(`'${key}' is only allowed in combination with 'directoryName', got: ${JSON.stringify(asset)}`);
     }
   }
+}
+
+function head(ss?: string[]): string | undefined {
+  if (ss && ss.length > 0) {
+    return ss[0];
+  }
+  return undefined;
+}
+
+function trim(s?: string): string | undefined {
+  if (s) {
+    return s.trim();
+  }
+  return undefined;
 }
