@@ -24,7 +24,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "my-stack-dev/TaskDef/TaskRole/Resource"
+        "aws:cdk:path": "my-stack-dev2/TaskDef/TaskRole/Resource"
       }
     },
     "TaskDef54694570": {
@@ -47,7 +47,7 @@
             "Arn"
           ]
         },
-        "Family": "mystackdevTaskDef141959DC",
+        "Family": "mystackdev2TaskDefF5BFA950",
         "Memory": "512",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": [
@@ -61,7 +61,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "my-stack-dev/TaskDef/Resource"
+        "aws:cdk:path": "my-stack-dev2/TaskDef/Resource"
       }
     },
     "TaskDefExecutionRoleB4775C97": {
@@ -81,7 +81,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "my-stack-dev/TaskDef/ExecutionRole/Resource"
+        "aws:cdk:path": "my-stack-dev2/TaskDef/ExecutionRole/Resource"
       }
     },
     "TaskDefExecutionRoleDefaultPolicy0DBB737A": {
@@ -108,11 +108,7 @@
                     {
                       "Ref": "AWS::Region"
                     },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":repository/your-ecr-repo-name"
+                    ":1234567890:repository/your-ecr-repo-name"
                   ]
                 ]
               }
@@ -133,7 +129,7 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "my-stack-dev/TaskDef/ExecutionRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "my-stack-dev2/TaskDef/ExecutionRole/DefaultPolicy/Resource"
       }
     },
     "CDKMetadata": {
@@ -142,7 +138,7 @@
         "Analytics": "v2:deflate64:H4sIAAAAAAAA/12PT4vCQAzFP4v3afwLnldF8KTUvUt2GktsO5FJ6iKl332ndUHwlOT3eC/JApYwm+CvZr6ospp/oDsb+soldOnIxwuqkinsxFcUDw2W9DUQlzTI6S7KJvG5QaWEFLo9xhKNvlGrHV05sLEEt72GTyLBkAPFN+sdYwNdLjUNhrGepGb/HMZX1/du3J+uLDmUg3Bs7d7a6CCVNvrRnfKL/9QgBcFNp4/5Cubr9O9NmbPYBuOGIH/VPwROJYsKAQAA"
       },
       "Metadata": {
-        "aws:cdk:path": "my-stack-dev/CDKMetadata/Default"
+        "aws:cdk:path": "my-stack-dev2/CDKMetadata/Default"
       },
       "Condition": "CDKMetadataAvailable"
     }

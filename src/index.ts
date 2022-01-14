@@ -3,6 +3,7 @@ import * as path from 'path';
 import { DockerImageAssetLocation, DockerImageAssetSource, FileAssetLocation, FileAssetPackaging, FileAssetSource, Fn, ISynthesisSession, Stack, StackSynthesizer, Token } from 'aws-cdk-lib';
 import * as cxschema from 'aws-cdk-lib/cloud-assembly-schema';
 import * as cxapi from 'aws-cdk-lib/cx-api';
+export * from './aspect';
 
 
 const REGION_PLACEHOLDER = '${AWS::Region}';
