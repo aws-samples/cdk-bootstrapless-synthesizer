@@ -98,6 +98,8 @@ env.BSS_IMAGE_ASSET_REGION_SET = 'us-west-1,us-west-2';
 new MyStack(app, 'my-stack-dev2', {
   synthesizer: new BootstraplessStackSynthesizer(),
 });
+
+// use Aspect to grant the role to pull ECR repository from account BSS_IMAGE_ASSET_ACCOUNT_ID
 /// !hide
 
 app.synth();
@@ -109,6 +111,16 @@ app.synth();
 /// !! $ cdk synth
 /// !! $ npx cdk-assets publish -p cdk.out/my-stack-dev.assets.json -v
 /// !! ```
+
+/// !! ## Limitations
+/// !! When using `BSS_IMAGE_ASSET_ACCOUNT_ID` to push ECR repository to shared account, you need use `Aspect` to grant the role with policy to pull the repository from cross account.
+/// !! 
+/// !! Currently only below scenarios are supported,
+/// !! 
+/// !! - ECS
+/// !! - SageMaker training job integrated with Step Functions
+/// !! 
+/// !! For other scenarios, the feature request or pull request are welcome.
 
 /// !! ## Sample Project
 /// !!
