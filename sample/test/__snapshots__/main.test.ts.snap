@@ -17,34 +17,41 @@ Object {
     },
   },
   "Resources": Object {
-    "MyHandler6B74D312": Object {
-      "DependsOn": Array [
-        "MyHandlerServiceRoleFFA06653",
-      ],
+    "TaskDef54694570": Object {
       "Properties": Object {
-        "Code": Object {
-          "S3Bucket": Object {
-            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
-          },
-          "S3Key": "c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55.zip",
-        },
-        "Handler": "index.handler",
-        "Layers": Array [
+        "ContainerDefinitions": Array [
           Object {
-            "Ref": "MyLayer38944FA5",
+            "Essential": true,
+            "Image": Object {
+              "Fn::Sub": "\${AWS::AccountId}.dkr.ecr.\${AWS::Region}.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}:d195bc4919540c304d368e3082c0a6103a3661c189ba1b4863162a31ecf4b8e3",
+            },
+            "Memory": 512,
+            "Name": "DefaultContainer",
           },
         ],
-        "Role": Object {
+        "Cpu": "256",
+        "ExecutionRoleArn": Object {
           "Fn::GetAtt": Array [
-            "MyHandlerServiceRoleFFA06653",
+            "TaskDefExecutionRoleB4775C97",
             "Arn",
           ],
         },
-        "Runtime": "nodejs12.x",
+        "Family": "testTaskDefFA002F41",
+        "Memory": "512",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": Array [
+          "FARGATE",
+        ],
+        "TaskRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "TaskDefTaskRole1EDB4A67",
+            "Arn",
+          ],
+        },
       },
-      "Type": "AWS::Lambda::Function",
+      "Type": "AWS::ECS::TaskDefinition",
     },
-    "MyHandlerServiceRoleFFA06653": Object {
+    "TaskDefExecutionRoleB4775C97": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -52,43 +59,79 @@ Object {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": Object {
-                "Service": "lambda.amazonaws.com",
+                "Service": "ecs-tasks.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-              ],
-            ],
-          },
-        ],
       },
       "Type": "AWS::IAM::Role",
     },
-    "MyLayer38944FA5": Object {
+    "TaskDefExecutionRoleDefaultPolicy0DBB737A": Object {
       "Properties": Object {
-        "CompatibleRuntimes": Array [
-          "nodejs12.x",
-        ],
-        "Content": Object {
-          "S3Bucket": Object {
-            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
-          },
-          "S3Key": "713bb8386428293da6e120d9844f696685a07336b6c246ff8702c396d916dbcf.zip",
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ecr:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":1234567890:repository/",
+                    Object {
+                      "Fn::Sub": "cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}",
+                    },
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
         },
-        "Description": "A layer to test the L2 construct",
+        "PolicyName": "TaskDefExecutionRoleDefaultPolicy0DBB737A",
+        "Roles": Array [
+          Object {
+            "Ref": "TaskDefExecutionRoleB4775C97",
+          },
+        ],
       },
-      "Type": "AWS::Lambda::LayerVersion",
+      "Type": "AWS::IAM::Policy",
+    },
+    "TaskDefTaskRole1EDB4A67": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
     },
   },
   "Rules": Object {

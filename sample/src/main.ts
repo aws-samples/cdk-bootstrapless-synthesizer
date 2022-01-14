@@ -12,55 +12,98 @@
 /// !! ## Usage
 
 import * as path from 'path';
-import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { App, CfnOutput, Stack, StackProps } from 'aws-cdk-lib/core';
-import { Construct } from 'constructs';
-
+import { App, CfnOutput, Stack, StackProps } from 'aws-cdk-lib';
+import { Repository, RepositoryBase, IRepository } from 'aws-cdk-lib/aws-ecr';
+import { DockerImageAsset, DockerImageAssetProps } from 'aws-cdk-lib/aws-ecr-assets';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { DockerImage, DockerImageConfig, ISageMakerTask } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 /// !show
 import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
 /// !hide
+import { Construct } from 'constructs';
 
 const env = process.env;
+
+/// !show
+function OverrideRepositoryAccount(scope: Construct, id: string, repo: IRepository): IRepository {
+  class Import extends RepositoryBase {
+    public repositoryName = repo.repositoryName;
+    public repositoryArn = Repository.arnForLocalRepository(repo.repositoryName, scope, env.BSS_IMAGE_ASSET_ACCOUNT_ID);
+
+    public addToResourcePolicy(_statement: iam.PolicyStatement): iam.AddToResourcePolicyResult {
+      // dropped
+      return { statementAdded: false };
+    }
+  }
+
+  return new Import(scope, id);
+}
+
+function WithCrossAccount(image: DockerImageAsset): DockerImageAsset {
+  image.repository = OverrideRepositoryAccount(image, 'CrossAccountRepo', image.repository);
+  return image;
+}
+
+
+class StandardDockerImage extends DockerImage {
+  private readonly allowAnyEcrImagePull: boolean;
+  private readonly imageUri: string;
+  private readonly repository?: IRepository;
+
+  constructor(opts: { allowAnyEcrImagePull?: boolean; imageUri: string; repository?: IRepository }) {
+    super();
+
+    this.allowAnyEcrImagePull = !!opts.allowAnyEcrImagePull;
+    this.imageUri = opts.imageUri;
+    this.repository = opts.repository;
+  }
+
+  public bind(task: ISageMakerTask): DockerImageConfig {
+    if (this.repository) {
+      this.repository.grantPull(task);
+    }
+    if (this.allowAnyEcrImagePull) {
+      task.grantPrincipal.addToPrincipalPolicy(new iam.PolicyStatement({
+        actions: [
+          'ecr:BatchCheckLayerAvailability',
+          'ecr:GetDownloadUrlForLayer',
+          'ecr:BatchGetImage',
+        ],
+        resources: ['*'],
+      }));
+    }
+    return {
+      imageUri: this.imageUri,
+    };
+  }
+}
+
+function fromAsset(scope: Construct, id: string, props: DockerImageAssetProps): DockerImage {
+  const asset = WithCrossAccount(new DockerImageAsset(scope, id, props));
+  return new StandardDockerImage({ repository: asset.repository, imageUri: asset.imageUri });
+}
+/// !hide
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    const image = new DockerImageAsset(this, 'MyBuildImage', {
+    const image = WithCrossAccount(new DockerImageAsset(this, 'MyBuildImage', {
       directory: path.join(__dirname, '../docker'),
-    });
+    }));
+
 
     new CfnOutput(this, 'output', { value: image.imageUri });
 
-    const layer = new lambda.LayerVersion(this, 'MyLayer', {
-      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/'), {
-        bundling: {
-          image: lambda.Runtime.NODEJS_12_X.bundlingImage,
-          user: 'root',
-          command: [
-            'bash', '-xc', [
-              'export npm_config_update_notifier=false',
-              'export npm_config_cache=$(mktemp -d)', // https://github.com/aws/aws-cdk/issues/8707#issuecomment-757435414
-              'cd $(mktemp -d)',
-              'find /asset-input/',
-              'cp -v /asset-input/package*.json .',
-              'npm i --only=prod',
-              'mkdir -p /asset-output/nodejs/',
-              'cp -au node_modules /asset-output/nodejs/',
-            ].join(' && '),
-          ],
-        },
-      }),
-      compatibleRuntimes: [lambda.Runtime.NODEJS_12_X],
-      description: 'A layer to test the L2 construct',
+    const taskDefinition = new ecs.FargateTaskDefinition(this, 'TaskDef');
+    taskDefinition.addContainer('DefaultContainer', {
+      image: ecs.ContainerImage.fromDockerImageAsset(image),
+      memoryLimitMiB: 512,
     });
 
-    new lambda.Function(this, 'MyHandler', {
-      runtime: lambda.Runtime.NODEJS_12_X,
-      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/src')),
-      handler: 'index.handler',
-      layers: [layer],
+    fromAsset(this, 'stepfunctions', {
+      directory: path.join(__dirname, '../docker'),
     });
   }
 }
@@ -114,12 +157,12 @@ app.synth();
 
 /// !! ## Limitations
 /// !! When using `BSS_IMAGE_ASSET_ACCOUNT_ID` to push ECR repository to shared account, you need use `Aspect` to grant the role with policy to pull the repository from cross account.
-/// !! 
+/// !!
 /// !! Currently only below scenarios are supported,
-/// !! 
+/// !!
 /// !! - ECS
 /// !! - SageMaker training job integrated with Step Functions
-/// !! 
+/// !!
 /// !! For other scenarios, the feature request or pull request are welcome.
 
 /// !! ## Sample Project

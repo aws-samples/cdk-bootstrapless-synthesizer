@@ -1,15 +1,15 @@
 {
   "version": "15.0.0",
   "files": {
-    "my-stack-dev.template.json": {
+    "my-stack-dev2.template.json": {
       "source": {
-        "path": "my-stack-dev.template.json",
+        "path": "my-stack-dev2.template.json",
         "packaging": "file"
       },
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cfn-template-bucket",
-          "objectKey": "file-asset-prefix/latest/my-stack-dev.template.json",
+          "objectKey": "file-asset-prefix/latest/my-stack-dev2.template.json",
           "region": "us-west-1"
         }
       }
