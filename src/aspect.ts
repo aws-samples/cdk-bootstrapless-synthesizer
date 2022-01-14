@@ -24,6 +24,9 @@ export interface ECRRepositoryAspectProps {
  */
 export abstract class ECRRepositoryAspect implements IAspect {
 
+  /**
+   * @internal
+   */
   static readonly _repoPolicies = new Map<string, Policy>();
   readonly account: string;
 
@@ -43,7 +46,7 @@ export abstract class ECRRepositoryAspect implements IAspect {
 
   protected crossAccountECRPolicy(stack: Stack, repoName: string): Policy {
     const policy = ECRRepositoryAspect._repoPolicies.get(repoName);
-    if (policy) {return policy;}
+    if (policy) { return policy; }
 
     const newPolicy = new Policy(stack, `CrossAccountECR-${repoName}`, {
       statements: [
@@ -78,11 +81,11 @@ export class ECSTaskDefinition extends ECRRepositoryAspect {
     super(props);
   }
 
-  protected hasBeReplaced(prop : CfnTaskDefinition.ContainerDefinitionProperty): string | undefined {
+  protected hasBeReplaced(prop: CfnTaskDefinition.ContainerDefinitionProperty): string | undefined {
     if (typeof prop.image === 'object' && FN_SUB in prop.image &&
       (prop.image[FN_SUB] as string).indexOf(this.account) > -1) {
       return prop.image[FN_SUB];
-    } else if (prop.image && (prop.image as string) && prop.image.indexOf(this.account) > -1) {return prop.image;}
+    } else if (prop.image && (prop.image as string) && prop.image.indexOf(this.account) > -1) { return prop.image; }
     return undefined;
   }
 
@@ -94,7 +97,7 @@ export class ECSTaskDefinition extends ECRRepositoryAspect {
         for (const container of containers) {
           if (container as CfnTaskDefinition.ContainerDefinitionProperty) {
             imageUri = this.hasBeReplaced(container);
-            if (imageUri) {break;}
+            if (imageUri) { break; }
           }
         }
       } else if (containers as CfnTaskDefinition.ContainerDefinitionProperty) {
@@ -122,7 +125,7 @@ export class StepFunctionsSageMakerTrainingJob extends ECRRepositoryAspect {
   public visit(construct: IConstruct): void {
     if (construct instanceof SageMakerCreateTrainingJob) {
       const stack = Stack.of(construct);
-      const state = construct.toStateJson() as {Parameters: {AlgorithmSpecification: {TrainingImage: any}}};
+      const state = construct.toStateJson() as { Parameters: { AlgorithmSpecification: { TrainingImage: any } } };
       const image = stack.resolve(state.Parameters.AlgorithmSpecification.TrainingImage);
       if (FN_SUB in image) {
         const repoName = this.getRepoName(image[FN_SUB]);
@@ -142,6 +145,9 @@ export class StepFunctionsSageMakerTrainingJob extends ECRRepositoryAspect {
  */
 export class CompositeECRRepositoryAspect extends ECRRepositoryAspect {
 
+  /**
+   * @internal
+   */
   readonly _aspects: ECRRepositoryAspect[];
 
   constructor(props: ECRRepositoryAspectProps = {}) {
