@@ -12,8 +12,10 @@
     "eslint": "npx projen eslint",
     "package": "npx projen package",
     "post-compile": "npx projen post-compile",
+    "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
     "synth": "npx projen synth",
+    "synth:silent": "npx projen synth:silent",
     "test": "npx projen test",
     "test:update": "npx projen test:update",
     "test:watch": "npx projen test:watch",
@@ -48,13 +50,12 @@
     "cdk-bootstrapless-synthesizer": "^2",
     "constructs": "^10.0.5"
   },
-  "bundledDependencies": [],
   "license": "UNLICENSED",
   "version": "0.0.0",
   "jest": {
     "testMatch": [
-      "**/__tests__/**/*.ts?(x)",
-      "**/?(*.)+(spec|test).ts?(x)"
+      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
+      "<rootDir>/(test|src)/**/?(*.)+(spec|test).ts?(x)"
     ],
     "clearMocks": true,
     "collectCoverage": true,
@@ -62,6 +63,7 @@
       "json",
       "lcov",
       "clover",
+      "cobertura",
       "text"
     ],
     "coverageDirectory": "coverage",

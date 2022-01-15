@@ -122,7 +122,46 @@
       "description": "Creates the distribution package",
       "steps": [
         {
-          "exec": "jsii-pacmak"
+          "exec": "mkdir -p dist"
+        },
+        {
+          "exec": "rsync -a . dist --exclude .git --exclude node_modules"
+        }
+      ]
+    },
+    "package-all": {
+      "name": "package-all",
+      "description": "Packages artifacts for all target languages",
+      "steps": [
+        {
+          "spawn": "package:js"
+        },
+        {
+          "spawn": "package:python"
+        }
+      ]
+    },
+    "package:js": {
+      "name": "package:js",
+      "description": "Create js language bindings",
+      "steps": [
+        {
+          "exec": "jsii_version=$(node -p \"JSON.parse(fs.readFileSync('.jsii')).jsiiVersion.split(' ')[0]\")"
+        },
+        {
+          "exec": "npx jsii-pacmak@$jsii_version -v --target js"
+        }
+      ]
+    },
+    "package:python": {
+      "name": "package:python",
+      "description": "Create python language bindings",
+      "steps": [
+        {
+          "exec": "jsii_version=$(node -p \"JSON.parse(fs.readFileSync('.jsii')).jsiiVersion.split(' ')[0]\")"
+        },
+        {
+          "exec": "npx jsii-pacmak@$jsii_version -v --target python"
         }
       ]
     },
@@ -137,6 +176,10 @@
           "spawn": "readme"
         }
       ]
+    },
+    "post-upgrade": {
+      "name": "post-upgrade",
+      "description": "Runs after upgrading dependencies"
     },
     "pre-compile": {
       "name": "pre-compile",
@@ -271,10 +314,13 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser ansi-regex eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii jsii-diff jsii-docgen jsii-pacmak json-schema npm-check-updates standard-version ts-jest typescript aws-cdk-lib constructs aws-cdk-lib constructs"
+          "exec": "yarn upgrade @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser ansi-regex eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii jsii-diff jsii-docgen json-schema npm-check-updates standard-version ts-jest typescript aws-cdk-lib constructs aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"
+        },
+        {
+          "spawn": "post-upgrade"
         }
       ]
     },
@@ -308,6 +354,9 @@
         },
         {
           "exec": "npx projen"
+        },
+        {
+          "spawn": "post-upgrade"
         }
       ]
     },
