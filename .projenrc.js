@@ -65,6 +65,7 @@ const sampleProject = new awscdk.AwsCdkTypeScriptApp({
   name: 'sample',
   licensed: false,
   github: false,
+  projenVersion: '^0.50.31',
   featureFlags: false,
   deps: [
     'cdk-bootstrapless-synthesizer@^2',
