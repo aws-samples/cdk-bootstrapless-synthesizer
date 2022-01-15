@@ -174,6 +174,39 @@ Override the name of the S3 bucket to hold Cloudformation template.
 
 ---
 
+### ECRRepositoryAspectProps <a name="cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps" id="cdkbootstraplesssynthesizerecrrepositoryaspectprops"></a>
+
+Configuration properties for ECRRepositoryAspect.
+
+#### Initializer <a name="[object Object].Initializer" id="object-objectinitializer"></a>
+
+```typescript
+import { ECRRepositoryAspectProps } from 'cdk-bootstrapless-synthesizer'
+
+const eCRRepositoryAspectProps: ECRRepositoryAspectProps = { ... }
+```
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`imageAssetAccountId`](#cdkbootstraplesssynthesizerecrrepositoryaspectpropspropertyimageassetaccountid) | `string` | Override the ECR repository account id of the Docker Image assets. |
+
+---
+
+##### `imageAssetAccountId`<sup>Optional</sup> <a name="cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps.property.imageAssetAccountId" id="cdkbootstraplesssynthesizerecrrepositoryaspectpropspropertyimageassetaccountid"></a>
+
+```typescript
+public readonly imageAssetAccountId: string;
+```
+
+- *Type:* `string`
+- *Default:* process.env.BSS_IMAGE_ASSET_ACCOUNT_ID
+
+Override the ECR repository account id of the Docker Image assets.
+
+---
+
 ## Classes <a name="Classes" id="classes"></a>
 
 ### BootstraplessStackSynthesizer <a name="cdk-bootstrapless-synthesizer.BootstraplessStackSynthesizer" id="cdkbootstraplesssynthesizerbootstraplessstacksynthesizer"></a>
@@ -263,6 +296,217 @@ public synthesize(session: ISynthesisSession)
 ###### `session`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.BootstraplessStackSynthesizer.parameter.session" id="cdkbootstraplesssynthesizerbootstraplessstacksynthesizerparametersession"></a>
 
 - *Type:* [`aws-cdk-lib.ISynthesisSession`](#aws-cdk-lib.ISynthesisSession)
+
+---
+
+
+
+
+### CompositeECRRepositoryAspect <a name="cdk-bootstrapless-synthesizer.CompositeECRRepositoryAspect" id="cdkbootstraplesssynthesizercompositeecrrepositoryaspect"></a>
+
+Default ECR asset aspect, support using ECR assets in below services,.
+
+ECS task definition - SageMaker training job in Step Functions
+
+#### Initializers <a name="cdk-bootstrapless-synthesizer.CompositeECRRepositoryAspect.Initializer" id="cdkbootstraplesssynthesizercompositeecrrepositoryaspectinitializer"></a>
+
+```typescript
+import { CompositeECRRepositoryAspect } from 'cdk-bootstrapless-synthesizer'
+
+new CompositeECRRepositoryAspect(props?: ECRRepositoryAspectProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`props`](#cdkbootstraplesssynthesizercompositeecrrepositoryaspectparameterprops) | [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps) | *No description.* |
+
+---
+
+##### `props`<sup>Optional</sup> <a name="cdk-bootstrapless-synthesizer.CompositeECRRepositoryAspect.parameter.props" id="cdkbootstraplesssynthesizercompositeecrrepositoryaspectparameterprops"></a>
+
+- *Type:* [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps)
+
+---
+
+#### Methods <a name="Methods" id="methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`visit`](#cdkbootstraplesssynthesizercompositeecrrepositoryaspectvisit) | All aspects can visit an IConstruct. |
+
+---
+
+##### `visit` <a name="cdk-bootstrapless-synthesizer.CompositeECRRepositoryAspect.visit" id="cdkbootstraplesssynthesizercompositeecrrepositoryaspectvisit"></a>
+
+```typescript
+public visit(construct: IConstruct)
+```
+
+###### `construct`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.CompositeECRRepositoryAspect.parameter.construct" id="cdkbootstraplesssynthesizercompositeecrrepositoryaspectparameterconstruct"></a>
+
+- *Type:* [`constructs.IConstruct`](#constructs.IConstruct)
+
+---
+
+
+
+
+### ECRRepositoryAspect <a name="cdk-bootstrapless-synthesizer.ECRRepositoryAspect" id="cdkbootstraplesssynthesizerecrrepositoryaspect"></a>
+
+- *Implements:* [`aws-cdk-lib.IAspect`](#aws-cdk-lib.IAspect)
+
+Abtract aspect for ECR repository.
+
+You must provide the account id in props or set BSS_IMAGE_ASSET_ACCOUNT_ID in env
+
+#### Initializers <a name="cdk-bootstrapless-synthesizer.ECRRepositoryAspect.Initializer" id="cdkbootstraplesssynthesizerecrrepositoryaspectinitializer"></a>
+
+```typescript
+import { ECRRepositoryAspect } from 'cdk-bootstrapless-synthesizer'
+
+new ECRRepositoryAspect(props?: ECRRepositoryAspectProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`props`](#cdkbootstraplesssynthesizerecrrepositoryaspectparameterprops) | [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps) | *No description.* |
+
+---
+
+##### `props`<sup>Optional</sup> <a name="cdk-bootstrapless-synthesizer.ECRRepositoryAspect.parameter.props" id="cdkbootstraplesssynthesizerecrrepositoryaspectparameterprops"></a>
+
+- *Type:* [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps)
+
+---
+
+#### Methods <a name="Methods" id="methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`visit`](#cdkbootstraplesssynthesizerecrrepositoryaspectvisit) | All aspects can visit an IConstruct. |
+
+---
+
+##### `visit` <a name="cdk-bootstrapless-synthesizer.ECRRepositoryAspect.visit" id="cdkbootstraplesssynthesizerecrrepositoryaspectvisit"></a>
+
+```typescript
+public visit(construct: IConstruct)
+```
+
+###### `construct`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.ECRRepositoryAspect.parameter.construct" id="cdkbootstraplesssynthesizerecrrepositoryaspectparameterconstruct"></a>
+
+- *Type:* [`constructs.IConstruct`](#constructs.IConstruct)
+
+---
+
+
+#### Properties <a name="Properties" id="properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`account`](#cdkbootstraplesssynthesizerecrrepositoryaspectpropertyaccount)<span title="Required">*</span> | `string` | *No description.* |
+
+---
+
+##### `account`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.ECRRepositoryAspect.property.account" id="cdkbootstraplesssynthesizerecrrepositoryaspectpropertyaccount"></a>
+
+```typescript
+public readonly account: string;
+```
+
+- *Type:* `string`
+
+---
+
+
+### ECSTaskDefinition <a name="cdk-bootstrapless-synthesizer.ECSTaskDefinition" id="cdkbootstraplesssynthesizerecstaskdefinition"></a>
+
+Process the image assets in ECS task definition.
+
+#### Initializers <a name="cdk-bootstrapless-synthesizer.ECSTaskDefinition.Initializer" id="cdkbootstraplesssynthesizerecstaskdefinitioninitializer"></a>
+
+```typescript
+import { ECSTaskDefinition } from 'cdk-bootstrapless-synthesizer'
+
+new ECSTaskDefinition(props?: ECRRepositoryAspectProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`props`](#cdkbootstraplesssynthesizerecstaskdefinitionparameterprops) | [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps) | *No description.* |
+
+---
+
+##### `props`<sup>Optional</sup> <a name="cdk-bootstrapless-synthesizer.ECSTaskDefinition.parameter.props" id="cdkbootstraplesssynthesizerecstaskdefinitionparameterprops"></a>
+
+- *Type:* [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps)
+
+---
+
+#### Methods <a name="Methods" id="methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`visit`](#cdkbootstraplesssynthesizerecstaskdefinitionvisit) | All aspects can visit an IConstruct. |
+
+---
+
+##### `visit` <a name="cdk-bootstrapless-synthesizer.ECSTaskDefinition.visit" id="cdkbootstraplesssynthesizerecstaskdefinitionvisit"></a>
+
+```typescript
+public visit(construct: IConstruct)
+```
+
+###### `construct`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.ECSTaskDefinition.parameter.construct" id="cdkbootstraplesssynthesizerecstaskdefinitionparameterconstruct"></a>
+
+- *Type:* [`constructs.IConstruct`](#constructs.IConstruct)
+
+---
+
+
+
+
+### StepFunctionsSageMakerTrainingJob <a name="cdk-bootstrapless-synthesizer.StepFunctionsSageMakerTrainingJob" id="cdkbootstraplesssynthesizerstepfunctionssagemakertrainingjob"></a>
+
+Process the image assets in SageMaker training job in Step Functions.
+
+#### Initializers <a name="cdk-bootstrapless-synthesizer.StepFunctionsSageMakerTrainingJob.Initializer" id="cdkbootstraplesssynthesizerstepfunctionssagemakertrainingjobinitializer"></a>
+
+```typescript
+import { StepFunctionsSageMakerTrainingJob } from 'cdk-bootstrapless-synthesizer'
+
+new StepFunctionsSageMakerTrainingJob(props?: ECRRepositoryAspectProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`props`](#cdkbootstraplesssynthesizerstepfunctionssagemakertrainingjobparameterprops) | [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps) | *No description.* |
+
+---
+
+##### `props`<sup>Optional</sup> <a name="cdk-bootstrapless-synthesizer.StepFunctionsSageMakerTrainingJob.parameter.props" id="cdkbootstraplesssynthesizerstepfunctionssagemakertrainingjobparameterprops"></a>
+
+- *Type:* [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps)
+
+---
+
+#### Methods <a name="Methods" id="methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`visit`](#cdkbootstraplesssynthesizerstepfunctionssagemakertrainingjobvisit) | All aspects can visit an IConstruct. |
+
+---
+
+##### `visit` <a name="cdk-bootstrapless-synthesizer.StepFunctionsSageMakerTrainingJob.visit" id="cdkbootstraplesssynthesizerstepfunctionssagemakertrainingjobvisit"></a>
+
+```typescript
+public visit(construct: IConstruct)
+```
+
+###### `construct`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.StepFunctionsSageMakerTrainingJob.parameter.construct" id="cdkbootstraplesssynthesizerstepfunctionssagemakertrainingjobparameterconstruct"></a>
+
+- *Type:* [`constructs.IConstruct`](#constructs.IConstruct)
 
 ---
 

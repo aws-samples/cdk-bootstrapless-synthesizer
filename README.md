@@ -59,7 +59,7 @@ $ cdk synth
 $ npx cdk-assets publish -p cdk.out/my-stack-dev.assets.json -v
 ```
 ## Limitations
-When using `BSS_IMAGE_ASSET_ACCOUNT_ID` to push ECR repository to shared account, you need use `Aspect` to grant the role with policy to pull the repository from cross account.
+When using `BSS_IMAGE_ASSET_ACCOUNT_ID` to push ECR repository to shared account, you need use `Aspect` to grant the role with policy to pull the repository from cross account. Or using the following `WithCrossAccount`  techniques.
 
 Currently only below scenarios are supported,
 
@@ -67,6 +67,49 @@ Currently only below scenarios are supported,
 - SageMaker training job integrated with Step Functions
 
 For other scenarios, the feature request or pull request are welcome.
+```ts
+function OverrideRepositoryAccount(scope: Construct, id: string, repo: IRepository): IRepository {
+  class Import extends RepositoryBase {
+    public repositoryName = repo.repositoryName;
+    public repositoryArn = Repository.arnForLocalRepository(repo.repositoryName, scope, env.BSS_IMAGE_ASSET_ACCOUNT_ID);
+
+    public addToResourcePolicy(_statement: iam.PolicyStatement): iam.AddToResourcePolicyResult {
+      // dropped
+      return { statementAdded: false };
+    }
+  }
+
+  return new Import(scope, id);
+}
+
+function WithCrossAccount(image: DockerImageAsset): DockerImageAsset {
+  image.repository = OverrideRepositoryAccount(image, 'CrossAccountRepo', image.repository);
+  return image;
+}
+
+export class SampleStack extends Stack {
+  constructor(scope: Construct, id: string, props: StackProps = {}) {
+    super(scope, id, props);
+
+    const image = WithCrossAccount(new DockerImageAsset(this, 'MyBuildImage', {
+      directory: path.join(__dirname, '../docker'),
+    }));
+
+    new CfnOutput(this, 'output', { value: image.imageUri });
+
+    const taskDefinition = new ecs.FargateTaskDefinition(this, 'TaskDef');
+    taskDefinition.addContainer('DefaultContainer', {
+      image: ecs.ContainerImage.fromDockerImageAsset(image),
+      memoryLimitMiB: 512,
+    });
+
+    fromAsset(this, 'stepfunctions', {
+      directory: path.join(__dirname, '../docker'),
+    });
+  }
+}
+```
+<small>[main.ts](sample/src/main.ts)</small>
 ## Sample Project
 
 See [Sample Project](./sample/README.md)
