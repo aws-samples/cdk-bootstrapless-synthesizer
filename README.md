@@ -13,67 +13,7 @@ Please use ^1.0.0 for cdk version 1.x.x, use ^2.0.0 for cdk version 2.x.x
 ```ts
 import { BootstraplessStackSynthesizer } from 'cdk-bootstrapless-synthesizer';
 ```
-<small>[main.ts](sample/src/main.ts)</small>
-```ts
-function OverrideRepositoryAccount(scope: Construct, id: string, repo: IRepository): IRepository {
-  class Import extends RepositoryBase {
-    public repositoryName = repo.repositoryName;
-    public repositoryArn = Repository.arnForLocalRepository(repo.repositoryName, scope, env.BSS_IMAGE_ASSET_ACCOUNT_ID);
-
-    public addToResourcePolicy(_statement: iam.PolicyStatement): iam.AddToResourcePolicyResult {
-      // dropped
-      return { statementAdded: false };
-    }
-  }
-
-  return new Import(scope, id);
-}
-
-function WithCrossAccount(image: DockerImageAsset): DockerImageAsset {
-  image.repository = OverrideRepositoryAccount(image, 'CrossAccountRepo', image.repository);
-  return image;
-}
-
-
-class StandardDockerImage extends DockerImage {
-  private readonly allowAnyEcrImagePull: boolean;
-  private readonly imageUri: string;
-  private readonly repository?: IRepository;
-
-  constructor(opts: { allowAnyEcrImagePull?: boolean; imageUri: string; repository?: IRepository }) {
-    super();
-
-    this.allowAnyEcrImagePull = !!opts.allowAnyEcrImagePull;
-    this.imageUri = opts.imageUri;
-    this.repository = opts.repository;
-  }
-
-  public bind(task: ISageMakerTask): DockerImageConfig {
-    if (this.repository) {
-      this.repository.grantPull(task);
-    }
-    if (this.allowAnyEcrImagePull) {
-      task.grantPrincipal.addToPrincipalPolicy(new iam.PolicyStatement({
-        actions: [
-          'ecr:BatchCheckLayerAvailability',
-          'ecr:GetDownloadUrlForLayer',
-          'ecr:BatchGetImage',
-        ],
-        resources: ['*'],
-      }));
-    }
-    return {
-      imageUri: this.imageUri,
-    };
-  }
-}
-
-function fromAsset(scope: Construct, id: string, props: DockerImageAssetProps): DockerImage {
-  const asset = WithCrossAccount(new DockerImageAsset(scope, id, props));
-  return new StandardDockerImage({ repository: asset.repository, imageUri: asset.imageUri });
-}
-```
-<small>[main.ts](sample/src/main.ts)</small>
+[main.ts](sample/src/main.ts)
 ```ts
 const app = new App();
 
@@ -110,7 +50,7 @@ new MyStack(app, 'my-stack-dev2', {
 
 // use Aspect to grant the role to pull ECR repository from account BSS_IMAGE_ASSET_ACCOUNT_ID
 ```
-<small>[main.ts](sample/src/main.ts)</small>
+[main.ts](sample/src/main.ts)
 
 Synth AWS CloudFormation templates, assets and upload them
 
@@ -169,7 +109,7 @@ export class SampleStack extends Stack {
   }
 }
 ```
-<small>[main.ts](sample/src/main.ts)</small>
+[main.ts](sample/src/main.ts)
 ## Sample Project
 
 See [Sample Project](./sample/README.md)

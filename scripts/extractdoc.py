@@ -33,7 +33,7 @@ def renderf(filename, basedir=os.curdir):
                         f'```{lang}',
                         textwrap.dedent(cat(*code)),
                         '```',
-                        f'<small>[{os.path.basename(filename)}]({os.path.relpath(filename, basedir)})</small>',
+                        f'[{os.path.basename(filename)}]({os.path.relpath(filename, basedir)})',
                     ))
                 continue
 
@@ -89,6 +89,7 @@ def main():
         fp.write('\n')
 
     fp.close()
+
 
 if __name__ == '__main__':
     main()
