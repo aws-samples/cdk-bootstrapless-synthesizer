@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@aws-cdk/aws-batch-alpha@^2.8.0-alpha.0":
+  version "2.8.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-batch-alpha/-/aws-batch-alpha-2.8.0-alpha.0.tgz#b00ab374b92906bc5fc4b82ad7d82ba360c35399"
+  integrity sha512-cZa/2BJ5R7QxEoyC5DlhixxLsvV6QppjgS8dluMzNASwofgvyq4elt3ukBaOv/3riKBg/irYVFZuvaSSsxVTOg==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.7":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.16.7.tgz#44416b6bd7624b998f5b1af5d470856c40138789"

@@ -209,6 +209,53 @@ Override the ECR repository account id of the Docker Image assets.
 
 ## Classes <a name="Classes" id="classes"></a>
 
+### BatchJobDefinitionAspect <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspect"></a>
+
+Process the image assets in AWS Batch job.
+
+#### Initializers <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect.Initializer" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspectinitializer"></a>
+
+```typescript
+import { BatchJobDefinitionAspect } from 'cdk-bootstrapless-synthesizer'
+
+new BatchJobDefinitionAspect(props?: ECRRepositoryAspectProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| [`props`](#cdkbootstraplesssynthesizerbatchjobdefinitionaspectparameterprops) | [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps) | *No description.* |
+
+---
+
+##### `props`<sup>Optional</sup> <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect.parameter.props" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspectparameterprops"></a>
+
+- *Type:* [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps)
+
+---
+
+#### Methods <a name="Methods" id="methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`visit`](#cdkbootstraplesssynthesizerbatchjobdefinitionaspectvisit) | All aspects can visit an IConstruct. |
+
+---
+
+##### `visit` <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect.visit" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspectvisit"></a>
+
+```typescript
+public visit(construct: IConstruct)
+```
+
+###### `construct`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect.parameter.construct" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspectparameterconstruct"></a>
+
+- *Type:* [`constructs.IConstruct`](#constructs.IConstruct)
+
+---
+
+
+
+
 ### BootstraplessStackSynthesizer <a name="cdk-bootstrapless-synthesizer.BootstraplessStackSynthesizer" id="cdkbootstraplesssynthesizerbootstraplessstacksynthesizer"></a>
 
 A Bootstrapless stack synthesizer that is designated to generate templates that can be directly used by Cloudformation.
@@ -306,7 +353,7 @@ public synthesize(session: ISynthesisSession)
 
 Default ECR asset aspect, support using ECR assets in below services,.
 
-ECS task definition - SageMaker training job in Step Functions
+ECS task definition - SageMaker training job in Step Functions - AWS Batch job
 
 #### Initializers <a name="cdk-bootstrapless-synthesizer.CompositeECRRepositoryAspect.Initializer" id="cdkbootstraplesssynthesizercompositeecrrepositoryaspectinitializer"></a>
 
