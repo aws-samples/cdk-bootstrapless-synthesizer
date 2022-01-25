@@ -65,6 +65,7 @@ Currently only below scenarios are supported,
 
 - ECS
 - SageMaker training job integrated with Step Functions
+- AWS Batch job
 
 For other scenarios, the feature request or pull request are welcome.
 ```ts
