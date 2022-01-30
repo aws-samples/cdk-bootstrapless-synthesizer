@@ -80,6 +80,31 @@ const sampleProject = new awscdk.AwsCdkTypeScriptApp({
   // release: undefined,          /* Add release management to this project. */
 });
 
+const sampleProject2 = new awscdk.AwsCdkTypeScriptApp({
+  parent: project,
+  outdir: 'sample-pipeline',
+  cdkVersion: '2.10.0',
+  cdkVersionPinning: false,
+  defaultReleaseBranch: 'main',
+  appEntrypoint: 'pipeline.ts',
+  name: 'sample-pipeline',
+  licensed: false,
+  github: false,
+  featureFlags: false,
+  deps: [
+    '@aws-cdk/aws-apigatewayv2-alpha@^2.10.0-alpha.0',
+    '@aws-cdk/aws-apigatewayv2-integrations-alpha@^2.10.0-alpha.0',
+    '@aws-lambda-powertools/logger@^0.4.0',
+    '@types/aws-lambda@^8.10.89',
+    'cdk-bootstrapless-synthesizer@^2',
+    'constructs@^10.0.5',
+  ], /* Runtime dependencies of this module. */
+  // description: undefined,      /* The description is just a string that helps people understand the purpose of the package. */
+  devDeps: [], /* Build dependencies for this module. */
+  // packageName: undefined,      /* The "name" in package.json. */
+  // release: undefined,          /* Add release management to this project. */
+});
+
 const gh = new github.GitHub(project, {
   pullRequestLint: false,
 });
