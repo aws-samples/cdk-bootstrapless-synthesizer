@@ -140,6 +140,8 @@ app.synth();
 /// !!
 /// !! - ECS
 /// !! - SageMaker training job integrated with Step Functions
+/// !! - AWS Batch
+/// !! - AWS Lambda
 /// !!
 /// !! For other scenarios, the feature request or pull request are welcome.
 
