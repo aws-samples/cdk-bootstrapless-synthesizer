@@ -1,8 +1,8 @@
 import * as batch from '@aws-cdk/aws-batch-alpha';
-import { IAspect, Stack, Arn, aws_iam as iam } from 'aws-cdk-lib';
+import { IAspect, Stack, Arn } from 'aws-cdk-lib';
 import * as batch_lib from 'aws-cdk-lib/aws-batch';
 import { TaskDefinition, CfnTaskDefinition } from 'aws-cdk-lib/aws-ecs';
-import { Policy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Policy, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { SageMakerCreateTrainingJob } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { IConstruct } from 'constructs';
 
@@ -16,7 +16,7 @@ export interface ECRRepositoryAspectProps {
    *
    * @default - process.env.BSS_IMAGE_ASSET_ACCOUNT_ID
    */
-  readonly imageAssetAccountId ? : string;
+  readonly imageAssetAccountId?: string;
 }
 
 /**
@@ -29,7 +29,7 @@ export abstract class ECRRepositoryAspect implements IAspect {
   /**
    * @internal
    */
-  static readonly _repoPolicies = new Map < string, Policy > ();
+  static readonly _repoPolicies = new Map<string, Policy>();
   readonly account: string;
 
   constructor(props: ECRRepositoryAspectProps = {}) {
@@ -155,15 +155,14 @@ export class StepFunctionsSageMakerTrainingJob extends ECRRepositoryAspect {
 /**
  * Process the image assets in AWS Batch job
  */
-
-export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
+export class BatchJobDefinition extends ECRRepositoryAspect {
   /**
    * @internal
    */
   readonly _repoNames: string[];
-  private _executionRole ? : iam.Role;
-  private _executionRoleArn ? : string;
-  private _allRolesMap: Map < string, iam.Role >;
+  private _executionRole?: Role;
+  private _executionRoleArn?: string;
+  private _allRolesMap: Map<string, Role>;
 
   constructor(props: ECRRepositoryAspectProps = {}) {
     super(props);
@@ -196,7 +195,7 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
         }
       }
     }
-    if (construct instanceof iam.Role) {
+    if (construct instanceof Role) {
       this._allRolesMap.set(construct.roleArn, construct);
       if (construct.roleArn == this._executionRoleArn) {
         const stack = construct.stack;
@@ -219,6 +218,7 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
  * - ECS task definition
  * - SageMaker training job in Step Functions
  * - AWS Batch job
+ * - AWS Lambda container image
  */
 export class CompositeECRRepositoryAspect extends ECRRepositoryAspect {
 
@@ -232,7 +232,7 @@ export class CompositeECRRepositoryAspect extends ECRRepositoryAspect {
     this._aspects = [
       new ECSTaskDefinition(props),
       new StepFunctionsSageMakerTrainingJob(props),
-      new BatchJobDefinitionAspect(props),
+      new BatchJobDefinition(props),
     ];
   }
 
