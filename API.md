@@ -209,25 +209,25 @@ Override the ECR repository account id of the Docker Image assets.
 
 ## Classes <a name="Classes" id="classes"></a>
 
-### BatchJobDefinitionAspect <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspect"></a>
+### BatchJobDefinition <a name="cdk-bootstrapless-synthesizer.BatchJobDefinition" id="cdkbootstraplesssynthesizerbatchjobdefinition"></a>
 
 Process the image assets in AWS Batch job.
 
-#### Initializers <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect.Initializer" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspectinitializer"></a>
+#### Initializers <a name="cdk-bootstrapless-synthesizer.BatchJobDefinition.Initializer" id="cdkbootstraplesssynthesizerbatchjobdefinitioninitializer"></a>
 
 ```typescript
-import { BatchJobDefinitionAspect } from 'cdk-bootstrapless-synthesizer'
+import { BatchJobDefinition } from 'cdk-bootstrapless-synthesizer'
 
-new BatchJobDefinitionAspect(props?: ECRRepositoryAspectProps)
+new BatchJobDefinition(props?: ECRRepositoryAspectProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`props`](#cdkbootstraplesssynthesizerbatchjobdefinitionaspectparameterprops) | [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps) | *No description.* |
+| [`props`](#cdkbootstraplesssynthesizerbatchjobdefinitionparameterprops) | [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps) | *No description.* |
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect.parameter.props" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspectparameterprops"></a>
+##### `props`<sup>Optional</sup> <a name="cdk-bootstrapless-synthesizer.BatchJobDefinition.parameter.props" id="cdkbootstraplesssynthesizerbatchjobdefinitionparameterprops"></a>
 
 - *Type:* [`cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps`](#cdk-bootstrapless-synthesizer.ECRRepositoryAspectProps)
 
@@ -237,17 +237,17 @@ new BatchJobDefinitionAspect(props?: ECRRepositoryAspectProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| [`visit`](#cdkbootstraplesssynthesizerbatchjobdefinitionaspectvisit) | All aspects can visit an IConstruct. |
+| [`visit`](#cdkbootstraplesssynthesizerbatchjobdefinitionvisit) | All aspects can visit an IConstruct. |
 
 ---
 
-##### `visit` <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect.visit" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspectvisit"></a>
+##### `visit` <a name="cdk-bootstrapless-synthesizer.BatchJobDefinition.visit" id="cdkbootstraplesssynthesizerbatchjobdefinitionvisit"></a>
 
 ```typescript
 public visit(construct: IConstruct)
 ```
 
-###### `construct`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.BatchJobDefinitionAspect.parameter.construct" id="cdkbootstraplesssynthesizerbatchjobdefinitionaspectparameterconstruct"></a>
+###### `construct`<sup>Required</sup> <a name="cdk-bootstrapless-synthesizer.BatchJobDefinition.parameter.construct" id="cdkbootstraplesssynthesizerbatchjobdefinitionparameterconstruct"></a>
 
 - *Type:* [`constructs.IConstruct`](#constructs.IConstruct)
 
@@ -353,7 +353,7 @@ public synthesize(session: ISynthesisSession)
 
 Default ECR asset aspect, support using ECR assets in below services,.
 
-ECS task definition - SageMaker training job in Step Functions - AWS Batch job
+ECS task definition - SageMaker training job in Step Functions - AWS Batch job - AWS Lambda container image
 
 #### Initializers <a name="cdk-bootstrapless-synthesizer.CompositeECRRepositoryAspect.Initializer" id="cdkbootstraplesssynthesizercompositeecrrepositoryaspectinitializer"></a>
 
