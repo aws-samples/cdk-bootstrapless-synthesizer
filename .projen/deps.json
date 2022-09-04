@@ -96,28 +96,33 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/aws-batch-alpha",
+      "version": "^2.40.0-alpha.0",
+      "type": "peer"
+    },
+    {
       "name": "aws-cdk-lib",
-      "version": "^2",
+      "version": "^2.40.0",
       "type": "peer"
     },
     {
       "name": "constructs",
-      "version": "^10.0.5",
+      "version": "^10.1.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-batch-alpha",
-      "version": "^2.8.0-alpha.0",
+      "version": "^2.40.0-alpha.0",
       "type": "runtime"
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2",
+      "version": "^2.40.0",
       "type": "runtime"
     },
     {
       "name": "constructs",
-      "version": "^10.0.5",
+      "version": "^10.1.0",
       "type": "runtime"
     }
   ],
