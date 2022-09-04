@@ -32,17 +32,21 @@ const project = new cdk.JsiiProject({
     },
   },
   deps: [
-    'aws-cdk-lib@^2.40.0',
-    'constructs@^10.1.0',
-    '@aws-cdk/aws-batch-alpha@^2.40.0-alpha.0',
+    'aws-cdk-lib@2.40.0',
+    'constructs@10.1.94',
+    '@aws-cdk/aws-batch-alpha@2.40.0-alpha.0',
   ],
   peerDeps: [
-    'aws-cdk-lib@^2.40.0',
-    'constructs@^10.1.0',
-    '@aws-cdk/aws-batch-alpha@^2.40.0-alpha.0',
+    'aws-cdk-lib@2.40.0',
+    'constructs@10.1.94',
+    '@aws-cdk/aws-batch-alpha@2.40.0-alpha.0',
   ],
   devDeps: [
     'ansi-regex@6.0.1',
+    'aws-cdk-lib@2.40.0',
+    'constructs@10.1.94',
+    '@aws-cdk/aws-batch-alpha@2.40.0-alpha.0',
+    'npm-check-updates@^16',
   ],
   publishToPypi: {
     distName: 'cdk-bootstrapless-synthesizer',

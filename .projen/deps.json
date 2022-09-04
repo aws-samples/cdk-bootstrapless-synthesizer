@@ -1,6 +1,11 @@
 {
   "dependencies": [
     {
+      "name": "@aws-cdk/aws-batch-alpha",
+      "version": "2.40.0-alpha.0",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "version": "^27",
       "type": "build"
@@ -23,6 +28,16 @@
     {
       "name": "ansi-regex",
       "version": "6.0.1",
+      "type": "build"
+    },
+    {
+      "name": "aws-cdk-lib",
+      "version": "2.40.0",
+      "type": "build"
+    },
+    {
+      "name": "constructs",
+      "version": "10.1.94",
       "type": "build"
     },
     {
@@ -97,32 +112,32 @@
     },
     {
       "name": "@aws-cdk/aws-batch-alpha",
-      "version": "^2.40.0-alpha.0",
+      "version": "2.40.0-alpha.0",
       "type": "peer"
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.40.0",
+      "version": "2.40.0",
       "type": "peer"
     },
     {
       "name": "constructs",
-      "version": "^10.1.0",
+      "version": "10.1.94",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-batch-alpha",
-      "version": "^2.40.0-alpha.0",
+      "version": "2.40.0-alpha.0",
       "type": "runtime"
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.40.0",
+      "version": "2.40.0",
       "type": "runtime"
     },
     {
       "name": "constructs",
-      "version": "^10.1.0",
+      "version": "10.1.94",
       "type": "runtime"
     }
   ],
