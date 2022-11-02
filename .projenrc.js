@@ -137,6 +137,12 @@ wf.addJobs({
 project.package.addField('resolutions', {
   'trim-newlines': '3.0.1',
 });
+sampleProject.package.addField('resolutions', {
+  minimatch: '3.0.5',
+});
+sampleProject2.package.addField('resolutions', {
+  minimatch: '3.0.5',
+});
 
 
 const readme = project.addTask('readme');
