@@ -82,7 +82,8 @@
   "version": "0.0.0",
   "jest": {
     "testPathIgnorePatterns": [
-      "sample/"
+      "sample/",
+      "node_modules/"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
@@ -99,7 +100,8 @@
     ],
     "coverageDirectory": "coverage",
     "coveragePathIgnorePatterns": [
-      "sample/"
+      "sample/",
+      "node_modules/"
     ],
     "watchPathIgnorePatterns": [
       "/node_modules/"
