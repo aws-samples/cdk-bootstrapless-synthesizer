@@ -51,6 +51,7 @@ const project = new cdk.JsiiProject({
     jestConfig: {
       testPathIgnorePatterns: [
         'sample/', // https://github.com/projen/projen/issues/1059
+        'node_modules/',
       ],
     },
   },
