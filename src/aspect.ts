@@ -47,7 +47,8 @@ export abstract class ECRRepositoryAspect implements IAspect {
   }
 
   protected crossAccountECRPolicy(stack: Stack, repoName: string): Policy {
-    const policy = ECRRepositoryAspect._repoPolicies.get(repoName);
+    const id = `${stack.stackName}-${repoName}`;
+    const policy = ECRRepositoryAspect._repoPolicies.get(id);
     if (policy) {
       return policy;
     }
@@ -71,7 +72,7 @@ export abstract class ECRRepositoryAspect implements IAspect {
         }),
       ],
     });
-    ECRRepositoryAspect._repoPolicies.set(repoName, newPolicy);
+    ECRRepositoryAspect._repoPolicies.set(id, newPolicy);
     return newPolicy;
   }
 }
