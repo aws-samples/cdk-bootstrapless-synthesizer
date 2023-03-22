@@ -27,7 +27,8 @@ const bootstraplessStackSynthesizerProps: BootstraplessStackSynthesizerProps = {
 | [`imageAssetPublishingRoleArn`](#cdkbootstraplesssynthesizerbootstraplessstacksynthesizerpropspropertyimageassetpublishingrolearn) | `string` | The role to use to publish image assets to the ECR repository in this environment. |
 | [`imageAssetRegionSet`](#cdkbootstraplesssynthesizerbootstraplessstacksynthesizerpropspropertyimageassetregionset) | `string`[] | Override the ECR repository region of the Docker Image assets. |
 | [`imageAssetRepositoryName`](#cdkbootstraplesssynthesizerbootstraplessstacksynthesizerpropspropertyimageassetrepositoryname) | `string` | Name of the ECR repository to hold Docker Image assets. |
-| [`imageAssetTagPrefix`](#cdkbootstraplesssynthesizerbootstraplessstacksynthesizerpropspropertyimageassettagprefix) | `string` | Override the tag of the Docker Image assets. |
+| [`imageAssetTagPrefix`](#cdkbootstraplesssynthesizerbootstraplessstacksynthesizerpropspropertyimageassettagprefix) | `string` | Override the tag prefix of the Docker Image assets. |
+| [`imageAssetTagSuffixType`](#cdkbootstraplesssynthesizerbootstraplessstacksynthesizerpropspropertyimageassettagsuffixtype) | [`cdk-bootstrapless-synthesizer.ImageAssetTagSuffixType`](#cdk-bootstrapless-synthesizer.ImageAssetTagSuffixType) | Override the tag suffix of the Docker Image assets. |
 | [`templateBucketName`](#cdkbootstraplesssynthesizerbootstraplessstacksynthesizerpropspropertytemplatebucketname) | `string` | Override the name of the S3 bucket to hold Cloudformation template. |
 
 ---
@@ -157,7 +158,20 @@ public readonly imageAssetTagPrefix: string;
 - *Type:* `string`
 - *Default:* process.env.BSS_IMAGE_ASSET_TAG_PREFIX
 
-Override the tag of the Docker Image assets.
+Override the tag prefix of the Docker Image assets.
+
+---
+
+##### `imageAssetTagSuffixType`<sup>Optional</sup> <a name="cdk-bootstrapless-synthesizer.BootstraplessStackSynthesizerProps.property.imageAssetTagSuffixType" id="cdkbootstraplesssynthesizerbootstraplessstacksynthesizerpropspropertyimageassettagsuffixtype"></a>
+
+```typescript
+public readonly imageAssetTagSuffixType: ImageAssetTagSuffixType;
+```
+
+- *Type:* [`cdk-bootstrapless-synthesizer.ImageAssetTagSuffixType`](#cdk-bootstrapless-synthesizer.ImageAssetTagSuffixType)
+- *Default:* HASH or process.env.BSS_IMAGE_ASSET_TAG_SUFFIX_TYPE
+
+Override the tag suffix of the Docker Image assets.
 
 ---
 
@@ -560,4 +574,24 @@ public visit(construct: IConstruct)
 
 
 
+
+## Enums <a name="Enums" id="enums"></a>
+
+### ImageAssetTagSuffixType <a name="ImageAssetTagSuffixType" id="imageassettagsuffixtype"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| [`NONE`](#cdkbootstraplesssynthesizerimageassettagsuffixtypenone) | *No description.* |
+| [`HASH`](#cdkbootstraplesssynthesizerimageassettagsuffixtypehash) | *No description.* |
+
+---
+
+#### `NONE` <a name="cdk-bootstrapless-synthesizer.ImageAssetTagSuffixType.NONE" id="cdkbootstraplesssynthesizerimageassettagsuffixtypenone"></a>
+
+---
+
+
+#### `HASH` <a name="cdk-bootstrapless-synthesizer.ImageAssetTagSuffixType.HASH" id="cdkbootstraplesssynthesizerimageassettagsuffixtypehash"></a>
+
+---
 

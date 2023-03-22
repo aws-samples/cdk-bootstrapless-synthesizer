@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as cxschema from 'aws-cdk-lib/cloud-assembly-schema';
 import { FileAssetPackaging, Stack, App } from 'aws-cdk-lib/core';
 import * as cxapi from 'aws-cdk-lib/cx-api';
-import { BootstraplessStackSynthesizer, BootstraplessStackSynthesizerProps } from '../src';
+import { BootstraplessStackSynthesizer, BootstraplessStackSynthesizerProps, ImageAssetTagSuffixType } from '../src';
 
 beforeEach(() => {
   delete process.env.BSS_FILE_ASSET_BUCKET_NAME;
@@ -13,6 +13,7 @@ beforeEach(() => {
   delete process.env.BSS_FILE_ASSET_REGION_SET;
   delete process.env.BSS_TEMPLATE_BUCKET_NAME;
   delete process.env.BSS_IMAGE_ASSET_TAG_PREFIX;
+  delete process.env.BSS_IMAGE_ASSET_TAG_SUFFIX_TYPE;
   delete process.env.BSS_IMAGE_ASSET_REGION_SET;
   delete process.env.BSS_IMAGE_ASSET_ACCOUNT_ID;
 });
@@ -263,6 +264,66 @@ test.each([
   expect(json.files).toEqual({});
 });
 
+test.each([
+  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetTagSuffixType: ImageAssetTagSuffixType.HASH }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_TAG_SUFFIX_TYPE: 'HASH' }),
+])('#%# addDockerImageAsset when imageAssetTagSuffixType HASH is specified', (mksynthzerFn) => {
+  const stack = new Stack();
+  const synthesizer = mksynthzerFn();
+  synthesizer.bind(stack);
+  synthesizer.addDockerImageAsset({
+    directoryName: __dirname,
+    sourceHash: 'abcdef',
+  });
+  const json = JSON.parse(synthesizer.dumps());
+
+  expect(json.dockerImages.abcdef.source).toEqual({
+    directory: __dirname,
+  });
+  expect(json.dockerImages.abcdef.destinations).toEqual({
+    'current_account-current_region': {
+      repositoryName: 'the-repo',
+      imageTag: 'abcdef',
+    },
+  });
+  expect(json.files).toEqual({});
+});
+
+test.each([
+  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetTagSuffixType: ImageAssetTagSuffixType.NONE }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_TAG_SUFFIX_TYPE: 'NONE' }),
+])('#%# addDockerImageAsset when imageAssetTagSuffixType NONE is specified', (mksynthzerFn) => {
+  const stack = new Stack();
+  const synthesizer = mksynthzerFn();
+  synthesizer.bind(stack);
+  synthesizer.addDockerImageAsset({
+    directoryName: __dirname,
+    sourceHash: 'abcdef',
+  });
+  const json = JSON.parse(synthesizer.dumps());
+
+  expect(json.dockerImages.abcdef.source).toEqual({
+    directory: __dirname,
+  });
+  expect(json.dockerImages.abcdef.destinations).toEqual({
+    'current_account-current_region': {
+      repositoryName: 'the-repo',
+      imageTag: '',
+    },
+  });
+  expect(json.files).toEqual({});
+});
+
+test.each([
+  () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetTagSuffixType: 'invalid' as ImageAssetTagSuffixType }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_TAG_SUFFIX_TYPE: 'INVALID' }),
+  () => mksynthzer({}, { BSS_IMAGE_ASSET_REPOSITORY_NAME: 'the-repo', BSS_IMAGE_ASSET_TAG_SUFFIX_TYPE: '' }),
+])('#%# addDockerImageAsset when imageAssetTagSuffixType is invalid', (mksynthzerFn) => {
+  expect(() => {
+    mksynthzerFn();
+  }).toThrow(/Invalid ImageAssetTagSuffixType/);
+});
+
 
 test.each([
   () => mksynthzer({ imageAssetRepositoryName: 'the-repo', imageAssetRegionSet: ['us-west-1'] }),
@@ -399,7 +460,7 @@ function readAssetManifest(asm: cxapi.CloudAssembly): cxschema.AssetManifest {
   return JSON.parse(fs.readFileSync(manifestArtifact.file, { encoding: 'utf-8' }));
 }
 
-function mksynthzer(props: BootstraplessStackSynthesizerProps, env?: {[key: string]: string}): BootstraplessStackSynthesizer {
+function mksynthzer(props: BootstraplessStackSynthesizerProps, env?: { [key: string]: string }): BootstraplessStackSynthesizer {
   if (env) {
     for (const key in env) {
       process.env[key] = env[key];

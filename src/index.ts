@@ -9,6 +9,11 @@ export * from './aspect';
 const REGION_PLACEHOLDER = '${AWS::Region}';
 const ERR_MSG_CALL_BIND_FIRST = 'You must call bind() first';
 
+export enum ImageAssetTagSuffixType {
+  NONE = 'NONE',
+  HASH = 'HASH',
+}
+
 /**
  * Configuration properties for BootstraplessStackSynthesizer
  */
@@ -92,11 +97,18 @@ export interface BootstraplessStackSynthesizerProps {
   readonly templateBucketName?: string;
 
   /**
-   * Override the tag of the Docker Image assets
+   * Override the tag prefix of the Docker Image assets
    *
    * @default - process.env.BSS_IMAGE_ASSET_TAG_PREFIX
    */
   readonly imageAssetTagPrefix?: string;
+
+  /**
+   * Override the tag suffix of the Docker Image assets
+   *
+   * @default - HASH or process.env.BSS_IMAGE_ASSET_TAG_SUFFIX_TYPE
+   */
+  readonly imageAssetTagSuffixType?: ImageAssetTagSuffixType;
 
   /**
    * Override the ECR repository region of the Docker Image assets
@@ -129,7 +141,8 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
   private fileAssetPrefix?: string;
   private fileAssetRegionSet?: string[];
   private templateBucketName?: string;
-  private imageAssetTagPrefix?: string;
+  private imageAssetTagPrefix: string;
+  private imageAssetTagSuffixType: ImageAssetTagSuffixType;
   private imageAssetRegionSet?: string[];
   private imageAssetAccountId?: string;
 
@@ -151,9 +164,11 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
 
       BSS_TEMPLATE_BUCKET_NAME,
       BSS_IMAGE_ASSET_TAG_PREFIX,
+      BSS_IMAGE_ASSET_TAG_SUFFIX_TYPE,
       BSS_IMAGE_ASSET_REGION_SET,
       BSS_IMAGE_ASSET_ACCOUNT_ID,
     } = process.env;
+    /* eslint-disable max-len */
     this.bucketName = props.fileAssetBucketName ?? BSS_FILE_ASSET_BUCKET_NAME;
     this.repositoryName = props.imageAssetRepositoryName ?? BSS_IMAGE_ASSET_REPOSITORY_NAME;
     this.fileAssetPublishingRoleArn = props.fileAssetPublishingRoleArn ?? BSS_FILE_ASSET_PUBLISHING_ROLE_ARN;
@@ -162,8 +177,10 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     this.fileAssetRegionSet = props.fileAssetRegionSet ?? commaSplit(BSS_FILE_ASSET_REGION_SET);
     this.templateBucketName = props.templateBucketName ?? BSS_TEMPLATE_BUCKET_NAME;
     this.imageAssetTagPrefix = (props.imageAssetTagPrefix ?? BSS_IMAGE_ASSET_TAG_PREFIX) ?? '';
+    this.imageAssetTagSuffixType = validateImageAssetTagSuffixType((props.imageAssetTagSuffixType ?? BSS_IMAGE_ASSET_TAG_SUFFIX_TYPE) ?? ImageAssetTagSuffixType.HASH);
     this.imageAssetRegionSet = props.imageAssetRegionSet ?? commaSplit(BSS_IMAGE_ASSET_REGION_SET);
     this.imageAssetAccountId = props.imageAssetAccountId ?? BSS_IMAGE_ASSET_ACCOUNT_ID;
+    /* eslint-enable max-len */
   }
 
   public bind(stack: Stack): void {
@@ -257,7 +274,11 @@ export class BootstraplessStackSynthesizer extends StackSynthesizer {
     assertNotNull(this.repositoryName, 'The repositoryName is null');
     validateDockerImageAssetSource(asset);
 
-    const imageTag = this.imageAssetTagPrefix + asset.sourceHash;
+    let imageTag = this.imageAssetTagPrefix;
+    if (this.imageAssetTagSuffixType === ImageAssetTagSuffixType.HASH) {
+      imageTag = this.imageAssetTagPrefix + asset.sourceHash;
+    }
+
     const destinations: { [id: string]: cxschema.DockerImageDestination } = {};
 
     if (this.imageAssetRegionSet?.length) {
@@ -460,6 +481,13 @@ function commaSplit(v?: string): string[] | undefined {
     return v.split(',');
   }
   return undefined;
+}
+
+function validateImageAssetTagSuffixType(s: string): ImageAssetTagSuffixType {
+  if (!Object.values(ImageAssetTagSuffixType).includes(s as ImageAssetTagSuffixType)) {
+    throw new Error(`Invalid ImageAssetTagSuffixType: ${s}, must be in ${Object.values(ImageAssetTagSuffixType)}`);
+  }
+  return s as ImageAssetTagSuffixType;
 }
 
 function validateFileAssetSource(asset: FileAssetSource) {
